@@ -47,7 +47,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Bin\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -55,7 +56,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -184,8 +184,8 @@
   <ItemGroup>
     <Content Include="AgileDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AgileDB.Context.cs</LastGenOutput>
       <DependentUpon>AgileDB.edmx</DependentUpon>
+      <LastGenOutput>AgileDB.Context.cs</LastGenOutput>
     </Content>
     <Content Include="AgileDB.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -219,7 +219,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -236,12 +238,12 @@
     <Content Include="Views\Shared\_RISLayout.cshtml" />
     <Content Include="Views\Shared\_ResearchLayout.cshtml" />
     <Content Include="Views\Shared\_DeanLayout - Copy.cshtml" />
+    <Content Include="Views\Research\createProject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Dean\" />
-    <Folder Include="Views\Research\" />
     <Folder Include="Views\RIS\" />
   </ItemGroup>
   <ItemGroup>
