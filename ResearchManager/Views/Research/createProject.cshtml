@@ -19,9 +19,9 @@
 
 
         <div class="form-group">
-            @Html.LabelFor(model => model.pName,"Project Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.pName,"Project Name", htmlAttributes: new { @class = "control-label col-md-2" ,  })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.pName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.pName, new { htmlAttributes = new { @class = "form-control", required = "required" } })
                 @Html.ValidationMessageFor(model => model.pName, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -29,7 +29,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.pDesc, "Project Description", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.pDesc, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.pDesc, new { htmlAttributes = new { @class = "form-control" , required = "required" } })
                 @Html.ValidationMessageFor(model => model.pDesc, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -37,7 +37,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.pAbstract, "Project Abstract", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.pAbstract, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.pAbstract, new { htmlAttributes = new { @class = "form-control" , required = "required" } })
                 @Html.ValidationMessageFor(model => model.pAbstract, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -45,7 +45,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.projectFile,"Project File:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.projectFile, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.projectFile, new { htmlAttributes = new { @class = "form-control", required = "required" } })
                 @Html.ValidationMessageFor(model => model.projectFile, "", new { @class = "text-danger" })
             </div>
         </div>

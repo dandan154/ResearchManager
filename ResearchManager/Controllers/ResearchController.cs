@@ -14,7 +14,7 @@ namespace ResearchManager.Controllers
             return View();
         }
         public ActionResult createProject()
-        {
+        { 
             return View();
         }
     }
