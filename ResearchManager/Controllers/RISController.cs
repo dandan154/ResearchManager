@@ -13,5 +13,10 @@ namespace ResearchManager.Controllers
         {
             return View();
         }
+
+        public ActionResult viewProject()
+        {
+            return View();
+        }
     }
 }
