@@ -26,6 +26,8 @@ namespace ResearchManager
         public System.DateTime dateCreated { get; set; }
         public int projectStage { get; set; }
         public string projectFile { get; set; }
+        public string pDesc { get; set; }
+        public string pAbstract { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<change> changes { get; set; }
