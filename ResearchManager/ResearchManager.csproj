@@ -263,6 +263,7 @@
     <Content Include="Views\Shared\_DeanLayout - Copy.cshtml" />
     <Content Include="Views\Research\createProject.cshtml" />
     <Content Include="Views\RIS\viewProject.cshtml" />
+    <Content Include="Views\Research\TestView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\ExpenditureFiles\" />
