@@ -15,7 +15,8 @@ namespace ResearchManager.Controllers
             return View();
         }
         public ActionResult createProject()
-        { 
+        {
+            ViewBag.Message = "Form for creating new research projects into the management system";
             return View();
         }
 
@@ -37,8 +38,8 @@ namespace ResearchManager.Controllers
             }
             catch
             {
-                ViewBag.Message = "Upload failed";
-                //return RedirectToAction("createProject");
+                //ViewBag.Message = "Upload failed";
+                return RedirectToAction("createProject");
             }
 
             if (ModelState.IsValid)
@@ -55,7 +56,9 @@ namespace ResearchManager.Controllers
                     projectFile = path
                  });
                 db.SaveChanges();
+                ViewBag.Message = "Created Project";
                 return RedirectToAction("createProject");
+
             }
 
             return View(model);
