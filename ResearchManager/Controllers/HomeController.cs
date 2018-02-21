@@ -40,6 +40,7 @@ namespace ResearchManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SignIn(ResearchManager.Models.SignInUser model)
         {
+            var ps = "";
             var db = new Entities();
 
             if (!ModelState.IsValid)
@@ -55,16 +56,16 @@ namespace ResearchManager.Controllers
                         Session["UserPosition"] = usr.staffPosition;
 
                         //Redirect user to appropriate page
-                        if (usr.staffPosition == 1)
+                        if (usr.staffPosition == "Research")
                         {
                             return RedirectToAction("Index", "Research");
 
                         }
-                        else if (usr.staffPosition == 2)
+                        else if (usr.staffPosition == "RIS")
                         {
                             return RedirectToAction("Index", "RIS");
                         }
-                        else if (usr.staffPosition > 2)
+                        else if (usr.staffPosition == "Dean")
                         {
                             return RedirectToAction("Index", "Dean");
                         }

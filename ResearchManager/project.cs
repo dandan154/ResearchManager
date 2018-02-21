@@ -24,7 +24,7 @@ namespace ResearchManager
         public int userID { get; set; }
         public string pName { get; set; }
         public System.DateTime dateCreated { get; set; }
-        public int projectStage { get; set; }
+        public string projectStage { get; set; }
         public string projectFile { get; set; }
         public string pDesc { get; set; }
         public string pAbstract { get; set; }
