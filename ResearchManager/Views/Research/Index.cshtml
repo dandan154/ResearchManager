@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<ResearchManager.project>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_ResearchLayout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.title</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Add New Project", "createProject")
 </p>
 <table class="table">
     <tr>
@@ -28,10 +28,9 @@
             @Html.DisplayNameFor(model => model.pDesc)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.pAbstract)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.user.forename)
-        </th>
+
         <th></th>
     </tr>
 
@@ -56,10 +55,6 @@
             @Html.DisplayFor(modelItem => item.pAbstract)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.user.forename)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.projectID }) |
             @Html.ActionLink("Details", "Details", new { id=item.projectID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.projectID })
         </td>
