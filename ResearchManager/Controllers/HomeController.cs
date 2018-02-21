@@ -30,7 +30,6 @@ namespace ResearchManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SignIn(ResearchManager.Models.SignInUser model)
         {
-            var ps = "";
             var db = new Entities();
 
             try
