@@ -27,7 +27,7 @@ namespace ResearchManager.Controllers
             int progID = projectID;
             Entities db = new Entities();
             var dProject = db.projects.Where(p => p.projectID == progID).First();
-            return File(dProject.projectFile, System.Net.Mime.MediaTypeNames.Application.Octet);
+            return File(dProject.projectFile, "application/xlsx",dProject.pName+ "-ExpenditureFile.xlsx");
         }
 
         [HttpPost]
@@ -39,7 +39,7 @@ namespace ResearchManager.Controllers
                 if (file.ContentLength > 0)
                 {
                     var fileName = Path.GetFileName(file.FileName);
-                    path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), fileName);
+                    path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"),fileName);
                     file.SaveAs(path);
                     Console.WriteLine(fileName);
                     Console.WriteLine(path);
