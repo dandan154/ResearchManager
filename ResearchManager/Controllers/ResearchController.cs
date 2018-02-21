@@ -13,13 +13,12 @@ namespace ResearchManager.Controllers
         public ActionResult Index()
         {
             Entities db = new Entities();
-            var projects = from m in db.projects
-                           where m.userID == 1
-                           select m;
-            return null;
+            var projects = db.projects.Where(p => p.userID == 1);
+            return View(projects.ToList());
         }
         public ActionResult createProject()
         {
+            ViewBag.Message = "Form for creating new research projects into the management system";
             return View();
         }
 
@@ -41,8 +40,8 @@ namespace ResearchManager.Controllers
             }
             catch
             {
-                ViewBag.Message = "Upload failed";
-                //return RedirectToAction("createProject");
+                //ViewBag.Message = "Upload failed";
+                return RedirectToAction("createProject");
             }
 
             if (ModelState.IsValid)
@@ -59,7 +58,9 @@ namespace ResearchManager.Controllers
                     projectFile = path
                  });
                 db.SaveChanges();
+                ViewBag.Message = "Created Project";
                 return RedirectToAction("createProject");
+
             }
 
             return View(model);
