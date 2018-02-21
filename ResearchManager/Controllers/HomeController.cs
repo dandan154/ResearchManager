@@ -32,39 +32,42 @@ namespace ResearchManager.Controllers
         {
             var db = new Entities();
 
-            if (!ModelState.IsValid)
+            try
             {
-                //WARNING - method needs try-catch for when db cannot be queried
-                var usr = db.users.Where(u => u.userID == model.userID).First();
-
-                if (usr != null)
+                if (!ModelState.IsValid)
                 {
-                    string ps = model.plntxtPass + usr.salt;
-                    ps = Crypto.HashPassword(ps);
-                    
-                    if (ps == usr.hash)
+                    //WARNING - method needs try-catch for when db cannot be queried
+                    var usr = db.users.Where(u => u.userID == model.userID).First();
+
+                    if (usr != null)
                     {
-                        Session["UserID"] = usr.userID;
-                        Session["UserPosition"] = usr.staffPosition;
+                        string ps = model.plntxtPass + usr.salt;
+                        ps = Crypto.HashPassword(ps);
 
-                        //Redirect user to appropriate page
-                        if (usr.staffPosition == 1)
+                        if (ps == usr.hash)
                         {
-                            return RedirectToAction("Index", "Research");
+                            Session["UserID"] = usr.userID;
+                            Session["UserPosition"] = usr.staffPosition;
 
-                        }
-                        else if (usr.staffPosition == 2)
-                        {
-                            return RedirectToAction("Index", "RIS");
-                        }
-                        else if (usr.staffPosition > 2)
-                        {
-                            return RedirectToAction("Index", "Dean");
+                            //Redirect user to appropriate page
+                            if (usr.staffPosition == 1)
+                            {
+                                return RedirectToAction("Index", "Research");
+
+                            }
+                            else if (usr.staffPosition == 2)
+                            {
+                                return RedirectToAction("Index", "RIS");
+                            }
+                            else if (usr.staffPosition > 2)
+                            {
+                                return RedirectToAction("Index", "Dean");
+                            }
                         }
                     }
                 }
-
             }
+            ViewBag.Message = "Login Failed, Please Try Again";
             return View();
         }
     }
