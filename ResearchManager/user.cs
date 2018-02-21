@@ -24,7 +24,7 @@ namespace ResearchManager
         public int userID { get; set; }
         public string forename { get; set; }
         public string surname { get; set; }
-        public int staffPosition { get; set; }
+        public string staffPosition { get; set; }
         public string hash { get; set; }
         public string salt { get; set; }
         public string Email { get; set; }

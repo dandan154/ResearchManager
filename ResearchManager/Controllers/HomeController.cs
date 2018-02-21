@@ -36,13 +36,13 @@ namespace ResearchManager.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    //WARNING - method needs try-catch for when db cannot be queried
                     var usr = db.users.Where(u => u.userID == model.userID).First();
 
                     if (usr != null)
                     {
                         string ps = model.plntxtPass + usr.salt;
                         ps = Crypto.HashPassword(ps);
+
 
                         if (ps == usr.hash)
                         {
