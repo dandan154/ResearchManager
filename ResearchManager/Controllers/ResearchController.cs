@@ -12,7 +12,11 @@ namespace ResearchManager.Controllers
         // GET: Research
         public ActionResult Index()
         {
-            return View();
+            Entities db = new Entities();
+            var projects = from m in db.projects
+                           where m.userID == 1
+                           select m;
+            return null;
         }
         public ActionResult createProject()
         {
@@ -63,6 +67,6 @@ namespace ResearchManager.Controllers
 
             return View(model);
         }
-        
     }
+
 }

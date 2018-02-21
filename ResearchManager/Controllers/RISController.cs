@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -8,6 +9,8 @@ namespace ResearchManager.Controllers
 {
     public class RISController : Controller
     {
+        private SqlConnection conn;
+
         // GET: RIS
         public ActionResult Index()
         {
@@ -18,6 +21,5 @@ namespace ResearchManager.Controllers
         {
             return View();
         }
-
     }
 }
