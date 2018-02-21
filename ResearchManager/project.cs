@@ -20,13 +20,8 @@ namespace ResearchManager
         {
             this.changes = new HashSet<change>();
         }
-<<<<<<< HEAD
-    
-        [Display(Name="Project ID")]
-=======
 
         [Display(Name = "Project ID")]
->>>>>>> Pair-1-Marc-&-Scott
         public int projectID { get; set; }
 
         [Display(Name = "User ID")]
@@ -41,11 +36,7 @@ namespace ResearchManager
         [Display(Name = "Project Stage")]
         public string projectStage { get; set; }
 
-<<<<<<< HEAD
-        [Display(Name = "Expenditure File Link")]
-=======
         [Display(Name = "Project File")]
->>>>>>> Pair-1-Marc-&-Scott
         public string projectFile { get; set; }
 
         [Display(Name = "Project Description")]
