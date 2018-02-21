@@ -27,12 +27,19 @@ namespace ResearchManager.Controllers
             int progID = projectID;
             Entities db = new Entities();
             var dProject = db.projects.Where(p => p.projectID == progID).First();
-            return File(dProject.projectFile, "application/xlsx",dProject.pName+ "-ExpenditureFile.xlsx");
+
+            return File(dProject.projectFile, "application/" + Path.GetExtension(dProject.projectFile),dProject.pName+ "-ExpenditureFile" + Path.GetExtension(dProject.projectFile));
         }
 
         [HttpPost]
         public ActionResult createProject(project model, HttpPostedFileBase file)
         {
+            var allowedExtensions = new[] { ".xls", ".xlsx"};
+            if (!allowedExtensions.Contains(Path.GetExtension(file.FileName)))
+            {
+                TempData["alert"] = "Select a file with extension type: " + string.Join(" ", allowedExtensions); ;
+                return RedirectToAction("createProject");
+            }
             var path ="";
             try
             {
@@ -41,14 +48,11 @@ namespace ResearchManager.Controllers
                     var fileName = Path.GetFileName(file.FileName);
                     path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"),fileName);
                     file.SaveAs(path);
-                    Console.WriteLine(fileName);
-                    Console.WriteLine(path);
-
                 }
             }
             catch
             {
-                //ViewBag.Message = "Upload failed";
+                ViewBag.Message = "Upload failed";
                 return RedirectToAction("createProject");
             }
 
