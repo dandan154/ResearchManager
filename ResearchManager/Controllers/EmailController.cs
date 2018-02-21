@@ -2,6 +2,14 @@
 using System.Web.Helpers;
 using System.Web.Mvc;
 using ResearchManager.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Configuration;
+
 namespace ResearchManager.Controllers
 {
     public class EmailController : Controller
@@ -34,17 +42,11 @@ namespace ResearchManager.Controllers
                 //Sender email address.  
                 WebMail.From = "donotreply.rsmanagerdundee@gmail.com";
 
+                // get details from database here, replacing the above variables as needed
 
-                // Here is where we will set the 
-                // temp variables for email content
-                string recipient = obj.ToEmail;
-                string subject = obj.EmailSubject;
-                string body = obj.EMailBody;
-                string cc = obj.EmailCC;
-                string bcc = obj.EmailBCC;
-
-                WebMail.Send(to: recipient, subject: subject, body: body, cc: cc, bcc: bcc, isBodyHtml: true);
+                WebMail.Send(to: obj.ToEmail, subject: obj.EmailSubject, body: obj.EMailBody, cc: obj.EmailCC, bcc: obj.EmailBCC, isBodyHtml: true);
                 ViewBag.Status = "Email Sent Successfully.";
+
             }
             catch (Exception)
             {
