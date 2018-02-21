@@ -3,22 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Helpers; 
 
 namespace ResearchManager.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
 
         public ActionResult Contact()
         {
@@ -43,36 +33,46 @@ namespace ResearchManager.Controllers
             var ps = "";
             var db = new Entities();
 
-            if (!ModelState.IsValid)
+            try
             {
-                //WARNING - method needs try-catch for when db cannot be queried
-                var usr = db.users.Where(u => u.userID == model.userID).First();
-
-                if (usr != null)
+                if (!ModelState.IsValid)
                 {
-                    if (ps == usr.hash)
+                    var usr = db.users.Where(u => u.userID == model.userID).First();
+
+                    if (usr != null)
                     {
-                        Session["UserID"] = usr.userID;
-                        Session["UserPosition"] = usr.staffPosition;
+                        string ps = model.plntxtPass + usr.salt;
+                        ps = Crypto.HashPassword(ps);
 
-                        //Redirect user to appropriate page
-                        if (usr.staffPosition == "Research")
-                        {
-                            return RedirectToAction("Index", "Research");
 
-                        }
-                        else if (usr.staffPosition == "RIS")
+                        if (ps == usr.hash)
                         {
-                            return RedirectToAction("Index", "RIS");
-                        }
-                        else if (usr.staffPosition == "Dean")
-                        {
-                            return RedirectToAction("Index", "Dean");
+                            Session["UserID"] = usr.userID;
+                            Session["UserPosition"] = usr.staffPosition;
+
+                            //Redirect user to appropriate page
+                            if (usr.staffPosition == "Research")
+                            {
+                                return RedirectToAction("Index", "Research");
+
+                            }
+                            else if (usr.staffPosition == "RIS")
+                            {
+                                return RedirectToAction("Index", "RIS");
+                            }
+                            else if (usr.staffPosition == "Dean" || usr.staffPosition == "AssociateDean")
+                            {
+                                return RedirectToAction("Index", "Dean");
+                            }
                         }
                     }
                 }
+            }
+            catch
+            {
 
             }
+            ViewBag.Message = "Login Failed, Please Try Again";
             return View();
         }
     }
