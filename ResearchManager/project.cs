@@ -11,7 +11,8 @@ namespace ResearchManager
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class project
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,14 +20,38 @@ namespace ResearchManager
         {
             this.changes = new HashSet<change>();
         }
+<<<<<<< HEAD
     
+        [Display(Name="Project ID")]
+=======
+
+        [Display(Name = "Project ID")]
+>>>>>>> Pair-1-Marc-&-Scott
         public int projectID { get; set; }
+
+        [Display(Name = "User ID")]
         public int userID { get; set; }
+
+        [Display(Name = "Project Name")]
         public string pName { get; set; }
+
+        [Display(Name = "Date Created")]
         public System.DateTime dateCreated { get; set; }
+
+        [Display(Name = "Project Stage")]
         public string projectStage { get; set; }
+
+<<<<<<< HEAD
+        [Display(Name = "Expenditure File Link")]
+=======
+        [Display(Name = "Project File")]
+>>>>>>> Pair-1-Marc-&-Scott
         public string projectFile { get; set; }
+
+        [Display(Name = "Project Description")]
         public string pDesc { get; set; }
+
+        [Display(Name = "Project Abstract")]
         public string pAbstract { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -1,14 +1,18 @@
 ﻿@model IEnumerable<ResearchManager.project>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_ResearchLayout.cshtml";
 }
 
-<h2>Index</h2>
+<<<<<<< HEAD
+<h2>@ViewBag.title</h2>
+=======
+<h2>@ViewBag.Title</h2>
+>>>>>>> Pair-1-Marc-&-Scott
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Add New Project", "createProject")
 </p>
 <table class="table">
     <tr>
@@ -22,17 +26,16 @@
             @Html.DisplayNameFor(model => model.projectStage)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.projectFile)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.pDesc)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.pAbstract)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.user.forename)
-        </th>
+<<<<<<< HEAD
+
         <th></th>
+=======
+>>>>>>> Pair-1-Marc-&-Scott
     </tr>
 
 @foreach (var item in Model) {
@@ -47,20 +50,17 @@
             @Html.DisplayFor(modelItem => item.projectStage)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.projectFile)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.pDesc)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.pAbstract)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.user.forename)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.projectID }) |
+<<<<<<< HEAD
             @Html.ActionLink("Details", "Details", new { id=item.projectID }) |
+=======
+            @Html.ActionLink("Download Expenditure File", "download", new { id=item.projectID }) |
+>>>>>>> Pair-1-Marc-&-Scott
             @Html.ActionLink("Delete", "Delete", new { id=item.projectID })
         </td>
     </tr>

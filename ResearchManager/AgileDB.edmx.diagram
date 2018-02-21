@@ -4,6 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
+      <Diagram DiagramId="88ccade146b34f37b4ee772b7c7915bd" Name="Diagram1">
+        <EntityTypeShape EntityType="agileteam7dbModel.change" Width="1.5" PointX="5.25" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="agileteam7dbModel.project" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="agileteam7dbModel.user" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
+        <AssociationConnector Association="agileteam7dbModel.changes_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="agileteam7dbModel.changes_ibfk_2" ManuallyRouted="false" />
+        <AssociationConnector Association="agileteam7dbModel.project_ibfk_1" ManuallyRouted="false" />
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
