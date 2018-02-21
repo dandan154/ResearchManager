@@ -16,7 +16,7 @@ namespace ResearchManager.Controllers
             var projects = from m in db.projects
                            where m.userID == 1
                            select m;
-            return View(user.ToList());
+            return null;
         }
         public ActionResult createProject()
         {
@@ -64,6 +64,6 @@ namespace ResearchManager.Controllers
 
             return View(model);
         }
-        
     }
+
 }
