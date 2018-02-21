@@ -22,6 +22,14 @@ namespace ResearchManager.Controllers
             return View();
         }
 
+        public FileResult download(int projectID)
+        {
+            int progID = projectID;
+            Entities db = new Entities();
+            var dProject = db.projects.Where(p => p.projectID == progID).First();
+            return File(dProject.projectFile, System.Net.Mime.MediaTypeNames.Application.Octet);
+        }
+
         [HttpPost]
         public ActionResult createProject(project model, HttpPostedFileBase file)
         {
@@ -59,7 +67,7 @@ namespace ResearchManager.Controllers
                  });
                 db.SaveChanges();
                 ViewBag.Message = "Created Project";
-                return RedirectToAction("createProject");
+                return RedirectToAction("Index");
 
             }
 

@@ -47,7 +47,7 @@
             @Html.DisplayFor(modelItem => item.pAbstract)
         </td>
         <td>
-            @Html.ActionLink("Download Expenditure File", "download", new { id=item.projectID }) |
+            @Html.ActionLink("Download Expenditure File", "download", new { projectID=item.projectID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.projectID })
         </td>
     </tr>
