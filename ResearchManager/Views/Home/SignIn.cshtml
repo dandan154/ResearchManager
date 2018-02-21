@@ -1,0 +1,38 @@
+﻿@model ResearchManager.Models.SignInUser
+
+@{
+    ViewBag.Title = "Login";
+}
+<h2>@ViewBag.Title</h2>
+<h3>@ViewBag.Message</h3>
+
+<p>
+    @{
+        if (Session["UserID"] != null)
+        {
+            Session["UserID"].ToString();
+        }
+        else
+        {
+             Session["UserID"] = 1234; 
+            Session["UserID"].ToString();
+        }
+    }
+
+</p>
+
+<body>
+    @using (Html.BeginForm("SignIn", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+    <div>
+        @Html.TextBoxFor(u => u.userID, new { @placeholder = "Username" })
+        @Html.PasswordFor(u => u.plntxtPass, new { @placeholder = "Password" })
+        <button type="submit">Sign In</button>
+    </div>
+    }
+
+</body>
+
+<p>Use this area to provide additional information.</p>

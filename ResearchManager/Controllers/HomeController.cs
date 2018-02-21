@@ -26,5 +26,45 @@ namespace ResearchManager.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public ActionResult SignIn()
+        {
+            var usr = new ResearchManager.Models.SignInUser(); 
+            return View(usr); 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SignIn(ResearchManager.Models.SignInUser model)
+        {
+            var db = new Entities();
+
+            if (!ModelState.IsValid)
+            {
+                var usr = db.users.Where(u => u.userID == model.userID).First();
+
+                if (usr != null)
+                {
+                    Session["UserID"] = usr.userID;
+
+                    if (usr.staffPosition == 1)
+                    {
+                        return RedirectToAction("Index", "Research");
+
+                    }
+                    else if(usr.staffPosition == 2)
+                    {
+                        return RedirectToAction("Index", "RIS");
+                    }
+                    else if(usr.staffPosition > 2)
+                    {
+                        return RedirectToAction("Index", "Dean"); 
+                    }
+                }
+
+            }
+            return View();
+        }
     }
 }

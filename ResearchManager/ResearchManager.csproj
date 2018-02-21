@@ -188,6 +188,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\SignInUser.cs" />
     <Compile Include="project.cs">
       <DependentUpon>AgileDB.tt</DependentUpon>
     </Compile>
@@ -266,10 +267,10 @@
     <Content Include="Views\Shared\_DeanLayout - Copy.cshtml" />
     <Content Include="Views\Research\createProject.cshtml" />
     <Content Include="Views\RIS\viewProject.cshtml" />
+    <Content Include="Views\Home\SignIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
     <Folder Include="Views\Dean\" />
   </ItemGroup>
   <ItemGroup>
