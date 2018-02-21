@@ -13,8 +13,8 @@ namespace ResearchManager.Controllers
         public ActionResult Index()
         {
             Entities db = new Entities();
-            var projects = db.project.Where(projects => p.userID == 1);
-            return view(projects.ToList());
+            var projects = db.projects.Where(p => p.userID == 1);
+            return View(projects.ToList());
         }
         public ActionResult createProject()
         {
