@@ -30,8 +30,10 @@ namespace ResearchManager.Controllers
         [HttpGet]
         public ActionResult SignIn()
         {
-            var usr = new ResearchManager.Models.SignInUser(); 
-            return View(usr); 
+            //Session variable test 
+            Session["UserID"] = 0;
+
+            return View(); 
         }
 
         [HttpPost]
@@ -42,24 +44,30 @@ namespace ResearchManager.Controllers
 
             if (!ModelState.IsValid)
             {
+                //WARNING - method needs try-catch for when db cannot be queried
                 var usr = db.users.Where(u => u.userID == model.userID).First();
 
                 if (usr != null)
                 {
-                    Session["UserID"] = usr.userID;
+                    if (ps == usr.hash)
+                    {
+                        Session["UserID"] = usr.userID;
+                        Session["UserPosition"] = usr.staffPosition;
 
-                    if (usr.staffPosition == 1)
-                    {
-                        return RedirectToAction("Index", "Research");
+                        //Redirect user to appropriate page
+                        if (usr.staffPosition == 1)
+                        {
+                            return RedirectToAction("Index", "Research");
 
-                    }
-                    else if(usr.staffPosition == 2)
-                    {
-                        return RedirectToAction("Index", "RIS");
-                    }
-                    else if(usr.staffPosition > 2)
-                    {
-                        return RedirectToAction("Index", "Dean"); 
+                        }
+                        else if (usr.staffPosition == 2)
+                        {
+                            return RedirectToAction("Index", "RIS");
+                        }
+                        else if (usr.staffPosition > 2)
+                        {
+                            return RedirectToAction("Index", "Dean");
+                        }
                     }
                 }
 
