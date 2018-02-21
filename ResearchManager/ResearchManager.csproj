@@ -179,12 +179,14 @@
       <DependentUpon>AgileDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\DeanController.cs" />
+    <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ResearchController.cs" />
     <Compile Include="Controllers\RISController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\EmailModel.cs" />
     <Compile Include="project.cs">
       <DependentUpon>AgileDB.tt</DependentUpon>
     </Compile>
@@ -264,10 +266,10 @@
     <Content Include="Views\Research\createProject.cshtml" />
     <Content Include="Views\RIS\viewProject.cshtml" />
     <Content Include="Views\Research\TestView.cshtml" />
+    <Content Include="Views\Email\SendEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\ExpenditureFiles\" />
-    <Folder Include="Models\" />
     <Folder Include="Views\Dean\" />
   </ItemGroup>
   <ItemGroup>
