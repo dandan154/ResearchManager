@@ -21,5 +21,5 @@ namespace ResearchManager.Controllers
         {
             return View();
         }
-
+    }
 }
