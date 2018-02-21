@@ -28,11 +28,11 @@ namespace ResearchManager.Controllers
                 //sending emails with secure protocol  
                 WebMail.EnableSsl = true;
                 //EmailId used to send emails from application  
-                WebMail.UserName = "connorsword25@googlemail.com";
-                WebMail.Password = "EmmaWoodhouse100";
+                WebMail.UserName = "donotreply.rsmanagerdundee@gmail.com";
+                WebMail.Password = "agile100";
 
                 //Sender email address.  
-                WebMail.From = "connorsword25@googlemail.com";
+                WebMail.From = "donotreply.rsmanagerdundee@gmail.com";
 
                 //Send email  
                 WebMail.Send(to: obj.ToEmail, subject: obj.EmailSubject, body: obj.EMailBody, cc: obj.EmailCC, bcc: obj.EmailBCC, isBodyHtml: true);
