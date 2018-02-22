@@ -21,7 +21,8 @@ namespace ResearchManager.Controllers
         public ActionResult SignIn()
         {
             //Session variable test 
-            Session["UserID"] = 0;
+            if(Session["UserPosition"] != null)
+                return RedirectToAction("SignIn");
 
             return View(); 
         }
@@ -47,22 +48,9 @@ namespace ResearchManager.Controllers
                         if (ps == usr.hash)
                         {
                             Session["UserID"] = usr.userID;
-                            Session["UserPosition"] = usr.staffPosition;
+                            Session["StaffPosition"] = usr.staffPosition;
 
-                            //Redirect user to appropriate page
-                            if (usr.staffPosition == "Research")
-                            {
-                                return RedirectToAction("Index", "Research");
-
-                            }
-                            else if (usr.staffPosition == "RIS")
-                            {
-                                return RedirectToAction("Index", "RIS");
-                            }
-                            else if (usr.staffPosition == "Dean" || usr.staffPosition == "AssociateDean")
-                            {
-                                return RedirectToAction("Index", "Dean");
-                            }
+                            return ControllerChange();
                         }
                     }
                 }
@@ -74,5 +62,35 @@ namespace ResearchManager.Controllers
             ViewBag.Message = "Login Failed, Please Try Again";
             return View();
         }
+
+        public RedirectToRouteResult ControllerChange()
+        {
+            try
+            {
+                //Redirect user to appropriate page
+                if (Session["StaffPosition"].ToString() == "Research")
+                {
+                    return RedirectToAction("Index", "Research");
+
+                }
+                else if (Session["StaffPosition"].ToString() == "RIS")
+                {
+                    return RedirectToAction("viewProject", "RIS");
+                }
+                else if (Session["StaffPosition"].ToString() == "Dean" || Session["StaffPosition"].ToString() == "AssociateDean")
+                {
+                    return RedirectToAction("Index", "Dean");
+                }
+                else
+                {
+                    return RedirectToAction("SignIn");
+                }
+            }
+            catch
+            {
+                return RedirectToAction("SignIn"); 
+            }
+        } 
     }
+    
 }
