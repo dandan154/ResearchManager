@@ -20,8 +20,8 @@ namespace ResearchManager
         {
             this.changes = new HashSet<change>();
         }
-        [Display(Name="Project ID")]
 
+        [Display(Name = "Project ID")]
         public int projectID { get; set; }
 
         [Display(Name = "User ID")]
