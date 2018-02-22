@@ -269,6 +269,7 @@
     <Content Include="Views\RIS\viewProject.cshtml" />
     <Content Include="Views\Home\SignIn.cshtml" />
     <Content Include="Views\Research\Index.cshtml" />
+    <Content Include="Views\RIS\reUploadExpend.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,66 @@
+﻿@model ResearchManager.project
+
+@{
+    ViewBag.Title = "reUploadExpend";
+    Layout = "~/Views/Shared/_RISLayout.cshtml";
+}
+
+<h2>Edit Expenditure File</h2>
+
+
+@using (Html.BeginForm("reUploadExpend", "RIS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("projectID", Model.projectID)
+    <div>
+        <h4>project</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.pName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.pName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.pDesc)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.pDesc)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.user.forename)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.user.forename)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.user.surname)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.user.surname)
+            </dd>
+            <dt>@Html.LabelFor(model => model.projectFile, "Project File:")</dt>
+
+            
+            <dd>
+                @Html.TextBox("file", "", new { type = "file", accept = ".xls,.xlsx" })
+                @Html.ValidationMessageFor(model => model.projectFile, "", new { @class = "text-danger" })
+                
+            </dd>
+            <dd>
+                <br/>
+                <input type="submit" value="Update" class="btn btn-default" />
+            </dd>
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}
