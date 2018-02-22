@@ -5,6 +5,9 @@
     Layout = "~/Views/Shared/_ResearchLayout.cshtml";
 }
 
+@using (Html.BeginForm("index", "RIS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
 <h2>@ViewBag.Title</h2>
 
 <h3>@ViewBag.Summary</h3>
@@ -32,6 +35,9 @@
     {
         <tr>
             <td>
+                @Html.DisplayFor(modelfield => field.projectID)
+            </td>
+            <td>
                 @Html.DisplayFor(modelfield => field.pName)
             </td>
             <td>
@@ -47,16 +53,17 @@
                 @Html.DisplayFor(modelfield => field.pAbstract)
             </td>
             <td>
-                @using (Html.BeginForm("SignProject", "RIS", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Sign" class="btn btn-default" />
-                        </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="hidden" name="id" value="@field.projectID" />
+                        <input type="submit" value="Sign" class="btn btn-default" />
                     </div>
-                }
+                </div>
+                
             </td>
         </tr>
     }
 
 </table>
+
+}

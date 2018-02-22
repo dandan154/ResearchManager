@@ -92,11 +92,28 @@ namespace ResearchManager.Controllers
         }
 
         [HttpPost]
-        public ActionResult SignProject()
+        public ActionResult index(int id)
         {
-            System.Diagnostics.Debug.Write("\n");
-            System.Diagnostics.Debug.Write("\n Sign \n");
-            System.Diagnostics.Debug.Write("\n");
+            //ViewBag.l = "";
+            //string l = ViewBag.l;
+            //ViewBag.Title = "Form for signing projects";
+            // return projects that relate to the current users level
+            //Entities db = new Entities();
+            // requires changing the current int representation of projectstage in project.cs to string, so as to match the database
+
+            //string label = IdToLabel(user_position);
+
+            //var projects = db.projects.Where(p => p.projectID == id);
+            //return View(projects.ToList());
+
+
+
+
+            //Update project with project id 'id' below here
+
+
+
+
             return View();
         }
     }
