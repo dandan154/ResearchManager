@@ -32,7 +32,6 @@ namespace ResearchManager.Controllers
         public ActionResult SignIn(Models.SignInUser model)
         {
             var db = new Entities();
-            System.Diagnostics.Debug.WriteLine(model.userID);  
 
             try
             {
@@ -49,13 +48,12 @@ namespace ResearchManager.Controllers
                         string ps = model.plntxtPass + usr.salt;
                         bool isCorrect = Crypto.VerifyHashedPassword(usr.hash, ps);
 
-                        Session["UserID"] = ps;
 
                         if (isCorrect)
                         {
                             Session["UserID"] = usr.userID;
                             Session["StaffPosition"] = usr.staffPosition;
-
+                            System.Diagnostics.Debug.WriteLine(Session["StaffPosition"]);
                             return ControllerChange();
                         }
                     }
@@ -74,7 +72,7 @@ namespace ResearchManager.Controllers
             try
             {
                 //Redirect user to appropriate page
-                if (Session["StaffPosition"].ToString() == "Research")
+                if (Session["StaffPosition"].ToString() == "Researcher")
                 {
                     return RedirectToAction("Index", "Research");
 
@@ -83,7 +81,7 @@ namespace ResearchManager.Controllers
                 {
                     return RedirectToAction("Index", "RIS");
                 }
-                else if (Session["StaffPosition"].ToString() == "Dean" || Session["StaffPosition"].ToString() == "AssociateDean")
+                else if (Session["StaffPosition"].ToString() == "Dean" || Session["StaffPosition"].ToString() == "Associate Dean")
                 {
                     return RedirectToAction("Index", "Dean");
                 }

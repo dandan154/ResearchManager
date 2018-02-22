@@ -23,11 +23,6 @@ namespace ResearchManager.Controllers
             return View(projects.ToList());
         }
 
-
-        public ActionResult viewProject()
-        {
-            return View();
-        }
         public ActionResult Details(int id)
         {
             try
@@ -44,7 +39,7 @@ namespace ResearchManager.Controllers
             }
         }
 
-        public ActionResult reUploadExpend(int projectID)
+        public ActionResult ReuploadExpend(int projectID)
         {
             int progID = projectID;
             Entities db = new Entities();
@@ -53,7 +48,7 @@ namespace ResearchManager.Controllers
         }
 
         [HttpPost]
-        public ActionResult reUploadExpend(int projectID, HttpPostedFileBase file)
+        public ActionResult ReuploadExpend(int projectID, HttpPostedFileBase file)
         {
             var allowedExtensions = new[] { ".xls", ".xlsx" };
             if (!allowedExtensions.Contains(Path.GetExtension(file.FileName)))
@@ -74,7 +69,7 @@ namespace ResearchManager.Controllers
             catch
             {
                 ViewBag.Message = "Upload failed";
-                return RedirectToAction("createProject");
+                return RedirectToAction("Index");
             }
 
             int progID = projectID;
@@ -94,13 +89,6 @@ namespace ResearchManager.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult View(int projectID)
-        {
-            int progID = projectID;
-            Entities db = new Entities();
-            var sampleProject = db.projects.Where(p => p.projectID == progID).First();
-            return View(sampleProject);
-        }
         public FileResult Download(int projectID)
         {
             int progID = projectID;
@@ -108,6 +96,26 @@ namespace ResearchManager.Controllers
             var dProject = db.projects.Where(p => p.projectID == progID).First();
 
             return File(dProject.projectFile, "application/" + Path.GetExtension(dProject.projectFile), dProject.pName + "-ExpenditureFile" + Path.GetExtension(dProject.projectFile));
+        }
+
+        string IdToLabel(string id)
+        {
+            // map user position to signature
+            if (id != "")
+            {
+                if (id == "RIS")
+                    return "Created";
+
+                if (id == "Researcher")
+                    return "Researcher_Signs";
+
+                if (id == "Associate Dean")
+                    return "Associate_Dean_Signs";
+
+                if (id == "Dean")
+                    return "Dean_Signs";
+            }
+            return null;
         }
 
     }
