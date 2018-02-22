@@ -75,10 +75,10 @@ namespace ResearchManager.Controllers
 
             string label = IdToLabel(user_position);
             System.Diagnostics.Debug.Write("\n");
-            System.Diagnostics.Debug.Write("\n user id = " + label + "\n");
+            System.Diagnostics.Debug.Write("\n user id = " + user_position + + " " + projectLabel +  "\n");
             System.Diagnostics.Debug.Write("\n");
-            //var projects = db.projects.Where(p => p.projectStage == projectLabel);
-            //return View(projects.ToList());
+            var projects = db.projects.Where(p => p.projectStage == projectLabel);
+            return View(projects.ToList());
             return View();
         }
     }

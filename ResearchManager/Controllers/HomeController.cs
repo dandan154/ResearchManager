@@ -49,26 +49,7 @@ namespace ResearchManager.Controllers
 
                 if (usr != null)
                 {
-                    if (ps == usr.hash)
-                    {
-                        Session["UserID"] = usr.userID;
-                        Session["UserPosition"] = usr.staffPosition;
-
-                        //Redirect user to appropriate page
-                        if (usr.staffPosition == 1)
-                        {
-                            return RedirectToAction("Index", "Research");
-
-                        }
-                        else if (usr.staffPosition == 2)
-                        {
-                            return RedirectToAction("Index", "RIS");
-                        }
-                        else if (usr.staffPosition > 2)
-                        {
-                            return RedirectToAction("Index", "Dean");
-                        }
-                    }
+   
                 }
 
             }
