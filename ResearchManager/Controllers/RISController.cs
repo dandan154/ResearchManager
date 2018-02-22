@@ -106,7 +106,24 @@ namespace ResearchManager.Controllers
             //var projects = db.projects.Where(p => p.projectID == id);
             //return View(projects.ToList());
 
+            if (ModelState.IsValid)
+            {
+                var db = new Entities();
+                db.projects.Add(new project
+                {
+                    userID = 1,
+                    dateCreated = DateTime.Now.ToUniversalTime(),
+                    //projectStage = 1,
+                    pName = model.pName,
+                    pAbstract = model.pAbstract,
+                    pDesc = model.pDesc,
+                    projectFile = path
+                });
+                db.SaveChanges();
+                ViewBag.Message = "Created Project";
+                return RedirectToAction("createProject");
 
+            }
 
 
             //Update project with project id 'id' below here
