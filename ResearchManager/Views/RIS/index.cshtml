@@ -1,11 +1,13 @@
 ﻿@model IEnumerable<ResearchManager.project>
 
 @{
-    ViewBag.Title = "Ongoing Projects - Require Signing";
+    //ViewBag.Title = "Ongoing Projects - Require Signing";
     Layout = "~/Views/Shared/_ResearchLayout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
+
+<h3>@ViewBag.Summary</h3>
 
 <table class="table">
     <tr>
@@ -43,6 +45,16 @@
             </td>
             <td>
                 @Html.DisplayFor(modelfield => field.pAbstract)
+            </td>
+            <td>
+                @using (Html.BeginForm("SignProject", "RIS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Sign" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
             </td>
         </tr>
     }

@@ -51,7 +51,7 @@ namespace ResearchManager.Controllers
                 {
                     userID = 1,
                     dateCreated = DateTime.Now.ToUniversalTime(),
-                    projectStage = 1,
+                    //projectStage = 1,
                     pName = model.pName,
                     pAbstract = model.pAbstract,
                     pDesc = model.pDesc,

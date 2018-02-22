@@ -23,7 +23,7 @@
           <Property Name="userID" Type="int" Nullable="false" />
           <Property Name="pName" Type="char" MaxLength="40" Nullable="false" />
           <Property Name="dateCreated" Type="datetime" Precision="0" Nullable="false" />
-          <Property Name="projectStage" Type="int" Nullable="false" />
+          <Property Name="projectStage" Type="char" MaxLength="45" Nullable="false" />
           <Property Name="projectFile" Type="char" MaxLength="250" Nullable="false" />
           <Property Name="pDesc" Type="char" MaxLength="255" Nullable="false" />
           <Property Name="pAbstract" Type="char" MaxLength="255" Nullable="false" />
@@ -35,10 +35,10 @@
           <Property Name="userID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="forename" Type="char" MaxLength="40" Nullable="false" />
           <Property Name="surname" Type="char" MaxLength="40" Nullable="false" />
-          <Property Name="staffPosition" Type="int" Nullable="false" />
-          <Property Name="hash" Type="varchar" MaxLength="500" Nullable="false" />
-          <Property Name="salt" Type="varchar" MaxLength="500" Nullable="false" />
-          <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="staffPosition" Type="char" MaxLength="40" Nullable="false" />
+          <Property Name="hash" Type="char" MaxLength="255" Nullable="false" />
+          <Property Name="salt" Type="char" MaxLength="255" Nullable="false" />
+          <Property Name="Email" Type="char" MaxLength="255" Nullable="false" />
         </EntityType>
         <Association Name="changes_ibfk_1">
           <End Role="user" Type="Self.user" Multiplicity="1" />
@@ -117,7 +117,7 @@
           <Property Name="userID" Type="Int32" Nullable="false" />
           <Property Name="pName" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="dateCreated" Type="DateTime" Nullable="false" />
-          <Property Name="projectStage" Type="Int32" Nullable="false" />
+          <Property Name="projectStage" Type="String" Nullable="false" Unicode="false" MaxLength="250" FixedLength="false" />
           <Property Name="projectFile" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="changes" Relationship="Self.changes_ibfk_2" FromRole="project" ToRole="changes" />
           <NavigationProperty Name="user" Relationship="Self.project_ibfk_1" FromRole="project" ToRole="user" />
@@ -131,7 +131,7 @@
           <Property Name="userID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="forename" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="surname" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="staffPosition" Type="Int32" Nullable="false" />
+          <Property Name="staffPosition" Type="String" Nullable="false" />
           <Property Name="hash" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="salt" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="changes" Relationship="Self.changes_ibfk_1" FromRole="user" ToRole="changes" />
