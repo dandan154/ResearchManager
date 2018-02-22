@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ResearchManager.project>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_RISLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.pName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dateCreated)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.projectStage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.user.forename)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.pName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dateCreated)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.projectStage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.user.forename)
+        </td>
+        <td>
+            @Html.ActionLink("Download", "Edit", new { id=item.projectID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.projectID }) |
+            @Html.ActionLink("Reupload ", "reUploadExpend", new { id = item.projectID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.projectID })
+        </td>
+    </tr>
+}
+
+</table>
