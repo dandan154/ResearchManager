@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.IO; 
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -23,11 +23,16 @@ namespace ResearchManager.Controllers
             return View(projects.ToList());
         }
 
+
+        public ActionResult viewProject()
+        {
+            return View();
+        }
         public ActionResult Details(int id)
         {
             try
             {   //Use searchTerm to query the database for project details and store this in a variable project
-                int searchTerm = id; 
+                int searchTerm = id;
                 Entities db = new Entities();
                 var project = db.projects.Where(p => p.projectID == searchTerm).First();
                 return View(project);
@@ -35,10 +40,67 @@ namespace ResearchManager.Controllers
             catch
             {
                 //Return to Index if error occurs
-                return RedirectToAction("Index"); 
+                return RedirectToAction("Index");
             }
         }
 
+        public ActionResult reUploadExpend(int projectID)
+        {
+            int progID = projectID;
+            Entities db = new Entities();
+            var sampleProject = db.projects.Where(p => p.projectID == progID).First();
+            return View(sampleProject);
+        }
+
+        [HttpPost]
+        public ActionResult reUploadExpend(int projectID, HttpPostedFileBase file)
+        {
+            var allowedExtensions = new[] { ".xls", ".xlsx" };
+            if (!allowedExtensions.Contains(Path.GetExtension(file.FileName)))
+            {
+                TempData["alert"] = "Select a file with extension type: " + string.Join(" ", allowedExtensions); ;
+                return RedirectToAction("Index");
+            }
+            var path = "";
+            try
+            {
+                if (file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), fileName);
+                    file.SaveAs(path);
+                }
+            }
+            catch
+            {
+                ViewBag.Message = "Upload failed";
+                return RedirectToAction("createProject");
+            }
+
+            int progID = projectID;
+            Entities db = new Entities();
+            var sampleProject = db.projects.Where(p => p.projectID == progID).First();
+            var fToDel = sampleProject.projectFile;
+            sampleProject.projectFile = path;
+            db.Set<project>().Attach(sampleProject);
+            db.Entry(sampleProject).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+
+            if (System.IO.File.Exists(fToDel))
+            {
+                System.IO.File.Delete(fToDel);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult View(int projectID)
+        {
+            int progID = projectID;
+            Entities db = new Entities();
+            var sampleProject = db.projects.Where(p => p.projectID == progID).First();
+            return View(sampleProject);
+        }
         public FileResult Download(int projectID)
         {
             int progID = projectID;
