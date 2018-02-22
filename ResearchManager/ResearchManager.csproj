@@ -183,6 +183,7 @@
     </Compile>
     <Compile Include="Controllers\DeanController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OngoingProjectsController.cs" />
     <Compile Include="Controllers\ResearchController.cs" />
     <Compile Include="Controllers\RISController.cs" />
     <Compile Include="Global.asax.cs">
