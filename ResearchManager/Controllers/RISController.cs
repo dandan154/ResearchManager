@@ -20,12 +20,19 @@ namespace ResearchManager.Controllers
 
         public ActionResult Details()
         {
-            String i = RouteData.Values["id"].ToString();
-            int searchTerm = Convert.ToInt32(i); 
- 
-            Entities db = new Entities();
-            var project = db.projects.Where(p => p.projectID == searchTerm).First(); 
-            return View(project); 
+            try
+            {
+                String i = RouteData.Values["id"].ToString();
+                int searchTerm = Convert.ToInt32(i);
+
+                Entities db = new Entities();
+                var project = db.projects.Where(p => p.projectID == searchTerm).First();
+                return View(project);
+            }
+            catch
+            {
+                return RedirectToAction("Index"); 
+            }
         }
 
     }
