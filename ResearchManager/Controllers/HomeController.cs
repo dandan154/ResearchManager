@@ -29,23 +29,29 @@ namespace ResearchManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SignIn(ResearchManager.Models.SignInUser model)
+        public ActionResult SignIn(Models.SignInUser model)
         {
             var db = new Entities();
+            System.Diagnostics.Debug.WriteLine(model.userID);  
 
             try
             {
                 if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+                else
                 {
                     var usr = db.users.Where(u => u.userID == model.userID).First();
 
                     if (usr != null)
                     {
                         string ps = model.plntxtPass + usr.salt;
-                        ps = Crypto.HashPassword(ps);
+                        bool isCorrect = Crypto.VerifyHashedPassword(usr.hash, ps);
 
+                        Session["UserID"] = ps;
 
-                        if (ps == usr.hash)
+                        if (isCorrect)
                         {
                             Session["UserID"] = usr.userID;
                             Session["StaffPosition"] = usr.staffPosition;
