@@ -22,3 +22,46 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.loginForm{
+
+}
+
+#loginLabel {
+    width: 100%;
+    text-align: center;
+    color: #263f68;
+}
+
+#matInput,#passInput{
+    width:100%;
+    padding-top:10px;
+    padding-bottom:10px;
+    text-align:center;
+}
+
+
+h2 {
+    color: #263f68;
+}
+#loginButton {
+    width: 100%;
+    padding-top:10px;
+    text-align: center;
+}
+
+#logbutt {
+    background-color: #263f68;
+    color: white;
+    border-radius: 8px;
+}
+
+#plntxtPass, #userID {
+    border-radius: 8px;
+    color: #263f68;
+    border-color: #263f68;
+}
+
+#footerText{
+    text-align:center;
+}
