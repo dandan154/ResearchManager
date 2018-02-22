@@ -38,6 +38,7 @@
           <Property Name="staffPosition" Type="int" Nullable="false" />
           <Property Name="hash" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="salt" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <Association Name="changes_ibfk_1">
           <End Role="user" Type="Self.user" Multiplicity="1" />
@@ -135,6 +136,7 @@
           <Property Name="salt" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="changes" Relationship="Self.changes_ibfk_1" FromRole="user" ToRole="changes" />
           <NavigationProperty Name="projects" Relationship="Self.project_ibfk_1" FromRole="user" ToRole="project" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="changes_ibfk_1">
           <End Role="user" Type="Self.user" Multiplicity="1" />
@@ -223,6 +225,7 @@
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="agileteam7dbModel.user">
               <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="userID" ColumnName="userID" />
                 <ScalarProperty Name="forename" ColumnName="forename" />
                 <ScalarProperty Name="surname" ColumnName="surname" />
