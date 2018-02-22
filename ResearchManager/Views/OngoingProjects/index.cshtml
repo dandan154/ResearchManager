@@ -1,0 +1,50 @@
+﻿@model IEnumerable<ResearchManager.project>
+
+@{
+    ViewBag.Title = "Ongoing Projects - Require Signing";
+    Layout = "~/Views/Shared/_ResearchLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.pName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dateCreated)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.projectStage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pDesc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pAbstract)
+        </th>
+    </tr>
+
+    @foreach (var field in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelfield => field.pName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelfield => field.dateCreated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelfield => field.projectStage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelfield => field.pDesc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelfield => field.pAbstract)
+            </td>
+        </tr>
+    }
+
+</table>

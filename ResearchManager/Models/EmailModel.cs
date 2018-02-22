@@ -18,6 +18,10 @@ namespace ResearchManager.Models
         // 3 = Associate dean
         // 4 = Dean
 
+        // if current_user_id == project_signature_status
+        //      show project
+        //      sign
+
         [DataType(DataType.EmailAddress), Display(Name = "To")]
         [Required]
         public string ToEmail { get; set; }

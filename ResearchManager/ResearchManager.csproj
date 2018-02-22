@@ -181,6 +181,7 @@
     <Compile Include="Controllers\DeanController.cs" />
     <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OngoingProjectsController.cs" />
     <Compile Include="Controllers\ResearchController.cs" />
     <Compile Include="Controllers\RISController.cs" />
     <Compile Include="Global.asax.cs">
@@ -267,10 +268,11 @@
     <Content Include="Views\RIS\viewProject.cshtml" />
     <Content Include="Views\Research\TestView.cshtml" />
     <Content Include="Views\Email\SendEmail.cshtml" />
+    <Content Include="Views\OngoingProjects\index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\ExpenditureFiles\" />
-    <Folder Include="Views\Dean\" />
+    <Folder Include="Views\Signing\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
