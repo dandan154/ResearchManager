@@ -260,16 +260,15 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_HomeLayout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_RISLayout.cshtml" />
     <Content Include="Views\Shared\_ResearchLayout.cshtml" />
     <Content Include="Views\Shared\_DeanLayout - Copy.cshtml" />
     <Content Include="Views\Research\createProject.cshtml" />
     <Content Include="Views\RIS\viewProject.cshtml" />
     <Content Include="Views\Home\SignIn.cshtml" />
-    <Content Include="Views\OngoingProjects\index.cshtml" />
+    <Content Include="Views\Research\Index.cshtml" />
+    
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
