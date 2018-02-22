@@ -10,7 +10,7 @@ namespace ResearchManager.Controllers
     public class RISController : Controller
     {
         // user id corresponds to...
-        string user_position = "Dean"; // try different position here (from he list below) to make sure shits working
+        string user_position = "Associate_Dean"; // try different position here (from he list below) to make sure shits working
         string projectLabel = "";
         // ... 
         // 1 = RIS
@@ -76,7 +76,6 @@ namespace ResearchManager.Controllers
         {
             // return projects that relate to the current users level
             Entities db = new Entities();
-            // requires changing the current int representation of projectstage in project.cs to string, so as to match the database
 
             string label = IdToLabel(user_position);
 
@@ -94,44 +93,27 @@ namespace ResearchManager.Controllers
         [HttpPost]
         public ActionResult index(int id)
         {
-            //ViewBag.l = "";
-            //string l = ViewBag.l;
-            //ViewBag.Title = "Form for signing projects";
-            // return projects that relate to the current users level
-            //Entities db = new Entities();
-            // requires changing the current int representation of projectstage in project.cs to string, so as to match the database
+            string label = IdToLabel(user_position);
 
-            //string label = IdToLabel(user_position);
+            var db = new Entities();
+            var projectToEdit = db.projects.Where(p => p.projectID == id).First();
 
-            //var projects = db.projects.Where(p => p.projectID == id);
-            //return View(projects.ToList());
+            if (user_position == "RIS") 
+                projectToEdit.projectStage = "Researcher_Signs";
+            if (user_position == "Researcher")
+                projectToEdit.projectStage = "Associate_Dean_Signs";
+            if (user_position == "Associate_Dean")
+                projectToEdit.projectStage = "Dean_Signs";
+            if (user_position == "Dean")
+                projectToEdit.projectStage = "Completed";
 
-            if (ModelState.IsValid)
-            {
-                var db = new Entities();
-                db.projects.Add(new project
-                {
-                    userID = 1,
-                    dateCreated = DateTime.Now.ToUniversalTime(),
-                    //projectStage = 1,
-                    pName = model.pName,
-                    pAbstract = model.pAbstract,
-                    pDesc = model.pDesc,
-                    projectFile = path
-                });
-                db.SaveChanges();
-                ViewBag.Message = "Created Project";
-                return RedirectToAction("createProject");
-
-            }
+            db.Set<project>().Attach(projectToEdit);
+            db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
 
 
-            //Update project with project id 'id' below here
-
-
-
-
-            return View();
+            var projects = db.projects.Where(p => p.projectStage == label);
+            return View(projects.ToList());
         }
     }
 }
