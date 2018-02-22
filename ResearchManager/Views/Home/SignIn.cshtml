@@ -28,7 +28,8 @@
     @{if (Session["UserID"] != null)
         {
             <p> TEST: UserID = @Session["UserID"].ToString() </p>
-            <p> TEST: UserPosition = @Session["StaffPosition"].ToString() </p>
+            <p> TEST: StaffPosition = @Session["StaffPosition"].ToString()</p>
+            
         }
     }
 
