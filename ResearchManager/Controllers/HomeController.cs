@@ -81,7 +81,7 @@ namespace ResearchManager.Controllers
                 }
                 else if (Session["StaffPosition"].ToString() == "RIS")
                 {
-                    return RedirectToAction("viewProject", "RIS");
+                    return RedirectToAction("Index", "RIS");
                 }
                 else if (Session["StaffPosition"].ToString() == "Dean" || Session["StaffPosition"].ToString() == "AssociateDean")
                 {

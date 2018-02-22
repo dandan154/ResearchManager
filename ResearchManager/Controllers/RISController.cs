@@ -18,9 +18,14 @@ namespace ResearchManager.Controllers
             return View(projects.ToList());
         }
 
-        public ActionResult ViewProject()
+        public ActionResult Details()
         {
-            return View();
+            String i = RouteData.Values["id"].ToString();
+            int searchTerm = Convert.ToInt32(i); 
+ 
+            Entities db = new Entities();
+            var project = db.projects.Where(p => p.projectID == searchTerm).First(); 
+            return View(project); 
         }
 
     }
