@@ -9,17 +9,19 @@ namespace ResearchManager.Controllers
 {
     public class RISController : Controller
     {
-        private SqlConnection conn;
 
         // GET: RIS
         public ActionResult Index()
         {
-            return View();
+            Entities db = new Entities();
+            var projects = db.projects;
+            return View(projects.ToList());
         }
 
-        public ActionResult viewProject()
+        public ActionResult ViewProject()
         {
             return View();
         }
+
     }
 }
