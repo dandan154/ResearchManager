@@ -14,6 +14,8 @@ namespace ResearchManager.Controllers
         // GET: RIS
         public ActionResult Index()
         {
+            if (Session["UserID"] == null)
+                return RedirectToAction("Home", "SignIn");
             // Create new Entities object. This is a reference to the database.
             Entities db = new Entities();
 
@@ -96,6 +98,8 @@ namespace ResearchManager.Controllers
 
         public ActionResult View(int projectID)
         {
+            if (Session["UserID"] == null)
+                return RedirectToAction("Home", "SignIn");
             int progID = projectID;
             Entities db = new Entities();
             var sampleProject = db.projects.Where(p => p.projectID == progID).First();

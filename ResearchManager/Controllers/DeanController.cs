@@ -11,6 +11,8 @@ namespace ResearchManager.Controllers
         // GET: Dean
         public ActionResult Index()
         {
+            if (Session["UserID"] == null)
+                return RedirectToAction("Home", "SignIn");
             return View();
         }
     }
