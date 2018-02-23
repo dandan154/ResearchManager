@@ -18,6 +18,13 @@ namespace ResearchManager.Controllers
             int session = Convert.ToInt32(Session["UserID"]);
             Entities db = new Entities();
             var projects = db.projects.Where(p => p.userID == session);
+            return viewIndexPage(Session["UserID"]);
+        }
+
+        public ActionResult viewIndexPage(object UserID)
+        {
+            Entities db = new Entities();
+            var projects = db.projects.Where(p => p.userID == Convert.ToInt32(UserID));
             return View(projects.ToList());
         }
         public ActionResult createProject()
