@@ -71,16 +71,16 @@ namespace ResearchManager.HelperClasses
             if (id != "")
             {
                 if (id == "RIS")
-                    return "Created";
+                    return "Project created";
 
                 if (id == "Researcher")
-                    return "Researcher_Signs";
+                    return "Awaiting further action from Researcher";
 
                 if (id == "AssociateDean")
-                    return "Associate_Dean_Signs";
+                    return "Awaiting further action from Associate Dean";
 
                 if (id == "Dean")
-                    return "Dean_Signs";
+                    return "Awaiting further action from Dean";
             }
             else
             {
@@ -95,19 +95,19 @@ namespace ResearchManager.HelperClasses
             // update signatures based on current user
             if (s == "RIS")
             {
-                return "Researcher_Signs";
+                return "Awaiting further action from Researcher";
             }
             else if (s == "Researcher")
             {
-                return "Associate_Dean_Signs";
+                return "Awaiting further action from Associate Dean";
             }
             else if (s == "AssociateDean")
             {
-                return "Dean_Signs";
+                return "Awaiting further action from Dean";
             }
             else if (s == "Dean")
             {
-                return "Completed";
+                return "Approved";
             }
 
             return null; 
