@@ -1,59 +1,88 @@
 ﻿@model IEnumerable<ResearchManager.project>
-
-@{
-    ViewBag.Title = "Dashboard";
-    Layout = "~/Views/Shared/_ResearchLayout.cshtml";
-}
-<h2>@ViewBag.Title</h2>
-<p>
-    @Html.ActionLink("Add New Project", "createProject")
+ 
+ @{
+     ViewBag.Title = "Dashboard";
+     Layout = "~/Views/Shared/_ResearchLayout.cshtml";
+     }
+ <h2>@ViewBag.Title</h2>
+ <p>
+        @Html.ActionLink("Add New Project", "createProject")
+    
 </p>
-<table class="table">
+ <table class="table">
+    
     <tr>
+        
         <th>
-            @Html.DisplayNameFor(model => model.pName)
+                        @Html.DisplayNameFor(model => model.pName)
+            
         </th>
+        
         <th>
-            @Html.DisplayNameFor(model => model.dateCreated)
+                        @Html.DisplayNameFor(model => model.dateCreated)
+            
         </th>
+        
         <th>
-            @Html.DisplayNameFor(model => model.projectStage)
+                        @Html.DisplayNameFor(model => model.projectStage)
+            
         </th>
+        
         <th>
-            @Html.DisplayNameFor(model => model.pDesc)
+                        @Html.DisplayNameFor(model => model.pDesc)
+            
         </th>
+        
         <th>
-            @Html.DisplayNameFor(model => model.pAbstract)
+                        @Html.DisplayNameFor(model => model.pAbstract)
+            
         </th>
+        
     </tr>
-
-@foreach (var item in Model) {
+    
+    @foreach (var item in Model)
+    {
+        
     <tr>
+        
         <td>
-            @Html.DisplayFor(modelItem => item.pName)
+                        @Html.DisplayFor(modelItem => item.pName)
+            
         </td>
+        
         <td>
-            @Html.DisplayFor(modelItem => item.dateCreated)
+                        @Html.DisplayFor(modelItem => item.dateCreated)
+            
         </td>
+        
         <td>
-            @Html.DisplayFor(modelItem => item.projectStage)
+                        @Html.DisplayFor(modelItem => item.projectStage)
+            
         </td>
+        
         <td>
-            @Html.DisplayFor(modelItem => item.pDesc)
+                        @Html.DisplayFor(modelItem => item.pDesc)
+            
         </td>
+        
         <td>
-            @Html.DisplayFor(modelItem => item.pAbstract)
+                        @Html.DisplayFor(modelItem => item.pAbstract)
+            
         </td>
+        
         <td>
-            @Html.ActionLink("Download Expenditure File", "Download", new { projectID=item.projectID }) |
-
-            @Html.ActionLink("Details", "ViewProject", new { id=item.projectID }) |
-
-            @Html.ActionLink("Delete", "Delete", new { id=item.projectID }) |
-
-            @Html.ActionLink("Sign", "sign", new { projectID = item.projectID })
+                        @Html.ActionLink("Download Expenditure File", "Download", new { projectID = item.projectID }) |
+            
+                        @Html.ActionLink("Details", "ViewProject", new { id = item.projectID }) |
+            
+                        @Html.ActionLink("Delete", "Delete", new { id = item.projectID }) |
+            
+                        @Html.ActionLink("Sign", "sign", new { projectID = item.projectID })
+            
         </td>
+        
     </tr>
-}
-
+        }
+    
+    
 </table>

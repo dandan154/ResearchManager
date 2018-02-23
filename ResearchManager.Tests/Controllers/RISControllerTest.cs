@@ -15,6 +15,7 @@ namespace ResearchManager.Tests.Controllers
     public class RISControllerTest
 
     {
+        //Unable to Test due to limitations of ASP MVC
         /*[TestMethod]
         public void SignIn()
         {

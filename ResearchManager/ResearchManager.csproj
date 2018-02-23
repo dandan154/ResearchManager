@@ -227,6 +227,7 @@
     <Content Include="AGILETEAM7DB.edmx.diagram">
       <DependentUpon>AGILETEAM7DB.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -256,11 +257,8 @@
     <Content Include="Views\Shared\_ResearchLayout.cshtml" />
     <Content Include="Views\Shared\_DeanLayout - Copy.cshtml" />
     <Content Include="Views\Research\createProject.cshtml" />
-    <Content Include="Views\RIS\viewProject.cshtml" />
     <Content Include="Views\Home\SignIn.cshtml" />
-    <Content Include="Views\Research\Index.cshtml" />
     <Content Include="Views\RIS\reUploadExpend.cshtml" />
-    <Content Include="Views\OngoingProjects\index.cshtml" />
     <Content Include="Views\RIS\index.cshtml" />
     <Content Include="Views\Dean\Index.cshtml" />
     <Content Include="Views\Associate\Index.cshtml" />
