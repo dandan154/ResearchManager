@@ -47,7 +47,7 @@ namespace ResearchManager.Tests.Controllers
             {
                 userID = 1,
                 dateCreated = DateTime.Now.ToUniversalTime(),
-                projectStage = 1,
+                projectStage = "Created",
                 pName = "Test Name",
                 pAbstract = "Test Abstract",
                 pDesc = "Test Description",

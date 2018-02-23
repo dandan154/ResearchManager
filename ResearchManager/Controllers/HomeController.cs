@@ -20,10 +20,6 @@ namespace ResearchManager.Controllers
         [HttpGet]
         public ActionResult SignIn()
         {
-            //Session variable test 
-            if(Session["UserPosition"] != null)
-                return RedirectToAction("SignIn");
-
             return View(); 
         }
 
