@@ -50,7 +50,16 @@ namespace ResearchManager.Controllers
                 if (file.ContentLength > 0)
                 {
                     var fileName = Path.GetFileName(file.FileName);
-                    path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), fileName);
+                    var fileextension = Path.GetExtension(fileName);
+                    Random randInt = new Random();
+                    int rand1 = randInt.Next(1, 10000);
+                    int rand2 = randInt.Next(1, 10000);
+                    int rand3 = randInt.Next(1, 10000);
+                    String randOne = Convert.ToString(rand1);
+                    String randTwo = Convert.ToString(rand2);
+                    String randThree = Convert.ToString(rand3);
+                    String newName = randOne + randTwo + randThree + "." + fileextension;
+                    path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), newName);
                     file.SaveAs(path);
                 }
             }
