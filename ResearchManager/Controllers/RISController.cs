@@ -167,43 +167,79 @@ namespace ResearchManager.Controllers
         public ActionResult sign(int projectID)
         {
             int id = projectID;
-            string session_capture = Session["StaffPosition"].ToString(); 
+            string session_capture = Session["StaffPosition"].ToString();
 
             string label = IdToLabel(session_capture);
-
+            
             // return our project to be changed (should be only 1)
             var db = new Entities();
+            var projects = db.projects.Where(p => p.projectStage == label);
             var projectToEdit = db.projects.Where(p => p.projectID == id).First();
 
-            // update signatures based on current user
-            if (session_capture == "RIS")
+            if ((Session["StaffPosition"].ToString() == "RIS" && projectToEdit.projectStage == "Created"))
             {
-                projectToEdit.projectStage = "Researcher_Signs";
-            }
-            if (session_capture == "Researcher")
-            {
-                projectToEdit.projectStage = "Associate_Dean_Signs";
-            }
-            if (session_capture == "AssociateDean")
-            {
-                projectToEdit.projectStage = "Dean_Signs";
-            }
-            if (session_capture == "Dean")
-            {
-                projectToEdit.projectStage = "Completed";
-            }
+                // update signatures based on current user
+                if (session_capture == "RIS")
+                {
+                    projectToEdit.projectStage = "Researcher_Signs";
+                }
+                if (session_capture == "Researcher")
+                {
+                    projectToEdit.projectStage = "Associate_Dean_Signs";
+                }
+                if (session_capture == "AssociateDean")
+                {
+                    projectToEdit.projectStage = "Dean_Signs";
+                }
+                if (session_capture == "Dean")
+                {
+                    projectToEdit.projectStage = "Completed";
+                }
 
-            // update database
-            db.Set<project>().Attach(projectToEdit);
-            db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;
-            db.SaveChanges();
+                // update database
+                db.Set<project>().Attach(projectToEdit);
+                db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
 
-            var projects = db.projects.Where(p => p.projectStage == label);
+                string email = positionToNewPosition(session_capture);
+                EmailHandler(email, projectToEdit.pName, projectToEdit.pDesc);
+            }
             // show all projects without previously changed one
             if (Session["StaffPosition"].ToString() == "RIS") {
                 projects = db.projects.Where(p => p.projectStage == label);
             }
             return RedirectToAction("Index", projects.ToList());//(projects.ToList());
+        }
+
+        string positionToNewPosition(string pos)
+        {
+            var db = new Entities();
+            if (pos == "RIS")
+            {
+                string l = "Researcher";
+                var userToEmail = db.users.Where(u => u.staffPosition == l).First();
+                return userToEmail.Email;
+            }
+            else if (pos == "Researcher")
+            {
+                string l = "AssociateDean";
+                var userToEmail = db.users.Where(u => u.staffPosition == l).First();
+                return userToEmail.Email;
+            }
+            else if (pos == "AssociateDean")
+            {
+                string l = "Dean";
+                var userToEmail = db.users.Where(u => u.staffPosition == l).First();
+                return userToEmail.Email;
+            }
+            else if (pos == "Dean")
+            {
+                return ("donotreply.rsmanagerdundee@gmail.com");
+            }
+            else
+            {
+                return ("donotreply.rsmanagerdundee@gmail.com");
+            }
         }
 
         // handle email sending

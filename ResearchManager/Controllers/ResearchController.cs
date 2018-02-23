@@ -142,12 +142,46 @@ namespace ResearchManager.Controllers
 
             var projects = db.projects.Where(p => p.projectStage == label);
 
+            string email = positionToNewPosition(session_capture);
+            EmailHandler(email, projectToEdit.pName, projectToEdit.pDesc);
+
             // show all projects without previously changed one
             if (Session["StaffPosition"].ToString() == "RIS")
             {
                 projects = db.projects.Where(p => p.projectStage == label);
             }
             return RedirectToAction("Index", projects.ToList());//(projects.ToList());
+        }
+
+        string positionToNewPosition(string pos)
+        {
+            var db = new Entities();
+            if (pos == "RIS")
+            {
+                string l = "Researcher";
+                var userToEmail = db.users.Where(u => u.staffPosition == l).First();
+                return userToEmail.Email;
+            }
+            else if (pos == "Researcher")
+            {
+                string l = "AssociateDean";
+                var userToEmail = db.users.Where(u => u.staffPosition == l).First();
+                return userToEmail.Email;
+            }
+            else if (pos == "AssociateDean")
+            {
+                string l = "Dean";
+                var userToEmail = db.users.Where(u => u.staffPosition == l).First();
+                return userToEmail.Email;
+            }
+            else if (pos == "Dean")
+            {
+                return ("donotreply.rsmanagerdundee@gmail.com");
+            }
+            else
+            {
+                return ("donotreply.rsmanagerdundee@gmail.com");
+            }
         }
 
         // handle email sending
