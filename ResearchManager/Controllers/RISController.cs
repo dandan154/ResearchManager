@@ -138,22 +138,7 @@ namespace ResearchManager.Controllers
             if ((Session["StaffPosition"].ToString() == "RIS" && projectToEdit.projectStage == "Created"))
             {
                 // update signatures based on current user
-                if (session_capture == "RIS")
-                {
-                    projectToEdit.projectStage = "Researcher_Signs";
-                }
-                if (session_capture == "Researcher")
-                {
-                    projectToEdit.projectStage = "Associate_Dean_Signs";
-                }
-                if (session_capture == "AssociateDean")
-                {
-                    projectToEdit.projectStage = "Dean_Signs";
-                }
-                if (session_capture == "Dean")
-                {
-                    projectToEdit.projectStage = "Completed";
-                }
+                projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(session_capture);
 
                 // update database
                 db.Set<project>().Attach(projectToEdit);
