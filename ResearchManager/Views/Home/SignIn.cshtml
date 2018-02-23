@@ -7,23 +7,30 @@
 
 
 <body>
-
+    <div class="loginForm">
+    <div id="loginLabel">
     <h2>@ViewBag.Title</h2>
-
+    </div>
     @using (Html.BeginForm("SignIn", "Home", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
 
         <div>
+            <div id="matInput">
             @Html.TextBoxFor(u => u.userID, new { @placeholder = "Username" })
+                </div>
+            <div id="passInput">
             @Html.PasswordFor(u => u.plntxtPass, new { @placeholder = "Password" })
-            <button type="submit">Sign In</button>
+                </div>
+            <div id="loginButton">
+            <button id="logbutt" type="submit">Sign In</button>
+            </div>
         </div>
-        <div>
+        <div id="footerText">
             @ViewBag.Message
         </div>
     }
-
+    </div>
 
 </body>
 
