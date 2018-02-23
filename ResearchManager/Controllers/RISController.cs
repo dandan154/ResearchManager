@@ -184,8 +184,14 @@ namespace ResearchManager.Controllers
                 db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
 
+                TempData["alert"] = "You have signed " + projectToEdit.pName;
+
                 string email = positionToNewPosition(session_capture);
                 EmailHandler(email, projectToEdit.pName, projectToEdit.pDesc);
+            }
+            else
+            {
+                TempData["alert"] = "You do not have permission to sign " + projectToEdit.pName;
             }
             // show all projects without previously changed one
             if (Session["StaffPosition"].ToString() == "RIS") {

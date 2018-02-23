@@ -198,6 +198,8 @@ namespace ResearchManager.Controllers
             db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
 
+            TempData["alert"] = "You have signed " + projectToEdit.pName;
+
             var projects = db.projects.Where(p => p.projectStage == label);
 
             string email = positionToNewPosition(session_capture);
