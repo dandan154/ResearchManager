@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ResearchManager.Models
 {
@@ -17,10 +13,6 @@ namespace ResearchManager.Models
         // 2 = Researcher
         // 3 = Associate dean
         // 4 = Dean
-
-        // if current_user_id == project_signature_status
-        //      show project
-        //      sign
 
         [DataType(DataType.EmailAddress), Display(Name = "To")]
         [Required]

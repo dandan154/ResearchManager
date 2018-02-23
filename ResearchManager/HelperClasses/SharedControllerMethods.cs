@@ -88,5 +88,30 @@ namespace ResearchManager.HelperClasses
             }
             return "Error";
         }
+
+        public static string Signature(string s)
+        {
+
+            // update signatures based on current user
+            if (s == "RIS")
+            {
+                return "Researcher_Signs";
+            }
+            else if (s == "Researcher")
+            {
+                return "Associate_Dean_Signs";
+            }
+            else if (s == "AssociateDean")
+            {
+                return "Dean_Signs";
+            }
+            else if (s == "Dean")
+            {
+                return "Completed";
+            }
+
+            return null; 
+        }
+
     }
 }
