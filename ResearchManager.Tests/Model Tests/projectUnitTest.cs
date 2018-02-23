@@ -42,8 +42,8 @@ namespace ResearchManager.Tests.Model_Tests
         public void testSetGetProjectStage()
         {
             project p = new project();
-            p.projectStage = 999;
-            Assert.AreEqual(999, p.projectStage);
+            p.projectStage = "Created";
+            Assert.AreEqual("Created", p.projectStage);
         }
 
         [TestMethod]
