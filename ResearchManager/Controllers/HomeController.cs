@@ -20,6 +20,8 @@ namespace ResearchManager.Controllers
         [HttpGet]
         public ActionResult SignIn()
         {
+            if (Session["StaffPosition"] != null)
+                return ControllerChange(); 
             return View(); 
         }
 
