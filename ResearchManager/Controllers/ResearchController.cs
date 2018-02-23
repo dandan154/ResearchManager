@@ -60,6 +60,17 @@ namespace ResearchManager.Controllers
                     String randThree = Convert.ToString(rand3);
                     String newName = randOne + randTwo + randThree + "." + fileextension;
                     path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"),newName);
+                    while(System.IO.File.Exists(path) == true)
+                    {
+                        int rand4 = randInt.Next(1, 10000);
+                        int rand5 = randInt.Next(1, 10000);
+                        int rand6 = randInt.Next(1, 10000);
+                        String randFour = Convert.ToString(rand1);
+                        String randFive= Convert.ToString(rand2);
+                        String randSiz = Convert.ToString(rand3);
+                        String TestName = randOne + randTwo + randThree + "." + fileextension;
+                        path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), TestName);
+                    }
                     file.SaveAs(path);
                 }
             }
