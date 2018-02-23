@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Helpers; 
 
 namespace ResearchManager.Controllers
 {
@@ -23,11 +24,6 @@ namespace ResearchManager.Controllers
             return View(projects.ToList());
         }
 
-
-        public ActionResult viewProject()
-        {
-            return View();
-        }
         public ActionResult Details(int id)
         {
             try
@@ -44,7 +40,7 @@ namespace ResearchManager.Controllers
             }
         }
 
-        public ActionResult reUploadExpend(int projectID)
+        public ActionResult ReuploadExpend(int projectID)
         {
             int progID = projectID;
             Entities db = new Entities();
@@ -53,7 +49,7 @@ namespace ResearchManager.Controllers
         }
 
         [HttpPost]
-        public ActionResult reUploadExpend(int projectID, HttpPostedFileBase file)
+        public ActionResult ReuploadExpend(int projectID, HttpPostedFileBase file)
         {
             var allowedExtensions = new[] { ".xls", ".xlsx" };
             if (!allowedExtensions.Contains(Path.GetExtension(file.FileName)))
@@ -74,7 +70,7 @@ namespace ResearchManager.Controllers
             catch
             {
                 ViewBag.Message = "Upload failed";
-                return RedirectToAction("createProject");
+                return RedirectToAction("Index");
             }
 
             int progID = projectID;
@@ -94,13 +90,6 @@ namespace ResearchManager.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult View(int projectID)
-        {
-            int progID = projectID;
-            Entities db = new Entities();
-            var sampleProject = db.projects.Where(p => p.projectID == progID).First();
-            return View(sampleProject);
-        }
         public FileResult Download(int projectID)
         {
             int progID = projectID;
@@ -108,6 +97,50 @@ namespace ResearchManager.Controllers
             var dProject = db.projects.Where(p => p.projectID == progID).First();
 
             return File(dProject.projectFile, "application/" + Path.GetExtension(dProject.projectFile), dProject.pName + "-ExpenditureFile" + Path.GetExtension(dProject.projectFile));
+        }
+
+        string IdToLabel(string id)
+        {
+            // map user position to signature
+            if (id != "")
+            {
+                if (id == "RIS")
+                    return "Created";
+
+                if (id == "Researcher")
+                    return "Researcher_Signs";
+
+                if (id == "Associate Dean")
+                    return "Associate_Dean_Signs";
+
+                if (id == "Dean")
+                    return "Dean_Signs";
+            }
+            return null;
+        }
+
+        void EmailHandler(string email, string projectName, string projectDe)
+        {
+            try
+            {
+                // email settings
+                WebMail.SmtpServer = "smtp.gmail.com";
+                WebMail.SmtpPort = 587;
+                WebMail.SmtpUseDefaultCredentials = true;
+                WebMail.EnableSsl = true;
+                WebMail.UserName = "donotreply.rsmanagerdundee@gmail.com";
+                WebMail.Password = "agile100";
+                WebMail.From = "donotreply.rsmanagerdundee@gmail.com";
+
+                // build email and send
+                string title = "Project Signature Required";
+                string body = "Project " + projectName + " requires signature. \nThank you.";
+                WebMail.Send(to: email, subject: title, body: body, cc: "", bcc: "", isBodyHtml: true);
+                ViewBag.Status = "Email Sent Successfully.";
+            }
+            catch (Exception)
+            {
+            }
         }
 
     }

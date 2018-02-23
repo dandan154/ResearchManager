@@ -7,7 +7,7 @@ namespace ResearchManager.Models
 {
     public class SignInUser
     {
-        public int userID { get; set; }
+        public string userID { get; set; }
         public string plntxtPass { get; set; }
     }
 }

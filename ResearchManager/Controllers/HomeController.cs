@@ -38,7 +38,7 @@ namespace ResearchManager.Controllers
                 }
                 else
                 {
-                    var usr = db.users.Where(u => u.userID == model.userID).First();
+                    var usr = db.users.Where(u => u.Matric == model.userID.Trim()).First();
 
                     if (usr != null)
                     {
