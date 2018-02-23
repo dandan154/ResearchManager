@@ -20,6 +20,8 @@ namespace ResearchManager.Controllers
         [HttpGet]
         public ActionResult SignIn()
         {
+            if (Session["StaffPosition"] != null)
+                return ControllerChange(); 
             return View(); 
         }
 
@@ -28,6 +30,7 @@ namespace ResearchManager.Controllers
         public ActionResult SignIn(Models.SignInUser model)
         {
             var db = new Entities();
+            System.Diagnostics.Debug.WriteLine(model.userID);  
 
             try
             {
@@ -56,7 +59,6 @@ namespace ResearchManager.Controllers
             }
             catch
             {
-
             }
             ViewBag.Message = "Login Failed, Please Try Again";
             return View();
@@ -67,18 +69,22 @@ namespace ResearchManager.Controllers
             try
             {
                 //Redirect user to appropriate page
-                if (Session["StaffPosition"].ToString() == "Research")
+
+                if (Session["StaffPosition"].ToString() == "Researcher")
                 {
                     return RedirectToAction("Index", "Research");
-
                 }
                 else if (Session["StaffPosition"].ToString() == "RIS")
                 {
                     return RedirectToAction("Index", "RIS");
                 }
-                else if (Session["StaffPosition"].ToString() == "Dean" || Session["StaffPosition"].ToString() == "AssociateDean")
+                else if (Session["StaffPosition"].ToString() == "Dean")
                 {
                     return RedirectToAction("Index", "Dean");
+                }
+                else if (Session["StaffPosition"].ToString() == "AssociateDean")
+                {
+                    return RedirectToAction("Index", "Associate");
                 }
                 else
                 {

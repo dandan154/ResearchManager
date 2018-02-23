@@ -4,10 +4,7 @@
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_ResearchLayout.cshtml";
 }
-
-<h2>@ViewBag.title</h2>
-
-
+<h2>@ViewBag.Title</h2>
 <p>
     @Html.ActionLink("Add New Project", "createProject")
 </p>
@@ -28,9 +25,6 @@
         <th>
             @Html.DisplayNameFor(model => model.pAbstract)
         </th>
-
-        <th></th>
-
     </tr>
 
 @foreach (var item in Model) {
@@ -51,14 +45,13 @@
             @Html.DisplayFor(modelItem => item.pAbstract)
         </td>
         <td>
-
             @Html.ActionLink("Download Expenditure File", "Download", new { projectID=item.projectID }) |
 
             @Html.ActionLink("Details", "ViewProject", new { id=item.projectID }) |
 
-            @Html.ActionLink("Download Expenditure File", "download", new { id=item.projectID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.projectID }) |
 
-            @Html.ActionLink("Delete", "Delete", new { id=item.projectID })
+            @Html.ActionLink("Sign", "sign", new { projectID = item.projectID })
         </td>
     </tr>
 }
