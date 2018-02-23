@@ -15,8 +15,9 @@ namespace ResearchManager.Controllers
         // GET: Research
         public ActionResult Index()
         {
+            int session = Convert.ToInt32(Session["UserID"]);
             Entities db = new Entities();
-            var projects = db.projects.Where(p => p.userID == 1);
+            var projects = db.projects.Where(p => p.userID == session);
             return View(projects.ToList());
         }
         public ActionResult createProject()
@@ -49,39 +50,39 @@ namespace ResearchManager.Controllers
             {
                 if (file.ContentLength > 0)
                 {
-                    var fileName = Path.GetFileName(file.FileName);
-                    var fileextension = Path.GetExtension(fileName);
+                    int rand1, rand2, rand3;
+                    string randOne, randTwo, randThree, newName, fileName, fileExtension;
                     Random randInt = new Random();
-                    int rand1 = randInt.Next(1, 10000);
-                    int rand2 = randInt.Next(1, 10000);
-                    int rand3 = randInt.Next(1, 10000);
-                    String randOne = Convert.ToString(rand1);
-                    String randTwo = Convert.ToString(rand2);
-                    String randThree = Convert.ToString(rand3);
-                    String newName = randOne + randTwo + randThree + "." + fileextension;
-                    path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"),newName);
-                    while(System.IO.File.Exists(path) == true)
+                    do
                     {
-                        int rand4 = randInt.Next(1, 10000);
-                        int rand5 = randInt.Next(1, 10000);
-                        int rand6 = randInt.Next(1, 10000);
-                        String randFour = Convert.ToString(rand1);
-                        String randFive= Convert.ToString(rand2);
-                        String randSiz = Convert.ToString(rand3);
-                        String TestName = randOne + randTwo + randThree + "." + fileextension;
-                        path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), TestName);
+                        fileName = Path.GetFileName(file.FileName);
+                        fileExtension = Path.GetExtension(fileName);
+
+                        rand1 = randInt.Next(1, 10000);
+                        rand2 = randInt.Next(1, 10000);
+                        rand3 = randInt.Next(1, 10000);
+
+                        randOne = Convert.ToString(rand1);
+                        randTwo = Convert.ToString(rand2);
+                        randThree = Convert.ToString(rand3);
+
+                        newName = randOne + randTwo + randThree + fileExtension;
+                        path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), newName);
                     }
+                    while (System.IO.File.Exists(path) == true);
+
                     file.SaveAs(path);
                 }
             }
             catch
             {
-                ViewBag.Message = "Upload failed";
+                TempData["alert"] = "Error Uploading";
                 return RedirectToAction("createProject");
             }
 
             if (ModelState.IsValid)
             {
+                System.Diagnostics.Debug.WriteLine(Session["UserID"].ToString());
                 var db = new Entities();
                 db.projects.Add(new project
                 {
