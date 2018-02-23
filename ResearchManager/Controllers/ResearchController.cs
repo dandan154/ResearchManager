@@ -5,12 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-<<<<<<< HEAD
-using System.Security.Cryptography;
-using System.Text;
-=======
 using System.Web.Helpers;
->>>>>>> d7cb739e87a89c8022b378db97a418c0a1b70235
+
 
 namespace ResearchManager.Controllers
 {
