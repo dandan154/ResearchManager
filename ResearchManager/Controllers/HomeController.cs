@@ -28,7 +28,6 @@ namespace ResearchManager.Controllers
         public ActionResult SignIn(Models.SignInUser model)
         {
             var db = new Entities();
-            System.Diagnostics.Debug.WriteLine(model.userID);  
 
             try
             {
@@ -44,8 +43,6 @@ namespace ResearchManager.Controllers
                     {
                         string ps = model.plntxtPass + usr.salt;
                         bool isCorrect = Crypto.VerifyHashedPassword(usr.hash, ps);
-
-                        Session["UserID"] = ps;
 
                         if (isCorrect)
                         {
