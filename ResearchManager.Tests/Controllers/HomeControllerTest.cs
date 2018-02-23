@@ -6,8 +6,6 @@ using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ResearchManager;
 using ResearchManager.Controllers;
-using System.Web;
-using Moq;
 
 namespace ResearchManager.Tests.Controllers
 {
@@ -15,33 +13,18 @@ namespace ResearchManager.Tests.Controllers
     public class HomeControllerTest
 
     {
-        /*[TestMethod]
+        [TestMethod]
         public void SignIn()
         {
             // Arrange
             HomeController controller = new HomeController();
-            Entities db = new Entities();
-            db.users.Add(new user
-                {
-                    Email="test@test.com",
-                    forename="test",
-                    surname="test",
-                    staffPosition="Dean",
-                    hash="test",
-                    salt="test",
-                    Matric="150014251"
-                });
-            db.SaveChanges();
+
             // Act
-            var addedUser = db.users.Where(u => u.Email == "test@test.com").First();
-            RedirectResult result = controller.viewSignIn(addedUser.staffPosition) as RedirectResult;
-            db.users.Remove(addedUser);
-            db.SaveChanges();
+            ViewResult result = controller.SignIn() as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);
         }
-        */
 
         [TestMethod]
         public void Contact()
@@ -55,6 +38,5 @@ namespace ResearchManager.Tests.Controllers
             // Assert
             Assert.IsNotNull(result);
         }
-
     }
 }
