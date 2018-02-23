@@ -15,8 +15,13 @@ namespace ResearchManager.Controllers
         // GET: Research
         public ActionResult Index()
         {
+            return viewIndexPage(Session["UserID"]);
+        }
+
+        public ActionResult viewIndexPage(object UserID)
+        {
             Entities db = new Entities();
-            var projects = db.projects.Where(p => p.userID == 1);
+            var projects = db.projects.Where(p => p.userID == Convert.ToInt32(UserID));
             return View(projects.ToList());
         }
         public ActionResult createProject()
@@ -24,6 +29,8 @@ namespace ResearchManager.Controllers
             ViewBag.Message = "Form for creating new research projects into the management system";
             return View();
         }
+
+
 
         public FileResult download(int projectID)
         {

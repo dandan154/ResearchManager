@@ -12,14 +12,14 @@ using Moq;
 namespace ResearchManager.Tests.Controllers
 {
     [TestClass]
-    public class HomeControllerTest
+    public class RISControllerTest
 
     {
         /*[TestMethod]
         public void SignIn()
         {
             // Arrange
-            HomeController controller = new HomeController();
+            RISController controller = new RISController();
             Entities db = new Entities();
             db.users.Add(new user
                 {
@@ -43,18 +43,18 @@ namespace ResearchManager.Tests.Controllers
         }
         */
 
-        [TestMethod]
-        public void Contact()
+        /*[TestMethod]
+        public void RISIndex()
         {
             // Arrange
-            HomeController controller = new HomeController();
+            RISController controller = new RISController();
 
             // Act
-            ViewResult result = controller.Contact() as ViewResult;
+            ViewResult result = controller.Index() as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);
         }
-
+        */
     }
 }
