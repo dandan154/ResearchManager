@@ -140,23 +140,7 @@ namespace ResearchManager.Controllers
             var db = new Entities();
             var projectToEdit = db.projects.Where(p => p.projectID == id).First();
 
-            // update signatures based on current user
-            if (session_capture == "RIS")
-            {
-                projectToEdit.projectStage = "Researcher_Signs";
-            }
-            if (session_capture == "Researcher")
-            {
-                projectToEdit.projectStage = "Associate_Dean_Signs";
-            }
-            if (session_capture == "AssociateDean")
-            {
-                projectToEdit.projectStage = "Dean_Signs";
-            }
-            if (session_capture == "Dean")
-            {
-                projectToEdit.projectStage = "Completed";
-            }
+            projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(session_capture);
 
             // update database
             db.Set<project>().Attach(projectToEdit);
