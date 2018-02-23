@@ -9,7 +9,6 @@
 <body>
 
     <h2>@ViewBag.Title</h2>
-    <h3>@ViewBag.Message</h3>
 
     @using (Html.BeginForm("SignIn", "Home", FormMethod.Post))
     {
@@ -20,10 +19,11 @@
             @Html.PasswordFor(u => u.plntxtPass, new { @placeholder = "Password" })
             <button type="submit">Sign In</button>
         </div>
+        <div>
+            @ViewBag.Message
+        </div>
     }
 
-    <p>@Session["UserID"].ToString()</p>
 
 </body>
 
-<p>Use this area to provide additional information.</p>

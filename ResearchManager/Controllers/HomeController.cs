@@ -3,22 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Helpers; 
 
 namespace ResearchManager.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
 
         public ActionResult Contact()
         {
@@ -31,29 +21,84 @@ namespace ResearchManager.Controllers
         public ActionResult SignIn()
         {
             //Session variable test 
-            Session["UserID"] = 0;
+            if(Session["UserPosition"] != null)
+                return RedirectToAction("SignIn");
 
             return View(); 
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SignIn(ResearchManager.Models.SignInUser model)
+        public ActionResult SignIn(Models.SignInUser model)
         {
             var db = new Entities();
+            System.Diagnostics.Debug.WriteLine(model.userID);  
 
-            if (!ModelState.IsValid)
+            try
             {
-                //WARNING - method needs try-catch for when db cannot be queried
-                var usr = db.users.Where(u => u.userID == model.userID).First();
-
-                if (usr != null)
+                if (!ModelState.IsValid)
                 {
-   
+                    return View(model);
                 }
+                else
+                {
+                    var usr = db.users.Where(u => u.userID == model.userID).First();
 
+                    if (usr != null)
+                    {
+                        string ps = model.plntxtPass + usr.salt;
+                        bool isCorrect = Crypto.VerifyHashedPassword(usr.hash, ps);
+
+                        Session["UserID"] = ps;
+
+                        if (isCorrect)
+                        {
+                            Session["UserID"] = usr.userID;
+                            Session["StaffPosition"] = usr.staffPosition;
+
+                            return ControllerChange();
+                        }
+                    }
+                }
             }
+            catch
+            {
+            }
+            ViewBag.Message = "Login Failed, Please Try Again";
             return View();
         }
+
+        public RedirectToRouteResult ControllerChange()
+        {
+            try
+            {
+                //Redirect user to appropriate page
+                if (Session["StaffPosition"].ToString() == "Researcher")
+                {
+                    return RedirectToAction("Index", "Research");
+                }
+                else if (Session["StaffPosition"].ToString() == "RIS")
+                {
+                    return RedirectToAction("Index", "RIS");
+                }
+                else if (Session["StaffPosition"].ToString() == "Dean")
+                {
+                    return RedirectToAction("Index", "Dean");
+                }
+                else if (Session["StaffPosition"].ToString() == "AssociateDean")
+                {
+                    return RedirectToAction("Index", "Associate");
+                }
+                else
+                {
+                    return RedirectToAction("SignIn");
+                }
+            }
+            catch
+            {
+                return RedirectToAction("SignIn"); 
+            }
+        } 
     }
+    
 }

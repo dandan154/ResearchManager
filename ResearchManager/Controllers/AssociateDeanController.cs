@@ -6,11 +6,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Helpers;
+
 namespace ResearchManager.Controllers
 {
-    public class DeanController : Controller
+    public class AssociateDeanController : Controller
     {
-        // GET: RIS
+        // GET: AssociateDean
         public ActionResult Index()
         {
             string session_capture = Convert.ToString(Session["StaffPosition"]);
