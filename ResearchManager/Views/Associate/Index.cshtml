@@ -1,0 +1,58 @@
+﻿@model IEnumerable<ResearchManager.project>
+
+@{
+    ViewBag.Title = "Ongoing Projects - Require Signing";
+    Layout = "~/Views/Shared/_ResearchLayout.cshtml";
+}
+
+@using (Html.BeginForm("Index", "Associate", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <h3>@ViewBag.Summary</h3>
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.pName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.projectStage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.pDesc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.pAbstract)
+            </th>
+        </tr>
+
+        @foreach (var field in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelfield => field.pName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelfield => field.dateCreated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelfield => field.projectStage)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelfield => field.pDesc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelfield => field.pAbstract)
+                </td>
+                <td>
+                    @Html.ActionLink("Sign", "sign", new { projectID = field.projectID })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+}
