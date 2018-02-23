@@ -11,7 +11,8 @@ namespace ResearchManager
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class user
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,14 +21,20 @@ namespace ResearchManager
             this.changes = new HashSet<change>();
             this.projects = new HashSet<project>();
         }
-    
+
+        [Display(Name = "User ID")]
         public int userID { get; set; }
+        [Display(Name = "User Forename")]
         public string forename { get; set; }
+        [Display(Name = "User Surname")]
         public string surname { get; set; }
+        [Display(Name = "User Role")]
         public string staffPosition { get; set; }
         public string hash { get; set; }
         public string salt { get; set; }
+        [Display(Name = "User Email")]
         public string Email { get; set; }
+        [Display(Name = "User Matriculation")]
         public string Matric { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
