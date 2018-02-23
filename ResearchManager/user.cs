@@ -28,6 +28,7 @@ namespace ResearchManager
         public string hash { get; set; }
         public string salt { get; set; }
         public string Email { get; set; }
+        public string Matric { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<change> changes { get; set; }
