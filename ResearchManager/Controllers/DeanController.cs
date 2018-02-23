@@ -14,11 +14,12 @@ namespace ResearchManager.Controllers
         public ActionResult Index()
         {
             string session_capture = Convert.ToString(Session["StaffPosition"]);
-
+            
             // <Connor's edits
             string label = IdToLabel(session_capture);
             // <Connor's edits
 
+            ViewBag.Title = session_capture;
 
             // Create new Entities object. This is a reference to the database.
             Entities db = new Entities();
@@ -161,35 +162,9 @@ namespace ResearchManager.Controllers
             return "Error";
         }
 
-        [HttpPost]
-        public ActionResult Index(int id, string email, string name)
+        public ActionResult sign(int projectID)
         {
-            /*
-            string label = IdToLabel(user_position);
-
-            // return our project to be changed (should be only 1)
-            var db = new Entities();
-            var projectToEdit = db.projects.Where(p => p.projectID == id).First();
-
-            // update signatures based on current user
-            if (user_position == "RIS")
-            {
-                projectToEdit.projectStage = "Researcher_Signs";
-            }
-            if (user_position == "Researcher")
-            {
-                projectToEdit.projectStage = "Associate_Dean_Signs";
-            }
-            if (user_position == "Associate_Dean")
-            {
-                projectToEdit.projectStage = "Dean_Signs";
-            }
-            if (user_position == "Dean")
-            {
-                projectToEdit.projectStage = "Completed";
-            }
-            */
-
+            int id = projectID;
             string session_capture = Session["StaffPosition"].ToString();
 
             string label = IdToLabel(session_capture);
@@ -228,7 +203,7 @@ namespace ResearchManager.Controllers
             {
                 projects = db.projects.Where(p => p.projectStage == label);
             }
-            return View(projects.ToList());
+            return RedirectToAction("Index", projects.ToList());//(projects.ToList());
         }
 
         // handle email sending

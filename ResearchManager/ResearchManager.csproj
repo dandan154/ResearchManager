@@ -181,7 +181,7 @@
     <Compile Include="change.cs">
       <DependentUpon>AgileDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\AssociateDeanController.cs" />
+    <Compile Include="Controllers\AssociateController.cs" />
     <Compile Include="Controllers\DeanController.cs" />
     <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
