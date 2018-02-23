@@ -258,7 +258,6 @@
     <Content Include="Views\Research\createProject.cshtml" />
     <Content Include="Views\RIS\viewProject.cshtml" />
     <Content Include="Views\Home\SignIn.cshtml" />
-    <Content Include="Views\Research\Index.cshtml" />
     <Content Include="Views\RIS\reUploadExpend.cshtml" />
     <Content Include="Views\OngoingProjects\index.cshtml" />
     <Content Include="Views\RIS\index.cshtml" />
