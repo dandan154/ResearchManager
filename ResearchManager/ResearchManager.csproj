@@ -180,13 +180,16 @@
     <Compile Include="change.cs">
       <DependentUpon>AGILETEAM7DB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AssociateController.cs" />
     <Compile Include="Controllers\DeanController.cs" />
+    <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ResearchController.cs" />
     <Compile Include="Controllers\RISController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\EmailModel.cs" />
     <Compile Include="Models\SignInUser.cs" />
     <Compile Include="project.cs">
       <DependentUpon>AGILETEAM7DB.tt</DependentUpon>
@@ -258,10 +261,16 @@
     <Content Include="Views\Home\SignIn.cshtml" />
     <Content Include="Views\Research\Index.cshtml" />
     <Content Include="Views\RIS\reUploadExpend.cshtml" />
+    <Content Include="Views\OngoingProjects\index.cshtml" />
+    <Content Include="Views\RIS\index.cshtml" />
+    <Content Include="Views\Dean\Index.cshtml" />
+    <Content Include="Views\Associate\Index.cshtml" />
+    <Content Include="Views\Email\SendEmail.cshtml" />
+    <Content Include="Views\Research\Index.cshtml" />
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Dean\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
