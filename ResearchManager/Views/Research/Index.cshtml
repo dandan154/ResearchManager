@@ -5,11 +5,8 @@
     Layout = "~/Views/Shared/_ResearchLayout.cshtml";
 }
 
-<<<<<<< HEAD
 <h2>@ViewBag.title</h2>
-=======
-<h2>@ViewBag.Title</h2>
->>>>>>> Pair-1-Marc-&-Scott
+
 
 <p>
     @Html.ActionLink("Add New Project", "createProject")
@@ -31,11 +28,9 @@
         <th>
             @Html.DisplayNameFor(model => model.pAbstract)
         </th>
-<<<<<<< HEAD
 
         <th></th>
-=======
->>>>>>> Pair-1-Marc-&-Scott
+
     </tr>
 
 @foreach (var item in Model) {
@@ -56,15 +51,13 @@
             @Html.DisplayFor(modelItem => item.pAbstract)
         </td>
         <td>
-<<<<<<< HEAD
+
             @Html.ActionLink("Download Expenditure File", "Download", new { projectID=item.projectID }) |
-=======
-<<<<<<< HEAD
+
             @Html.ActionLink("Details", "ViewProject", new { id=item.projectID }) |
-=======
+
             @Html.ActionLink("Download Expenditure File", "download", new { id=item.projectID }) |
->>>>>>> Pair-1-Marc-&-Scott
->>>>>>> 97a49af5610e20f5e821319ebaa33ed573475f91
+
             @Html.ActionLink("Delete", "Delete", new { id=item.projectID })
         </td>
     </tr>
