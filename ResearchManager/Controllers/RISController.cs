@@ -5,23 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Helpers;
 
 namespace ResearchManager.Controllers
 {
     public class RISController : Controller
     {
-
-        // GET: RIS
-        public ActionResult Index()
-        {
-            // Create new Entities object. This is a reference to the database.
-            Entities db = new Entities();
-
-            //Create a variable to store projects data from the database
-            var projects = db.projects;
-
-            return View(projects.ToList());
-        }
 
         public ActionResult Details(int id)
         {
@@ -62,7 +51,27 @@ namespace ResearchManager.Controllers
                 if (file.ContentLength > 0)
                 {
                     var fileName = Path.GetFileName(file.FileName);
-                    path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), fileName);
+                    var fileextension = Path.GetExtension(fileName);
+                    Random randInt = new Random();
+                    int rand1 = randInt.Next(1, 10000);
+                    int rand2 = randInt.Next(1, 10000);
+                    int rand3 = randInt.Next(1, 10000);
+                    String randOne = Convert.ToString(rand1);
+                    String randTwo = Convert.ToString(rand2);
+                    String randThree = Convert.ToString(rand3);
+                    String newName = randOne + randTwo + randThree + "." + fileextension;
+                    path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), newName);
+                    while (System.IO.File.Exists(path) == true)
+                    {
+                        int rand4 = randInt.Next(1, 10000);
+                        int rand5 = randInt.Next(1, 10000);
+                        int rand6 = randInt.Next(1, 10000);
+                        String randFour = Convert.ToString(rand1);
+                        String randFive = Convert.ToString(rand2);
+                        String randSiz = Convert.ToString(rand3);
+                        String TestName = randOne + randTwo + randThree + "." + fileextension;
+                        path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), TestName);
+                    }
                     file.SaveAs(path);
                 }
             }
@@ -89,6 +98,33 @@ namespace ResearchManager.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: RIS
+        public ActionResult Index()
+        {
+            string session_capture = Convert.ToString(Session["StaffPosition"]);
+
+            string label = HelperClasses.SharedControllerMethods.IdToLabel(session_capture);
+
+
+            // Create new Entities object. This is a reference to the database.
+            Entities db = new Entities();
+
+            var projects = db.projects.Where(p => p.projectStage == label);
+
+            // RIS can view all projects
+            if (session_capture == "RIS")
+            {
+                projects = db.projects;
+            }
+            // everybody else is limited
+            else
+            {
+                projects = db.projects.Where(p => p.projectStage == label);
+            }
+
+            return View(projects.ToList());
+        }
+
         public FileResult Download(int projectID)
         {
             int progID = projectID;
@@ -97,26 +133,43 @@ namespace ResearchManager.Controllers
 
             return File(dProject.projectFile, "application/" + Path.GetExtension(dProject.projectFile), dProject.pName + "-ExpenditureFile" + Path.GetExtension(dProject.projectFile));
         }
-
-        string IdToLabel(string id)
+    
+        public ActionResult sign(int projectID)
         {
-            // map user position to signature
-            if (id != "")
+            int id = projectID;
+            string session_capture = Session["StaffPosition"].ToString();
+            string label = HelperClasses.SharedControllerMethods.IdToLabel(session_capture);
+
+            // return our project to be changed (should be only 1)
+            var db = new Entities();
+            var projects = db.projects.Where(p => p.projectStage == label);
+            var projectToEdit = db.projects.Where(p => p.projectID == id).First();
+
+            if ((Session["StaffPosition"].ToString() == "RIS" && projectToEdit.projectStage == "Project created"))
             {
-                if (id == "RIS")
-                    return "Created";
+                // update signatures based on current user
+                projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(session_capture);
 
-                if (id == "Researcher")
-                    return "Researcher_Signs";
+                // update database
+                db.Set<project>().Attach(projectToEdit);
+                db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
 
-                if (id == "Associate Dean")
-                    return "Associate_Dean_Signs";
+                TempData["alert"] = "You have signed " + projectToEdit.pName;
 
-                if (id == "Dean")
-                    return "Dean_Signs";
+                string email = HelperClasses.SharedControllerMethods.PositionToNewPosition(session_capture);
+                HelperClasses.SharedControllerMethods.EmailHandler(email, projectToEdit.pName, projectToEdit.pDesc); 
+         
             }
-            return null;
+            else
+            {
+                TempData["alert"] = "You do not have permission to sign " + projectToEdit.pName;
+            }
+            // show all projects without previously changed one
+            if (Session["StaffPosition"].ToString() == "RIS") {
+                projects = db.projects.Where(p => p.projectStage == label);
+            }
+            return RedirectToAction("Index", projects.ToList());//(projects.ToList());
         }
-
     }
 }

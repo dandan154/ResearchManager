@@ -20,7 +20,14 @@ namespace ResearchManager.Controllers
         [HttpGet]
         public ActionResult SignIn()
         {
-            return View(); 
+            return viewSignIn(Session["StaffPosition"]);
+        }
+
+        public ActionResult viewSignIn(object staffPos)
+        {
+            if (staffPos != null)
+                return ControllerChange();
+            return View("SignIn");
         }
 
         [HttpPost]
@@ -37,13 +44,12 @@ namespace ResearchManager.Controllers
                 }
                 else
                 {
-                    var usr = db.users.Where(u => u.userID == model.userID).First();
+                    var usr = db.users.Where(u => u.Matric == model.userID.Trim()).First();
 
                     if (usr != null)
                     {
                         string ps = model.plntxtPass + usr.salt;
                         bool isCorrect = Crypto.VerifyHashedPassword(usr.hash, ps);
-
 
                         if (isCorrect)
                         {
@@ -57,7 +63,6 @@ namespace ResearchManager.Controllers
             }
             catch
             {
-
             }
             ViewBag.Message = "Login Failed, Please Try Again";
             return View();
@@ -71,15 +76,18 @@ namespace ResearchManager.Controllers
                 if (Session["StaffPosition"].ToString() == "Researcher")
                 {
                     return RedirectToAction("Index", "Research");
-
                 }
                 else if (Session["StaffPosition"].ToString() == "RIS")
                 {
                     return RedirectToAction("Index", "RIS");
                 }
-                else if (Session["StaffPosition"].ToString() == "Dean" || Session["StaffPosition"].ToString() == "Associate Dean")
+                else if (Session["StaffPosition"].ToString() == "Dean")
                 {
                     return RedirectToAction("Index", "Dean");
+                }
+                else if (Session["StaffPosition"].ToString() == "AssociateDean")
+                {
+                    return RedirectToAction("Index", "Associate");
                 }
                 else
                 {

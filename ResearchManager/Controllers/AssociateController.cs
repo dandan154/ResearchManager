@@ -6,17 +6,18 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Helpers;
+
 namespace ResearchManager.Controllers
 {
-    public class DeanController : Controller
+    public class AssociateController : Controller
     {
-        // GET: RIS
+        // GET: AssociateDean
         public ActionResult Index()
         {
             string session_capture = Convert.ToString(Session["StaffPosition"]);
 
-            string label = HelperClasses.SharedControllerMethods.IdToLabel(session_capture);
-
+            string label = HelperClasses.SharedControllerMethods.IdToLabel(session_capture); 
+;
 
             // Create new Entities object. This is a reference to the database.
             Entities db = new Entities();
@@ -132,6 +133,7 @@ namespace ResearchManager.Controllers
         public ActionResult sign(int projectID)
         {
             int id = projectID;
+
             string session_capture = Session["StaffPosition"].ToString();
 
             string label = HelperClasses.SharedControllerMethods.IdToLabel(session_capture);

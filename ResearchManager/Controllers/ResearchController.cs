@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Helpers;
+
 
 namespace ResearchManager.Controllers
 {
@@ -12,8 +15,17 @@ namespace ResearchManager.Controllers
         // GET: Research
         public ActionResult Index()
         {
+            int session = Convert.ToInt32(Session["UserID"]);
             Entities db = new Entities();
-            var projects = db.projects.Where(p => p.userID == 1);
+            var projects = db.projects.Where(p => p.userID == session);
+            return viewIndexPage(Session["UserID"]);
+        }
+
+        public ActionResult viewIndexPage(object UserID)
+        {
+            int session = Convert.ToInt32(UserID);
+            Entities db = new Entities();
+            var projects = db.projects.Where(p => p.userID == session);
             return View(projects.ToList());
         }
         public ActionResult createProject()
@@ -34,6 +46,7 @@ namespace ResearchManager.Controllers
         [HttpPost]
         public ActionResult createProject(project model, HttpPostedFileBase file)
         {
+            int uID = Convert.ToInt32(Session["UserID"]);
             var allowedExtensions = new[] { ".xls", ".xlsx"};
             if (!allowedExtensions.Contains(Path.GetExtension(file.FileName)))
             {
@@ -45,29 +58,49 @@ namespace ResearchManager.Controllers
             {
                 if (file.ContentLength > 0)
                 {
-                    var fileName = Path.GetFileName(file.FileName);
-                    path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"),fileName);
+                    int rand1, rand2, rand3;
+                    string randOne, randTwo, randThree, newName, fileName, fileExtension;
+                    Random randInt = new Random();
+                    do
+                    {
+                        fileName = Path.GetFileName(file.FileName);
+                        fileExtension = Path.GetExtension(fileName);
+
+                        rand1 = randInt.Next(1, 10000);
+                        rand2 = randInt.Next(1, 10000);
+                        rand3 = randInt.Next(1, 10000);
+
+                        randOne = Convert.ToString(rand1);
+                        randTwo = Convert.ToString(rand2);
+                        randThree = Convert.ToString(rand3);
+
+                        newName = randOne + randTwo + randThree + fileExtension;
+                        path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), newName);
+                    }
+                    while (System.IO.File.Exists(path) == true);
+
                     file.SaveAs(path);
                 }
             }
             catch
             {
-                ViewBag.Message = "Upload failed";
+                TempData["alert"] = "Error Uploading";
                 return RedirectToAction("createProject");
             }
 
             if (ModelState.IsValid)
             {
+                System.Diagnostics.Debug.WriteLine(Session["UserID"].ToString());
                 var db = new Entities();
                 db.projects.Add(new project
                 {
-                    userID = 1,
+                    userID = Convert.ToInt32(Session["UserID"]),
                     dateCreated = DateTime.Now.ToUniversalTime(),
                     projectStage = "Created",
                     pName = model.pName,
                     pAbstract = model.pAbstract,
                     pDesc = model.pDesc,
-                    projectFile = path
+                    projectFile = path,
                  });
                 db.SaveChanges();
                 ViewBag.Message = "Created Project";
@@ -77,6 +110,38 @@ namespace ResearchManager.Controllers
 
             return View(model);
         }
+
+        public ActionResult sign(int projectID)
+        {
+            int id = projectID;
+            string session_capture = Session["StaffPosition"].ToString();
+
+            string label = HelperClasses.SharedControllerMethods.IdToLabel(session_capture);
+
+            // return our project to be changed (should be only 1)
+            var db = new Entities();
+            var projectToEdit = db.projects.Where(p => p.projectID == id).First();
+
+            projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(session_capture);
+
+            // update database
+            db.Set<project>().Attach(projectToEdit);
+            db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+
+            var projects = db.projects.Where(p => p.projectStage == label);
+
+            string email = HelperClasses.SharedControllerMethods.PositionToNewPosition(session_capture);
+            HelperClasses.SharedControllerMethods.EmailHandler(email, projectToEdit.pName, projectToEdit.pDesc);
+
+            // show all projects without previously changed one
+            if (Session["StaffPosition"].ToString() == "RIS")
+            {
+                projects = db.projects.Where(p => p.projectStage == label);
+            }
+            return RedirectToAction("Index", projects.ToList());//(projects.ToList());
+        }
+
     }
 
 }

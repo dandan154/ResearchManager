@@ -57,11 +57,11 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MySql.Data, Version=6.10.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.6.10.6\lib\net452\MySql.Data.dll</HintPath>
+    <Reference Include="MySql.Data, Version=6.9.11.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.11\lib\net45\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data.Entity.EF6, Version=6.10.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.Entity.6.10.6\lib\net452\MySql.Data.Entity.EF6.dll</HintPath>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.11.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.Entity.6.9.11\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel" />
@@ -180,13 +180,17 @@
     <Compile Include="change.cs">
       <DependentUpon>AGILETEAM7DB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AssociateController.cs" />
     <Compile Include="Controllers\DeanController.cs" />
+    <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ResearchController.cs" />
     <Compile Include="Controllers\RISController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HelperClasses\SharedControllerMethods.cs" />
+    <Compile Include="Models\EmailModel.cs" />
     <Compile Include="Models\SignInUser.cs" />
     <Compile Include="project.cs">
       <DependentUpon>AGILETEAM7DB.tt</DependentUpon>
@@ -209,17 +213,6 @@
     </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="docs\MySqlCommand.xml" />
-    <Content Include="docs\MySqlCommandBuilder.xml" />
-    <Content Include="docs\MySqlConnection.xml" />
-    <Content Include="docs\MySqlConnectionStringBuilder.xml" />
-    <Content Include="docs\MySqlDataAdapter.xml" />
-    <Content Include="docs\MySqlDataReader.xml" />
-    <Content Include="docs\MySqlException.xml" />
-    <Content Include="docs\MySqlHelper.xml" />
-    <Content Include="docs\MySqlParameter.xml" />
-    <Content Include="docs\MySqlParameterCollection.xml" />
-    <Content Include="docs\MySqlTransaction.xml" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -234,6 +227,7 @@
     <Content Include="AGILETEAM7DB.edmx.diagram">
       <DependentUpon>AGILETEAM7DB.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -258,21 +252,21 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_HomeLayout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_RISLayout.cshtml" />
     <Content Include="Views\Shared\_ResearchLayout.cshtml" />
     <Content Include="Views\Shared\_DeanLayout - Copy.cshtml" />
     <Content Include="Views\Research\createProject.cshtml" />
     <Content Include="Views\Home\SignIn.cshtml" />
+    <Content Include="Views\RIS\reUploadExpend.cshtml" />
+    <Content Include="Views\RIS\index.cshtml" />
+    <Content Include="Views\Dean\Index.cshtml" />
+    <Content Include="Views\Associate\Index.cshtml" />
+    <Content Include="Views\Email\SendEmail.cshtml" />
     <Content Include="Views\Research\Index.cshtml" />
-    <Content Include="Views\RIS\ReuploadExpend.cshtml" />
-    <Content Include="Views\RIS\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Dean\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

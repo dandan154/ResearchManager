@@ -18,7 +18,7 @@ namespace ResearchManager.Tests.Controllers
             ResearchController controller = new ResearchController();
 
             // Act
-            ViewResult result = controller.Index() as ViewResult;
+            ViewResult result = controller.viewIndexPage(999) as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);
