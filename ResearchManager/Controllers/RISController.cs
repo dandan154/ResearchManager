@@ -11,6 +11,7 @@ namespace ResearchManager.Controllers
 {
     public class RISController : Controller
     {
+
         public ActionResult Details(int id)
         {
             try
@@ -124,7 +125,6 @@ namespace ResearchManager.Controllers
             return View(projects.ToList());
         }
 
-
         public FileResult Download(int projectID)
         {
             int progID = projectID;
@@ -138,7 +138,6 @@ namespace ResearchManager.Controllers
         {
             int id = projectID;
             string session_capture = Session["StaffPosition"].ToString();
-
             string label = HelperClasses.SharedControllerMethods.IdToLabel(session_capture);
 
             // return our project to be changed (should be only 1)

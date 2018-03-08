@@ -35,7 +35,6 @@ namespace ResearchManager.Controllers
         public ActionResult SignIn(Models.SignInUser model)
         {
             var db = new Entities();
-            System.Diagnostics.Debug.WriteLine(model.userID);  
 
             try
             {
@@ -56,7 +55,7 @@ namespace ResearchManager.Controllers
                         {
                             Session["UserID"] = usr.userID;
                             Session["StaffPosition"] = usr.staffPosition;
-
+                            System.Diagnostics.Debug.WriteLine(Session["StaffPosition"]);
                             return ControllerChange();
                         }
                     }
@@ -74,7 +73,6 @@ namespace ResearchManager.Controllers
             try
             {
                 //Redirect user to appropriate page
-
                 if (Session["StaffPosition"].ToString() == "Researcher")
                 {
                     return RedirectToAction("Index", "Research");
