@@ -13,19 +13,17 @@ namespace ResearchManager.Controllers
     public class ResearchController : Controller
     {
         // GET: Research
-        public ActionResult Index()
+        public ActionResult Index(Models.ActiveUser active)
         {
-            int session = Convert.ToInt32(Session["UserID"]);
             Entities db = new Entities();
-            var projects = db.projects.Where(p => p.userID == session);
-            return viewIndexPage(Session["UserID"]);
+            var projects = db.projects.Where(p => p.userID == active.userID);
+            return viewIndexPage(active);
         }
 
-        public ActionResult viewIndexPage(object UserID)
+        public ActionResult viewIndexPage(Models.ActiveUser active)
         {
-            int session = Convert.ToInt32(UserID);
             Entities db = new Entities();
-            var projects = db.projects.Where(p => p.userID == session);
+            var projects = db.projects.Where(p => p.userID == active.userID);
             return View(projects.ToList());
         }
         public ActionResult createProject()
