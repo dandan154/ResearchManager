@@ -264,6 +264,7 @@
     <Content Include="Views\Associate\Index.cshtml" />
     <Content Include="Views\Email\SendEmail.cshtml" />
     <Content Include="Views\Research\Index.cshtml" />
+    <Content Include="Views\Research\EditProject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

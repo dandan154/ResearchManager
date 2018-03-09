@@ -28,6 +28,14 @@ namespace ResearchManager.Controllers
             var projects = db.projects.Where(p => p.userID == session);
             return View(projects.ToList());
         }
+
+        public ActionResult EditProject(int projectID)
+        {
+            int progID = projectID;
+            Entities db = new Entities();
+            var sampleProject = db.projects.Where(p => p.projectID == progID).First();
+            return View(sampleProject);
+        }
         public ActionResult createProject()
         {
             ViewBag.Message = "Form for creating new research projects into the management system";
