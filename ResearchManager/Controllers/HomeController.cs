@@ -20,11 +20,14 @@ namespace ResearchManager.Controllers
         [HttpGet]
         public ActionResult SignIn()
         {
-            //Session variable test 
-            if(Session["UserPosition"] != null)
-                return RedirectToAction("SignIn");
+            return viewSignIn(Session["StaffPosition"]);
+        }
 
-            return View(); 
+        public ActionResult viewSignIn(object staffPos)
+        {
+            if (staffPos != null)
+                return ControllerChange();
+            return View("SignIn");
         }
 
         [HttpPost]
@@ -32,7 +35,6 @@ namespace ResearchManager.Controllers
         public ActionResult SignIn(Models.SignInUser model)
         {
             var db = new Entities();
-            System.Diagnostics.Debug.WriteLine(model.userID);  
 
             try
             {
@@ -42,20 +44,18 @@ namespace ResearchManager.Controllers
                 }
                 else
                 {
-                    var usr = db.users.Where(u => u.userID == model.userID).First();
+                    var usr = db.users.Where(u => u.Matric == model.userID.Trim()).First();
 
                     if (usr != null)
                     {
                         string ps = model.plntxtPass + usr.salt;
                         bool isCorrect = Crypto.VerifyHashedPassword(usr.hash, ps);
 
-                        Session["UserID"] = ps;
-
                         if (isCorrect)
                         {
                             Session["UserID"] = usr.userID;
                             Session["StaffPosition"] = usr.staffPosition;
-
+                            System.Diagnostics.Debug.WriteLine(Session["StaffPosition"]);
                             return ControllerChange();
                         }
                     }

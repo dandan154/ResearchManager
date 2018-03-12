@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="agileteam7dbModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="changes">
+          <Key>
+            <PropertyRef Name="changeID" />
+          </Key>
+          <Property Name="changeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userID" Type="int" Nullable="false" />
+          <Property Name="projectID" Type="int" Nullable="false" />
+          <Property Name="dateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="changeSummary" Type="char" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="project">
+          <Key>
+            <PropertyRef Name="projectID" />
+          </Key>
+          <Property Name="projectID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userID" Type="int" Nullable="false" />
+          <Property Name="pName" Type="char" MaxLength="40" Nullable="false" />
+          <Property Name="dateCreated" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="projectStage" Type="char" MaxLength="45" Nullable="false" />
+          <Property Name="projectFile" Type="char" MaxLength="250" Nullable="false" />
+          <Property Name="pDesc" Type="char" MaxLength="255" Nullable="false" />
+          <Property Name="pAbstract" Type="char" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="forename" Type="char" MaxLength="40" Nullable="false" />
+          <Property Name="surname" Type="char" MaxLength="40" Nullable="false" />
+          <Property Name="staffPosition" Type="char" MaxLength="40" Nullable="false" />
+          <Property Name="hash" Type="char" MaxLength="255" Nullable="false" />
+          <Property Name="salt" Type="char" MaxLength="255" Nullable="false" />
+          <Property Name="Email" Type="char" MaxLength="255" Nullable="false" />
+          <Property Name="Matric" Type="char" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <Association Name="changes_ibfk_1">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="changes" Type="Self.changes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="changes">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="changes_ibfk_2">
+          <End Role="project" Type="Self.project" Multiplicity="1" />
+          <End Role="changes" Type="Self.changes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="project">
+              <PropertyRef Name="projectID" />
+            </Principal>
+            <Dependent Role="changes">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="project_ibfk_1">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="project" Type="Self.project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="agileteam7dbModelStoreContainer">
+          <EntitySet Name="changes" EntityType="Self.changes" Schema="17agileteam7db" store:Type="Tables" />
+          <EntitySet Name="project" EntityType="Self.project" Schema="17agileteam7db" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="17agileteam7db" store:Type="Tables" />
+          <AssociationSet Name="changes_ibfk_1" Association="Self.changes_ibfk_1">
+            <End Role="user" EntitySet="user" />
+            <End Role="changes" EntitySet="changes" />
+          </AssociationSet>
+          <AssociationSet Name="changes_ibfk_2" Association="Self.changes_ibfk_2">
+            <End Role="project" EntitySet="project" />
+            <End Role="changes" EntitySet="changes" />
+          </AssociationSet>
+          <AssociationSet Name="project_ibfk_1" Association="Self.project_ibfk_1">
+            <End Role="user" EntitySet="user" />
+            <End Role="project" EntitySet="project" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="agileteam7dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="change">
+          <Key>
+            <PropertyRef Name="changeID" />
+          </Key>
+          <Property Name="changeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userID" Type="Int32" Nullable="false" />
+          <Property Name="projectID" Type="Int32" Nullable="false" />
+          <Property Name="dateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="changeSummary" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="user" Relationship="Self.changes_ibfk_1" FromRole="changes" ToRole="user" />
+          <NavigationProperty Name="project" Relationship="Self.changes_ibfk_2" FromRole="changes" ToRole="project" />
+        </EntityType>
+        <EntityType Name="project">
+          <Key>
+            <PropertyRef Name="projectID" />
+          </Key>
+          <Property Name="projectID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userID" Type="Int32" Nullable="false" />
+          <Property Name="pName" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="dateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="projectStage" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="projectFile" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pDesc" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pAbstract" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="changes" Relationship="Self.changes_ibfk_2" FromRole="project" ToRole="changes" />
+          <NavigationProperty Name="user" Relationship="Self.project_ibfk_1" FromRole="project" ToRole="user" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="forename" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="surname" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="staffPosition" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="hash" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="salt" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="changes" Relationship="Self.changes_ibfk_1" FromRole="user" ToRole="changes" />
+          <NavigationProperty Name="projects" Relationship="Self.project_ibfk_1" FromRole="user" ToRole="project" />
+          <Property Name="Matric" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="changes_ibfk_1">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="changes" Type="Self.change" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="changes">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="changes_ibfk_2">
+          <End Role="project" Type="Self.project" Multiplicity="1" />
+          <End Role="changes" Type="Self.change" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="project">
+              <PropertyRef Name="projectID" />
+            </Principal>
+            <Dependent Role="changes">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="project_ibfk_1">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="project" Type="Self.project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="changes" EntityType="Self.change" />
+          <EntitySet Name="projects" EntityType="Self.project" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="changes_ibfk_1" Association="Self.changes_ibfk_1">
+            <End Role="user" EntitySet="users" />
+            <End Role="changes" EntitySet="changes" />
+          </AssociationSet>
+          <AssociationSet Name="changes_ibfk_2" Association="Self.changes_ibfk_2">
+            <End Role="project" EntitySet="projects" />
+            <End Role="changes" EntitySet="changes" />
+          </AssociationSet>
+          <AssociationSet Name="project_ibfk_1" Association="Self.project_ibfk_1">
+            <End Role="user" EntitySet="users" />
+            <End Role="project" EntitySet="projects" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="agileteam7dbModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="changes">
+            <EntityTypeMapping TypeName="agileteam7dbModel.change">
+              <MappingFragment StoreEntitySet="changes">
+                <ScalarProperty Name="changeID" ColumnName="changeID" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="projectID" ColumnName="projectID" />
+                <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+                <ScalarProperty Name="changeSummary" ColumnName="changeSummary" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="projects">
+            <EntityTypeMapping TypeName="agileteam7dbModel.project">
+              <MappingFragment StoreEntitySet="project">
+                <ScalarProperty Name="projectID" ColumnName="projectID" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="pName" ColumnName="pName" />
+                <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+                <ScalarProperty Name="projectStage" ColumnName="projectStage" />
+                <ScalarProperty Name="projectFile" ColumnName="projectFile" />
+                <ScalarProperty Name="pDesc" ColumnName="pDesc" />
+                <ScalarProperty Name="pAbstract" ColumnName="pAbstract" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="agileteam7dbModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="Matric" ColumnName="Matric" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="forename" ColumnName="forename" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+                <ScalarProperty Name="staffPosition" ColumnName="staffPosition" />
+                <ScalarProperty Name="hash" ColumnName="hash" />
+                <ScalarProperty Name="salt" ColumnName="salt" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Helpers;
 
+
 namespace ResearchManager.Controllers
 {
     public class ResearchController : Controller
@@ -14,8 +15,17 @@ namespace ResearchManager.Controllers
         // GET: Research
         public ActionResult Index()
         {
+            int session = Convert.ToInt32(Session["UserID"]);
             Entities db = new Entities();
-            var projects = db.projects.Where(p => p.userID == 1);
+            var projects = db.projects.Where(p => p.userID == session);
+            return viewIndexPage(Session["UserID"]);
+        }
+
+        public ActionResult viewIndexPage(object UserID)
+        {
+            int session = Convert.ToInt32(UserID);
+            Entities db = new Entities();
+            var projects = db.projects.Where(p => p.userID == session);
             return View(projects.ToList());
         }
         public ActionResult createProject()
@@ -36,6 +46,7 @@ namespace ResearchManager.Controllers
         [HttpPost]
         public ActionResult createProject(project model, HttpPostedFileBase file)
         {
+            int uID = Convert.ToInt32(Session["UserID"]);
             var allowedExtensions = new[] { ".xls", ".xlsx"};
             if (!allowedExtensions.Contains(Path.GetExtension(file.FileName)))
             {
@@ -47,29 +58,49 @@ namespace ResearchManager.Controllers
             {
                 if (file.ContentLength > 0)
                 {
-                    var fileName = Path.GetFileName(file.FileName);
-                    path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"),fileName);
+                    int rand1, rand2, rand3;
+                    string randOne, randTwo, randThree, newName, fileName, fileExtension;
+                    Random randInt = new Random();
+                    do
+                    {
+                        fileName = Path.GetFileName(file.FileName);
+                        fileExtension = Path.GetExtension(fileName);
+
+                        rand1 = randInt.Next(1, 10000);
+                        rand2 = randInt.Next(1, 10000);
+                        rand3 = randInt.Next(1, 10000);
+
+                        randOne = Convert.ToString(rand1);
+                        randTwo = Convert.ToString(rand2);
+                        randThree = Convert.ToString(rand3);
+
+                        newName = randOne + randTwo + randThree + fileExtension;
+                        path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), newName);
+                    }
+                    while (System.IO.File.Exists(path) == true);
+
                     file.SaveAs(path);
                 }
             }
             catch
             {
-                ViewBag.Message = "Upload failed";
+                TempData["alert"] = "Error Uploading";
                 return RedirectToAction("createProject");
             }
 
             if (ModelState.IsValid)
             {
+                System.Diagnostics.Debug.WriteLine(Session["UserID"].ToString());
                 var db = new Entities();
                 db.projects.Add(new project
                 {
-                    userID = 1,
+                    userID = Convert.ToInt32(Session["UserID"]),
                     dateCreated = DateTime.Now.ToUniversalTime(),
                     projectStage = "Created",
                     pName = model.pName,
                     pAbstract = model.pAbstract,
                     pDesc = model.pDesc,
-                    projectFile = path
+                    projectFile = path,
                  });
                 db.SaveChanges();
                 ViewBag.Message = "Created Project";
@@ -80,60 +111,18 @@ namespace ResearchManager.Controllers
             return View(model);
         }
 
-
-        // Convert user id to project label
-        string IdToLabel(string id)
-        {
-            // map user position to signature
-            if (id != "")
-            {
-                if (id == "RIS")
-                    return "Created";
-
-                if (id == "Researcher")
-                    return "Researcher_Signs";
-
-                if (id == "AssociateDean")
-                    return "Associate_Dean_Signs";
-
-                if (id == "Dean")
-                    return "Dean_Signs";
-            }
-            else
-            {
-                return "Invalid user ID - Caught in try/catch";
-            }
-            return "Error";
-        }
-
         public ActionResult sign(int projectID)
         {
             int id = projectID;
             string session_capture = Session["StaffPosition"].ToString();
 
-            string label = IdToLabel(session_capture);
+            string label = HelperClasses.SharedControllerMethods.IdToLabel(session_capture);
 
             // return our project to be changed (should be only 1)
             var db = new Entities();
             var projectToEdit = db.projects.Where(p => p.projectID == id).First();
 
-            // update signatures based on current user
-            if (session_capture == "RIS")
-            {
-                projectToEdit.projectStage = "Researcher_Signs";
-            }
-            if (session_capture == "Researcher")
-            {
-                projectToEdit.projectStage = "Associate_Dean_Signs";
-            }
-            if (session_capture == "AssociateDean")
-            {
-                projectToEdit.projectStage = "Dean_Signs";
-            }
-            if (session_capture == "Dean")
-            {
-                projectToEdit.projectStage = "Completed";
-            }
+            projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(session_capture);
 
             // update database
             db.Set<project>().Attach(projectToEdit);
@@ -142,8 +131,8 @@ namespace ResearchManager.Controllers
 
             var projects = db.projects.Where(p => p.projectStage == label);
 
-            string email = positionToNewPosition(session_capture);
-            EmailHandler(email, projectToEdit.pName, projectToEdit.pDesc);
+            string email = HelperClasses.SharedControllerMethods.PositionToNewPosition(session_capture);
+            HelperClasses.SharedControllerMethods.EmailHandler(email, projectToEdit.pName, projectToEdit.pDesc);
 
             // show all projects without previously changed one
             if (Session["StaffPosition"].ToString() == "RIS")
@@ -153,62 +142,6 @@ namespace ResearchManager.Controllers
             return RedirectToAction("Index", projects.ToList());//(projects.ToList());
         }
 
-        string positionToNewPosition(string pos)
-        {
-            var db = new Entities();
-            if (pos == "RIS")
-            {
-                string l = "Researcher";
-                var userToEmail = db.users.Where(u => u.staffPosition == l).First();
-                return userToEmail.Email;
-            }
-            else if (pos == "Researcher")
-            {
-                string l = "AssociateDean";
-                var userToEmail = db.users.Where(u => u.staffPosition == l).First();
-                return userToEmail.Email;
-            }
-            else if (pos == "AssociateDean")
-            {
-                string l = "Dean";
-                var userToEmail = db.users.Where(u => u.staffPosition == l).First();
-                return userToEmail.Email;
-            }
-            else if (pos == "Dean")
-            {
-                return ("donotreply.rsmanagerdundee@gmail.com");
-            }
-            else
-            {
-                return ("donotreply.rsmanagerdundee@gmail.com");
-            }
-        }
-
-        // handle email sending
-        void EmailHandler(string email, string projectName, string projectDe)
-        {
-            try
-            {
-                // email settings
-                WebMail.SmtpServer = "smtp.gmail.com";
-                WebMail.SmtpPort = 587;
-                WebMail.SmtpUseDefaultCredentials = true;
-                WebMail.EnableSsl = true;
-                WebMail.UserName = "donotreply.rsmanagerdundee@gmail.com";
-                WebMail.Password = "agile100";
-                WebMail.From = "donotreply.rsmanagerdundee@gmail.com";
-
-                // build email and send
-                string title = "Project Signature Required";
-                string body = "Project " + projectName + " requires signature. \nThank you.\nThis is a no reply email, any replies will not be answered.\n Dundee Research Project Manager";
-                WebMail.Send(to: email, subject: title, body: body, cc: "", bcc: "", isBodyHtml: true);
-                ViewBag.Status = "Email Sent Successfully.";
-            }
-            catch (Exception)
-            {
-            }
-        }
-        // <Connor's edits
     }
 
 }

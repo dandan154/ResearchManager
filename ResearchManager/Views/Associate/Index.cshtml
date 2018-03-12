@@ -4,7 +4,13 @@
     ViewBag.Title = "Ongoing Projects - Require Signing";
     Layout = "~/Views/Shared/_ResearchLayout.cshtml";
 }
-
+    @if (TempData["alert"] != null)
+    {
+        <div class="alert alert-danger fade in">
+        <a href="" class="close" data-dismiss="alert"></a>
+        @TempData["alert"]
+        </div>
+    }
 @using (Html.BeginForm("Index", "Associate", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 
