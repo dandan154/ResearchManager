@@ -36,6 +36,22 @@ namespace ResearchManager.Controllers
             var sampleProject = db.projects.Where(p => p.projectID == progID).First();
             return View(sampleProject);
         }
+
+        [HttpPost]
+        public ActionResult EditProject(project edited)
+        {
+            Entities db = new Entities();
+            var sampleProject = db.projects.Where(p => p.projectID == edited.projectID).First();
+            sampleProject.pName = edited.pName;
+            sampleProject.pDesc = edited.pDesc;
+            sampleProject.pAbstract = edited.pAbstract;
+            db.Set<project>().Attach(sampleProject);
+            db.Entry(sampleProject).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
         public ActionResult createProject()
         {
             ViewBag.Message = "Form for creating new research projects into the management system";
