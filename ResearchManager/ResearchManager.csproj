@@ -191,7 +191,8 @@
     </Compile>
     <Compile Include="HelperClasses\SharedControllerMethods.cs" />
     <Compile Include="Models\EmailModel.cs" />
-    <Compile Include="Models\SignInUser.cs" />
+    <Compile Include="Models\ActiveUser.cs" />
+    <Compile Include="Models\SignInData.cs" />
     <Compile Include="project.cs">
       <DependentUpon>AGILETEAM7DB.tt</DependentUpon>
     </Compile>

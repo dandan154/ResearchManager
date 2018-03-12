@@ -11,11 +11,9 @@ namespace ResearchManager.Controllers
     public class DeanController : Controller
     {
         // GET: RIS
-        public ActionResult Index()
+        public ActionResult Index(Models.ActiveUser active)
         {
-            string session_capture = Convert.ToString(Session["StaffPosition"]);
-
-            string label = HelperClasses.SharedControllerMethods.IdToLabel(session_capture);
+            string label = HelperClasses.SharedControllerMethods.IdToLabel(active.staffPosition);
 
 
             // Create new Entities object. This is a reference to the database.
@@ -27,7 +25,7 @@ namespace ResearchManager.Controllers
             // <Connor's edits
             var projects = db.projects.Where(p => p.projectStage == label);
             // RIS can view all projects
-            if (session_capture == "RIS")
+            if (active.staffPosition == "RIS")
             {
                 projects = db.projects;
             }
@@ -36,8 +34,6 @@ namespace ResearchManager.Controllers
             {
                 projects = db.projects.Where(p => p.projectStage == label);
             }
-            // <Connor's edits
-
 
             return View(projects.ToList());
         }

@@ -26,13 +26,13 @@ namespace ResearchManager.Controllers
         public ActionResult viewSignIn(object staffPos)
         {
             if (staffPos != null)
-                return ControllerChange();
+                return ControllerChange(null);
             return View("SignIn");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SignIn(Models.SignInUser model)
+        public ActionResult SignIn(Models.SignInData model)
         {
             var db = new Entities();
 
@@ -53,10 +53,15 @@ namespace ResearchManager.Controllers
 
                         if (isCorrect)
                         {
-                            Session["UserID"] = usr.userID;
-                            Session["StaffPosition"] = usr.staffPosition;
-                            System.Diagnostics.Debug.WriteLine(Session["StaffPosition"]);
-                            return ControllerChange();
+                            Models.ActiveUser active = new Models.ActiveUser();
+
+                            active.staffPosition = usr.staffPosition;
+                            active.forename = usr.forename;
+                            active.surname = usr.surname;
+                            active.matric = usr.Matric;
+                            active.email = usr.Email; 
+
+                            return ControllerChange(active);
                         }
                     }
                 }
@@ -68,26 +73,26 @@ namespace ResearchManager.Controllers
             return View();
         }
 
-        public RedirectToRouteResult ControllerChange()
+        public RedirectToRouteResult ControllerChange(Models.ActiveUser active)
         {
             try
             {
                 //Redirect user to appropriate page
-                if (Session["StaffPosition"].ToString() == "Researcher")
+                if (active.staffPosition == "Researcher")
                 {
-                    return RedirectToAction("Index", "Research");
+                    return RedirectToAction("Index", "Research", active);
                 }
-                else if (Session["StaffPosition"].ToString() == "RIS")
+                else if (active.staffPosition == "RIS")
                 {
-                    return RedirectToAction("Index", "RIS");
+                    return RedirectToAction("Index", "RIS", active);
                 }
-                else if (Session["StaffPosition"].ToString() == "Dean")
+                else if (active.staffPosition == "Dean")
                 {
-                    return RedirectToAction("Index", "Dean");
+                    return RedirectToAction("Index", "Dean", active);
                 }
-                else if (Session["StaffPosition"].ToString() == "AssociateDean")
+                else if (active.staffPosition == "AssociateDean")
                 {
-                    return RedirectToAction("Index", "Associate");
+                    return RedirectToAction("Index", "Associate", active);
                 }
                 else
                 {
