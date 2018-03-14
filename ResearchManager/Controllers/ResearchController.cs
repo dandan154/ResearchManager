@@ -15,7 +15,7 @@ namespace ResearchManager.Controllers
         // GET: Research
         public ActionResult Index()
         {
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 System.Diagnostics.Debug.Print("here");
@@ -77,7 +77,7 @@ namespace ResearchManager.Controllers
         public ActionResult createProject(project model, HttpPostedFileBase file)
         {
             //TempData Check and Renewal
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");
@@ -152,7 +152,7 @@ namespace ResearchManager.Controllers
 
         public ActionResult sign(int projectID)
         {
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");

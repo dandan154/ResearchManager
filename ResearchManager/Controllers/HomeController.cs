@@ -18,7 +18,7 @@ namespace ResearchManager.Controllers
         }
 
         [HttpGet]
-        public ActionResult SignIn(Models.ActiveUser user)
+        public ActionResult SignIn(user user)
         {
             if (user.staffPosition != null)
                 return ControllerChange();
@@ -49,15 +49,15 @@ namespace ResearchManager.Controllers
 
                         if (isCorrect)
                         {
-                            Models.ActiveUser active = new Models.ActiveUser();
+                            user active = new user();
 
                             TempData["ActiveUser"] = active; 
                             
                             active.staffPosition = usr.staffPosition;
                             active.forename = usr.forename;
                             active.surname = usr.surname;
-                            active.matric = usr.Matric;
-                            active.email = usr.Email;
+                            active.Matric = usr.Matric;
+                            active.Email = usr.Email;
                             active.userID = usr.userID; 
 
                             return ControllerChange();
@@ -74,7 +74,7 @@ namespace ResearchManager.Controllers
 
         public RedirectToRouteResult ControllerChange()
         {
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");

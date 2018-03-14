@@ -15,7 +15,7 @@ namespace ResearchManager.Controllers
         public ActionResult Details(int id)
         {
             //TempData Check and Renewal
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");
@@ -41,7 +41,7 @@ namespace ResearchManager.Controllers
         public ActionResult ReuploadExpend(int projectID)
         {
             //TempData Check and Renewal
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");
@@ -60,7 +60,7 @@ namespace ResearchManager.Controllers
         public ActionResult ReuploadExpend(int projectID, HttpPostedFileBase file)
         {
             //TempData Check and Renewal
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");
@@ -132,7 +132,7 @@ namespace ResearchManager.Controllers
         public ActionResult Index()
         {
             //TempData Check and Renewal
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");
@@ -173,7 +173,7 @@ namespace ResearchManager.Controllers
         public ActionResult sign(int projectID)
         {
             //TempData Check and Renewal
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");
