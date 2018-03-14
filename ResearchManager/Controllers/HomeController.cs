@@ -21,7 +21,7 @@ namespace ResearchManager.Controllers
         public ActionResult SignIn(Models.ActiveUser user)
         {
             if (user.staffPosition != null)
-                return ControllerChange(null);
+                return ControllerChange();
             return View("SignIn");
         }
 

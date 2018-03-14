@@ -18,34 +18,22 @@ namespace ResearchManager.Controllers
             Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
             if (active == null)
             {
+                System.Diagnostics.Debug.Print("here");
                 return RedirectToAction("SignIn", "Home");
             }
             else
             {
+                System.Diagnostics.Debug.Print("here2");
                 TempData["ActiveUser"] = active; 
             }
 
             Entities db = new Entities();
             var projects = db.projects.Where(p => p.userID == active.userID);
-            return viewIndexPage();
+            System.Diagnostics.Debug.Print("here4");
+            
+            return View("Index",projects.ToList());
         }
 
-        public ActionResult viewIndexPage()
-        {
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
-            if (active == null)
-            {
-                return RedirectToAction("SignIn", "Home");
-            }
-            else
-            {
-                TempData["ActiveUser"] = active;
-            }
-
-            Entities db = new Entities();
-            var projects = db.projects.Where(p => p.userID == active.userID);
-            return View(projects.ToList());
-        }
 
         public ActionResult EditProject(int projectID)
         {
