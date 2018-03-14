@@ -18,17 +18,13 @@ namespace ResearchManager.Controllers
         }
 
         [HttpGet]
-        public ActionResult SignIn()
+        public ActionResult SignIn(Models.ActiveUser user)
         {
-            return viewSignIn(Session["StaffPosition"]);
-        }
-
-        public ActionResult viewSignIn(object staffPos)
-        {
-            if (staffPos != null)
+            if (user.staffPosition != null)
                 return ControllerChange(null);
             return View("SignIn");
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -55,13 +51,16 @@ namespace ResearchManager.Controllers
                         {
                             Models.ActiveUser active = new Models.ActiveUser();
 
+                            TempData["ActiveUser"] = active; 
+                            
                             active.staffPosition = usr.staffPosition;
                             active.forename = usr.forename;
                             active.surname = usr.surname;
                             active.matric = usr.Matric;
-                            active.email = usr.Email; 
+                            active.email = usr.Email;
+                            active.userID = usr.userID; 
 
-                            return ControllerChange(active);
+                            return ControllerChange();
                         }
                     }
                 }
@@ -73,26 +72,36 @@ namespace ResearchManager.Controllers
             return View();
         }
 
-        public RedirectToRouteResult ControllerChange(Models.ActiveUser active)
+        public RedirectToRouteResult ControllerChange()
         {
+            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+            }
+
             try
             {
                 //Redirect user to appropriate page
                 if (active.staffPosition == "Researcher")
                 {
-                    return RedirectToAction("Index", "Research", active);
+                    return RedirectToAction("Index", "Research");
                 }
                 else if (active.staffPosition == "RIS")
                 {
-                    return RedirectToAction("Index", "RIS", active);
+                    return RedirectToAction("Index", "RIS");
                 }
                 else if (active.staffPosition == "Dean")
                 {
-                    return RedirectToAction("Index", "Dean", active);
+                    return RedirectToAction("Index", "Dean");
                 }
                 else if (active.staffPosition == "AssociateDean")
                 {
-                    return RedirectToAction("Index", "Associate", active);
+                    return RedirectToAction("Index", "Associate");
                 }
                 else
                 {

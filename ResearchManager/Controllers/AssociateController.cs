@@ -14,21 +14,25 @@ namespace ResearchManager.Controllers
         // GET: AssociateDean
         public ActionResult Index()
         {
-            string session_capture = Convert.ToString(Session["StaffPosition"]);
-
-            string label = HelperClasses.SharedControllerMethods.IdToLabel(session_capture); 
+            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+            }
+            string label = HelperClasses.SharedControllerMethods.IdToLabel(active.staffPosition); 
 ;
 
             // Create new Entities object. This is a reference to the database.
             Entities db = new Entities();
 
-            //Create a variable to store projects data from the database
-            //var projects = db.projects;
 
-            // <Connor's edits
             var projects = db.projects.Where(p => p.projectStage == label);
             // RIS can view all projects
-            if (session_capture == "RIS")
+            if (active.staffPosition == "RIS")
             {
                 projects = db.projects;
             }
@@ -37,8 +41,6 @@ namespace ResearchManager.Controllers
             {
                 projects = db.projects.Where(p => p.projectStage == label);
             }
-            // <Connor's edits
-
 
             return View(projects.ToList());
         }
@@ -50,11 +52,20 @@ namespace ResearchManager.Controllers
         }
         public ActionResult Details(int id)
         {
+            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+            }
+
             try
             {   //Use searchTerm to query the database for project details and store this in a variable project
-                int searchTerm = id;
                 Entities db = new Entities();
-                var project = db.projects.Where(p => p.projectID == searchTerm).First();
+                var project = db.projects.Where(p => p.projectID == id).First();
                 return View(project);
             }
             catch
@@ -66,15 +77,24 @@ namespace ResearchManager.Controllers
 
         public ActionResult reUploadExpend(int projectID)
         {
-            int progID = projectID;
             Entities db = new Entities();
-            var sampleProject = db.projects.Where(p => p.projectID == progID).First();
+            var sampleProject = db.projects.Where(p => p.projectID == projectID).First();
             return View(sampleProject);
         }
 
         [HttpPost]
         public ActionResult reUploadExpend(int projectID, HttpPostedFileBase file)
         {
+            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+            }
+
             var allowedExtensions = new[] { ".xls", ".xlsx" };
             if (!allowedExtensions.Contains(Path.GetExtension(file.FileName)))
             {
@@ -97,9 +117,8 @@ namespace ResearchManager.Controllers
                 return RedirectToAction("createProject");
             }
 
-            int progID = projectID;
             Entities db = new Entities();
-            var sampleProject = db.projects.Where(p => p.projectID == progID).First();
+            var sampleProject = db.projects.Where(p => p.projectID == projectID).First();
             var fToDel = sampleProject.projectFile;
             sampleProject.projectFile = path;
             db.Set<project>().Attach(sampleProject);
@@ -116,33 +135,48 @@ namespace ResearchManager.Controllers
 
         public ActionResult View(int projectID)
         {
-            int progID = projectID;
+            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+            }
+
             Entities db = new Entities();
-            var sampleProject = db.projects.Where(p => p.projectID == progID).First();
+            var sampleProject = db.projects.Where(p => p.projectID == projectID).First();
             return View(sampleProject);
         }
         public FileResult Download(int projectID)
         {
-            int progID = projectID;
             Entities db = new Entities();
-            var dProject = db.projects.Where(p => p.projectID == progID).First();
+            var dProject = db.projects.Where(p => p.projectID == projectID).First();
 
             return File(dProject.projectFile, "application/" + Path.GetExtension(dProject.projectFile), dProject.pName + "-ExpenditureFile" + Path.GetExtension(dProject.projectFile));
         }
 
         public ActionResult sign(int projectID)
         {
+            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+            }
+
             int id = projectID;
-
-            string session_capture = Session["StaffPosition"].ToString();
-
-            string label = HelperClasses.SharedControllerMethods.IdToLabel(session_capture);
+            string label = HelperClasses.SharedControllerMethods.IdToLabel(active.staffPosition);
 
             // return our project to be changed (should be only 1)
             var db = new Entities();
             var projectToEdit = db.projects.Where(p => p.projectID == id).First();
 
-            projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(session_capture);
+            projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(active.staffPosition);
 
             // update database
             db.Set<project>().Attach(projectToEdit);
@@ -153,15 +187,15 @@ namespace ResearchManager.Controllers
 
             var projects = db.projects.Where(p => p.projectStage == label);
 
-            string email = HelperClasses.SharedControllerMethods.PositionToNewPosition(session_capture);
+            string email = HelperClasses.SharedControllerMethods.PositionToNewPosition(active.staffPosition);
             HelperClasses.SharedControllerMethods.EmailHandler(email, projectToEdit.pName, projectToEdit.pDesc);
 
             // show all projects without previously changed one
-            if (Session["StaffPosition"].ToString() == "RIS")
+            if (active.staffPosition == "RIS")
             {
                 projects = db.projects.Where(p => p.projectStage == label);
             }
-            return RedirectToAction("Index", projects.ToList());//(projects.ToList());
+            return RedirectToAction("Index", projects.ToList());
         }
     }
 }
