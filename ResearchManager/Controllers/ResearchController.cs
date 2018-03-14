@@ -13,15 +13,35 @@ namespace ResearchManager.Controllers
     public class ResearchController : Controller
     {
         // GET: Research
-        public ActionResult Index(Models.ActiveUser active)
+        public ActionResult Index()
         {
+            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active; 
+            }
+
             Entities db = new Entities();
             var projects = db.projects.Where(p => p.userID == active.userID);
-            return viewIndexPage(active);
+            return viewIndexPage();
         }
 
-        public ActionResult viewIndexPage(Models.ActiveUser active)
+        public ActionResult viewIndexPage()
         {
+            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+            }
+
             Entities db = new Entities();
             var projects = db.projects.Where(p => p.userID == active.userID);
             return View(projects.ToList());
@@ -68,7 +88,17 @@ namespace ResearchManager.Controllers
         [HttpPost]
         public ActionResult createProject(project model, HttpPostedFileBase file)
         {
-            int uID = Convert.ToInt32(Session["UserID"]);
+            //TempData Check and Renewal
+            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+            }
+
             var allowedExtensions = new[] { ".xls", ".xlsx"};
             if (!allowedExtensions.Contains(Path.GetExtension(file.FileName)))
             {
@@ -112,11 +142,10 @@ namespace ResearchManager.Controllers
 
             if (ModelState.IsValid)
             {
-                System.Diagnostics.Debug.WriteLine(Session["UserID"].ToString());
                 var db = new Entities();
                 db.projects.Add(new project
                 {
-                    userID = Convert.ToInt32(Session["UserID"]),
+                    userID = active.userID,
                     dateCreated = DateTime.Now.ToUniversalTime(),
                     projectStage = "Created",
                     pName = model.pName,
@@ -135,16 +164,23 @@ namespace ResearchManager.Controllers
 
         public ActionResult sign(int projectID)
         {
-            int id = projectID;
-            string session_capture = Session["StaffPosition"].ToString();
+            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+            }
 
-            string label = HelperClasses.SharedControllerMethods.IdToLabel(session_capture);
+            string label = HelperClasses.SharedControllerMethods.IdToLabel(active.staffPosition);
 
             // return our project to be changed (should be only 1)
             var db = new Entities();
-            var projectToEdit = db.projects.Where(p => p.projectID == id).First();
+            var projectToEdit = db.projects.Where(p => p.projectID == projectID).First();
 
-            projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(session_capture);
+            projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(active.staffPosition);
 
             // update database
             db.Set<project>().Attach(projectToEdit);
@@ -153,15 +189,15 @@ namespace ResearchManager.Controllers
 
             var projects = db.projects.Where(p => p.projectStage == label);
 
-            string email = HelperClasses.SharedControllerMethods.PositionToNewPosition(session_capture);
+            string email = HelperClasses.SharedControllerMethods.PositionToNewPosition(active.staffPosition);
             HelperClasses.SharedControllerMethods.EmailHandler(email, projectToEdit.pName, projectToEdit.pDesc);
 
             // show all projects without previously changed one
-            if (Session["StaffPosition"].ToString() == "RIS")
+            if (active.staffPosition == "RIS")
             {
                 projects = db.projects.Where(p => p.projectStage == label);
             }
-            return RedirectToAction("Index", projects.ToList());//(projects.ToList());
+            return RedirectToAction("Index", projects.ToList());
         }
 
     }
