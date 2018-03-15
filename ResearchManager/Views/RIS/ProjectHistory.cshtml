@@ -1,0 +1,52 @@
+﻿@model IEnumerable<ResearchManager.change>
+
+@{
+    ViewBag.Title = "ProjectHistory";
+    Layout = "~/Views/Shared/_RISLayout.cshtml";
+}
+
+<h2>ProjectHistory</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.dateCreated)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.changeSummary)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.user.forename)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.project.pName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.dateCreated)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.changeSummary)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.user.forename)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.project.pName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.changeID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.changeID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.changeID })
+        </td>
+    </tr>
+}
+
+</table>

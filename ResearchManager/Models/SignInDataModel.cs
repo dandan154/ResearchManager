@@ -1,6 +1,6 @@
 ﻿namespace ResearchManager.Models
 {
-    public class SignInData
+    public class SignInDataModel
     {
         public string userID { get; set; }
         public string plntxtPass { get; set; }

@@ -26,9 +26,11 @@ namespace ResearchManager.Controllers
             }
 
             try
-            {   //Use searchTerm to query the database for project details and store this in a variable project
+            {   //Fetch project details and change history from database
                 Entities db = new Entities();
                 var project = db.projects.Where(p => p.projectID == id).First();
+
+
                 return View(project);
             }
             catch

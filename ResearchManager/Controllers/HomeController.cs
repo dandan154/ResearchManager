@@ -28,7 +28,7 @@ namespace ResearchManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SignIn(Models.SignInData model)
+        public ActionResult SignIn(Models.SignInDataModel model)
         {
             var db = new Entities();
 

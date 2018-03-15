@@ -190,9 +190,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HelperClasses\SharedControllerMethods.cs" />
+    <Compile Include="Models\DetailsViewModel.cs" />
     <Compile Include="Models\EmailModel.cs" />
-    <Compile Include="Models\ActiveUser.cs" />
-    <Compile Include="Models\SignInData.cs" />
+    <Compile Include="Models\SignInDataModel.cs" />
     <Compile Include="project.cs">
       <DependentUpon>AGILETEAM7DB.tt</DependentUpon>
     </Compile>
@@ -260,12 +260,14 @@
     <Content Include="Views\Research\createProject.cshtml" />
     <Content Include="Views\Home\SignIn.cshtml" />
     <Content Include="Views\RIS\reUploadExpend.cshtml" />
-    <Content Include="Views\RIS\index.cshtml" />
+    <Content Include="Views\RIS\Index.cshtml" />
     <Content Include="Views\Dean\Index.cshtml" />
     <Content Include="Views\Associate\Index.cshtml" />
     <Content Include="Views\Email\SendEmail.cshtml" />
     <Content Include="Views\Research\Index.cshtml" />
     <Content Include="Views\Research\EditProject.cshtml" />
+    <Content Include="Views\RIS\ProjectHistory.cshtml" />
+    <Content Include="Views\RIS\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
