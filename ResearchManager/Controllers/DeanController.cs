@@ -13,7 +13,7 @@ namespace ResearchManager.Controllers
         // GET: RIS
         public ActionResult Index()
         {
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");
@@ -48,7 +48,7 @@ namespace ResearchManager.Controllers
 
        /* public ActionResult viewProject()
         {
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");
@@ -61,7 +61,7 @@ namespace ResearchManager.Controllers
         }*/
         public ActionResult Details(int id)
         {
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");
@@ -86,7 +86,7 @@ namespace ResearchManager.Controllers
 
         public ActionResult reUploadExpend(int projectID)
         {
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");
@@ -104,7 +104,7 @@ namespace ResearchManager.Controllers
         [HttpPost]
         public ActionResult reUploadExpend(int projectID, HttpPostedFileBase file)
         {
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");
@@ -154,7 +154,7 @@ namespace ResearchManager.Controllers
 
         public ActionResult View(int projectID)
         {
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");
@@ -178,7 +178,7 @@ namespace ResearchManager.Controllers
 
         public ActionResult sign(int projectID)
         {
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");

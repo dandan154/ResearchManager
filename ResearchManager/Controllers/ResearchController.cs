@@ -15,37 +15,49 @@ namespace ResearchManager.Controllers
         // GET: Research
         public ActionResult Index()
         {
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
+                System.Diagnostics.Debug.Print("here");
                 return RedirectToAction("SignIn", "Home");
             }
             else
             {
+                System.Diagnostics.Debug.Print("here2");
                 TempData["ActiveUser"] = active; 
             }
 
             Entities db = new Entities();
             var projects = db.projects.Where(p => p.userID == active.userID);
-            return viewIndexPage();
+            System.Diagnostics.Debug.Print("here4");
+            
+            return View("Index",projects.ToList());
         }
 
-        public ActionResult viewIndexPage()
+
+        public ActionResult EditProject(int projectID)
         {
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
-            if (active == null)
-            {
-                return RedirectToAction("SignIn", "Home");
-            }
-            else
-            {
-                TempData["ActiveUser"] = active;
-            }
-
+            int progID = projectID;
             Entities db = new Entities();
-            var projects = db.projects.Where(p => p.userID == active.userID);
-            return View(projects.ToList());
+            var sampleProject = db.projects.Where(p => p.projectID == progID).First();
+            return View(sampleProject);
         }
+
+        [HttpPost]
+        public ActionResult EditProject(project edited)
+        {
+            Entities db = new Entities();
+            var sampleProject = db.projects.Where(p => p.projectID == edited.projectID).First();
+            sampleProject.pName = edited.pName;
+            sampleProject.pDesc = edited.pDesc;
+            sampleProject.pAbstract = edited.pAbstract;
+            db.Set<project>().Attach(sampleProject);
+            db.Entry(sampleProject).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
         public ActionResult createProject()
         {
             ViewBag.Message = "Form for creating new research projects into the management system";
@@ -65,7 +77,7 @@ namespace ResearchManager.Controllers
         public ActionResult createProject(project model, HttpPostedFileBase file)
         {
             //TempData Check and Renewal
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");
@@ -140,7 +152,7 @@ namespace ResearchManager.Controllers
 
         public ActionResult sign(int projectID)
         {
-            Models.ActiveUser active = TempData["ActiveUser"] as Models.ActiveUser;
+            user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");

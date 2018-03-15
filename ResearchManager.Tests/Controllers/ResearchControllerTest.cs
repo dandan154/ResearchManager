@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ResearchManager;
 using ResearchManager.Controllers;
+using System.Data.Entity;
 namespace ResearchManager.Tests.Controllers
 {
     [TestClass]
@@ -14,14 +15,49 @@ namespace ResearchManager.Tests.Controllers
         [TestMethod]
         public void IndexTest()
         {
+            Entities db = new Entities();
+
+
             // Arrange
+            TempDataDictionary tempData = new TempDataDictionary();
+            user tempUser = new user();
+            tempUser.Email = "test@test.com";
+            tempUser.forename = "Testf";
+            tempUser.surname = "Tests";
+            tempUser.hash = "null";
+            tempUser.salt = "null";
+            tempUser.staffPosition = "Researcher";
+            tempUser.Matric = "999999";
+            var userToDel = db.users.Add(tempUser);
+
+            db.SaveChanges();
+            var tempProject = new project();
+            tempProject.userID = userToDel.userID;
+            tempProject.pName = "test";
+            tempProject.pDesc = "test";
+            tempProject.pAbstract = "test";
+            tempProject.dateCreated = DateTime.UtcNow;
+            tempProject.projectFile = "none";
+            tempProject.projectStage = "Test";
+            var projectToDel = db.projects.Add(tempProject);
+            db.SaveChanges();
+            tempData["ActiveUser"] = userToDel;
+
             ResearchController controller = new ResearchController();
+            controller.TempData = tempData;
 
             // Act
-            ViewResult result = controller.viewIndexPage(999) as ViewResult;
+            ViewResult result = controller.Index() as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);
+            Assert.AreEqual("Index", result.ViewName);
+            Assert.IsNotNull(result.TempData["ActiveUser"]);
+            Assert.IsNotNull(result.Model);
+
+            db.projects.Remove(projectToDel);
+            db.users.Remove(userToDel);
+            db.SaveChanges();
         }
 
         [TestMethod]
