@@ -131,6 +131,7 @@
     <Compile Include="Model Tests\userUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
+    <Compile Include="StaticMethods\DatabaseInsert.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

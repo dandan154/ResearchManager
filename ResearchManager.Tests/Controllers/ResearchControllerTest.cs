@@ -61,20 +61,20 @@ namespace ResearchManager.Tests.Controllers
         }
 
         [TestMethod]
-        public void createProjectTest()
+        public void CreateProjectTest()
         {
             // Arrange
             ResearchController controller = new ResearchController();
 
             // Act
-            ViewResult result = controller.createProject() as ViewResult;
+            ViewResult result = controller.CreateProject() as ViewResult;
 
             // Assert
             Assert.AreEqual("Form for creating new research projects into the management system", result.ViewBag.Message);
         }
 
         [TestMethod]
-        public void createProjectPOSTTest()
+        public void CreateProjectPOSTTest()
         {
             // ASK ABOUT IN CLASS 
             // Arrange

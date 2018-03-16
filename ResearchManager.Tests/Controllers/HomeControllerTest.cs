@@ -13,7 +13,8 @@ namespace ResearchManager.Tests.Controllers
     public class HomeControllerTest
 
     {
-    /*    public void SignIn()
+    /*  [TestMethod]  
+        public void SignIn()
         {
             // Arrange
             HomeController controller = new HomeController();

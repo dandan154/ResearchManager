@@ -34,6 +34,30 @@ namespace ResearchManager.Controllers
             return View("Index",projects.ToList());
         }
 
+        public ActionResult Details(int id)
+        {
+            user active = TempData["ActiveUser"] as user;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+            }
+
+            try
+            {   //Use searchTerm to query the database for project details and store this in a variable project
+                Entities db = new Entities();
+                var project = db.projects.Where(p => p.projectID == id).First();
+                return View(project);
+            }
+            catch
+            {
+                //Return to Index if error occurs
+                return RedirectToAction("Index");
+            }
+        }
 
         public ActionResult EditProject(int projectID)
         {
@@ -58,13 +82,13 @@ namespace ResearchManager.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult createProject()
+        public ActionResult CreateProject()
         {
             ViewBag.Message = "Form for creating new research projects into the management system";
             return View();
         }
 
-        public FileResult download(int projectID)
+        public FileResult Download(int projectID)
         {
             int progID = projectID;
             Entities db = new Entities();
@@ -74,7 +98,7 @@ namespace ResearchManager.Controllers
         }
 
         [HttpPost]
-        public ActionResult createProject(project model, HttpPostedFileBase file)
+        public ActionResult CreateProject(project model, HttpPostedFileBase file)
         {
             //TempData Check and Renewal
             user active = TempData["ActiveUser"] as user;
@@ -150,7 +174,7 @@ namespace ResearchManager.Controllers
             return View(model);
         }
 
-        public ActionResult sign(int projectID)
+        public ActionResult Sign(int projectID)
         {
             user active = TempData["ActiveUser"] as user;
             if (active == null)

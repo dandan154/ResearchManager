@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Ongoing Projects - Require Signing";
-    Layout = "~/Views/Shared/_ResearchLayout.cshtml";
+    Layout = "~/Views/Shared/_AssociateDeanLayout.cshtml";
 }
     @if (TempData["alert"] != null)
     {
@@ -54,7 +54,8 @@
                     @Html.DisplayFor(modelfield => field.pAbstract)
                 </td>
                 <td>
-                    @Html.ActionLink("Sign", "sign", new { projectID = field.projectID })
+                    @Html.ActionLink("Details", "Details", new { id = field.projectID }) | 
+                    @Html.ActionLink("Sign", "Sign", new { projectID = field.projectID })
                 </td>
             </tr>
         }

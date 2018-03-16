@@ -170,7 +170,7 @@ namespace ResearchManager.Controllers
             return File(dProject.projectFile, "application/" + Path.GetExtension(dProject.projectFile), dProject.pName + "-ExpenditureFile" + Path.GetExtension(dProject.projectFile));
         }
     
-        public ActionResult sign(int projectID)
+        public ActionResult Sign(int projectID)
         {
             //TempData Check and Renewal
             user active = TempData["ActiveUser"] as user;

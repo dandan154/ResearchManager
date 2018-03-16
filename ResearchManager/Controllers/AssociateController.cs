@@ -45,11 +45,6 @@ namespace ResearchManager.Controllers
             return View(projects.ToList());
         }
 
-
-        public ActionResult viewProject()
-        {
-            return View();
-        }
         public ActionResult Details(int id)
         {
             user active = TempData["ActiveUser"] as user;

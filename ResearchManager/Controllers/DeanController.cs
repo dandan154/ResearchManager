@@ -10,7 +10,7 @@ namespace ResearchManager.Controllers
 {
     public class DeanController : Controller
     {
-        // GET: RIS
+        // GET: Dean
         public ActionResult Index()
         {
             user active = TempData["ActiveUser"] as user;
@@ -45,20 +45,6 @@ namespace ResearchManager.Controllers
             return View(projects.ToList());
         }
 
-
-       /* public ActionResult viewProject()
-        {
-            user active = TempData["ActiveUser"] as user;
-            if (active == null)
-            {
-                return RedirectToAction("SignIn", "Home");
-            }
-            else
-            {
-                TempData["ActiveUser"] = active;
-            }
-            return View();
-        }*/
         public ActionResult Details(int id)
         {
             user active = TempData["ActiveUser"] as user;
@@ -75,6 +61,11 @@ namespace ResearchManager.Controllers
             {   //Use searchTerm to query the database for project details and store this in a variable project
                 Entities db = new Entities();
                 var project = db.projects.Where(p => p.projectID == id).First();
+
+                if (project == null)
+                {
+                    return RedirectToAction("Index"); 
+                }
                 return View(project);
             }
             catch
@@ -84,7 +75,7 @@ namespace ResearchManager.Controllers
             }
         }
 
-        public ActionResult reUploadExpend(int projectID)
+        public ActionResult ReuploadExpend(int projectID)
         {
             user active = TempData["ActiveUser"] as user;
             if (active == null)
@@ -102,7 +93,7 @@ namespace ResearchManager.Controllers
         }
 
         [HttpPost]
-        public ActionResult reUploadExpend(int projectID, HttpPostedFileBase file)
+        public ActionResult ReuploadExpend(int projectID, HttpPostedFileBase file)
         {
             user active = TempData["ActiveUser"] as user;
             if (active == null)
@@ -152,22 +143,6 @@ namespace ResearchManager.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult View(int projectID)
-        {
-            user active = TempData["ActiveUser"] as user;
-            if (active == null)
-            {
-                return RedirectToAction("SignIn", "Home");
-            }
-            else
-            {
-                TempData["ActiveUser"] = active;
-            }
-
-            Entities db = new Entities();
-            var sampleProject = db.projects.Where(p => p.projectID == projectID).First();
-            return View(sampleProject);
-        }
         public FileResult Download(int projectID)
         {
             Entities db = new Entities();
@@ -176,7 +151,7 @@ namespace ResearchManager.Controllers
             return File(dProject.projectFile, "application/" + Path.GetExtension(dProject.projectFile), dProject.pName + "-ExpenditureFile" + Path.GetExtension(dProject.projectFile));
         }
 
-        public ActionResult sign(int projectID)
+        public ActionResult Sign(int projectID)
         {
             user active = TempData["ActiveUser"] as user;
             if (active == null)
