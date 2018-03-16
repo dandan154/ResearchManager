@@ -23,6 +23,7 @@ namespace ResearchManager.Controllers
                 TempData["ActiveUser"] = active;
             }
 
+            ViewBag.DashboardText = "Dean Dashboard";
             string label = HelperClasses.SharedControllerMethods.IdToLabel(active.staffPosition);
 
 
@@ -57,6 +58,8 @@ namespace ResearchManager.Controllers
                 TempData["ActiveUser"] = active;
             }
 
+            ViewBag.DashboardText = "Dean Dashboard";
+
             try
             {   //Use searchTerm to query the database for project details and store this in a variable project
                 Entities db = new Entities();
@@ -87,6 +90,8 @@ namespace ResearchManager.Controllers
                 TempData["ActiveUser"] = active;
             }
 
+            ViewBag.DashboardText = "Dean Dashboard";
+
             Entities db = new Entities();
             var sampleProject = db.projects.Where(p => p.projectID == projectID).First();
             return View(sampleProject);
@@ -104,6 +109,8 @@ namespace ResearchManager.Controllers
             {
                 TempData["ActiveUser"] = active;
             }
+
+            ViewBag.DashboardText = "Dean Dashboard";
 
             var allowedExtensions = new[] { ".xls", ".xlsx" };
             if (!allowedExtensions.Contains(Path.GetExtension(file.FileName)))
@@ -163,6 +170,7 @@ namespace ResearchManager.Controllers
                 TempData["ActiveUser"] = active;
             }
 
+            ViewBag.DashboardText = "Dean Dashboard";
             string label = HelperClasses.SharedControllerMethods.IdToLabel(active.staffPosition);
 
             // return our project to be changed (should be only 1)

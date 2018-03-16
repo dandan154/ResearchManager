@@ -13,8 +13,8 @@ namespace ResearchManager.Tests.Controllers
     public class HomeControllerTest
 
     {
-    /*  [TestMethod]  
-        public void SignIn()
+       [TestMethod]  
+        public void HomeSignIn()
         {
             // Arrange
             HomeController controller = new HomeController();
@@ -25,10 +25,10 @@ namespace ResearchManager.Tests.Controllers
             // Assert
             Assert.IsNotNull(result);
         }
-        */
+        
 
         [TestMethod]
-        public void Contact()
+        public void HomeContact()
         {
             // Arrange
             HomeController controller = new HomeController();
@@ -38,6 +38,12 @@ namespace ResearchManager.Tests.Controllers
 
             // Assert
             Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void HomeSignOut()
+        {
+
         }
     }
 }

@@ -14,19 +14,41 @@ namespace ResearchManager.Tests.Controllers
 
     {
         [TestMethod]
-        public void DetailsRedirectTest()
+        public void DeanDetailsRedirect()
         {
+            //Connect to database
+            Entities db = new Entities();
+
+            //Create new TempData storage
+            TempDataDictionary tempData = new TempDataDictionary();
+
+            //Add test models to the database
+            user testUser = DatabaseInsert.AddTestUser("Dean", db);
+            project testProject = DatabaseInsert.AddTestProject(testUser, db);
+
+            //Create controller instance
+            tempData["ActiveUser"] = testUser;
             DeanController dean = new DeanController();
+            dean.TempData = tempData;
 
+            //remove test project before usage
+            db.projects.Remove(testProject);
+            db.SaveChanges(); 
 
-            int m = int.MaxValue;
-            ActionResult action = dean.Details(m) as ActionResult;
+            RedirectToRouteResult result = (RedirectToRouteResult)dean.Details(testProject.projectID);
 
-            Assert.IsNotNull(action);
+            db.users.Remove(testUser);
+            db.SaveChanges();
+
+            //Main Tests
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.RouteName);
+
+            Console.WriteLine(result.RouteName);
         }
 
         [TestMethod]
-        public void DetailsStandardTest()
+        public void DeanDetailsStandard()
         {
             //Connect to database
             Entities db = new Entities();
@@ -57,7 +79,8 @@ namespace ResearchManager.Tests.Controllers
 
         }
 
-        public void Index()
+        [TestMethod]
+        public void DeanIndex()
         {
             //Connect to database
             Entities db = new Entities();

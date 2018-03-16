@@ -9,19 +9,34 @@ namespace ResearchManager.Controllers
 {
     public class HomeController : Controller
     {
+        public ActionResult SignOut()
+        {
+
+            TempData["ActiveUser"] = null; 
+            return View("SignIn"); 
+        }
 
         public ActionResult Contact()
         {
+            user active = TempData["ActiveUser"] as user; 
+            if(active != null)
+            {
+                TempData["ActiveUser"] = active; 
+            }
             ViewBag.Message = "Your contact page.";
 
             return View();
         }
 
         [HttpGet]
-        public ActionResult SignIn(user user)
+        public ActionResult SignIn()
         {
-            if (user.staffPosition != null)
+            user active = TempData["ActiveUser"] as user;
+            if (active != null)
+            {
+                TempData["ActiveUser"] = active;
                 return ControllerChange();
+            }
             return View("SignIn");
         }
 
@@ -97,6 +112,7 @@ namespace ResearchManager.Controllers
                 }
                 else if (active.staffPosition == "Dean")
                 {
+
                     return RedirectToAction("Index", "Dean");
                 }
                 else if (active.staffPosition == "AssociateDean")
