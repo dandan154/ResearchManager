@@ -3,11 +3,11 @@
  @{
      
      ViewBag.Title = "Dashboard";
-     Layout = "~/Views/Shared/_ResearchLayout.cshtml";
+     Layout = "~/Views/Shared/_DefaultLayout.cshtml";
      }
  <h2>@ViewBag.Title</h2>
  <p>
-        @Html.ActionLink("Add New Project", "createProject")
+        @Html.ActionLink("Add New Project", "CreateProject")
     
 </p>
  <table class="table">
@@ -73,11 +73,8 @@
         
         <td>
                         @Html.ActionLink("Download Expenditure File", "Download", new { projectID = item.projectID }) |
-            
                         @Html.ActionLink("Details", "Details", new { id = item.projectID }) |
-            
                         @Html.ActionLink("Delete", "Delete", new { id = item.projectID }) |
-            
                         @Html.ActionLink("Sign", "sign", new { projectID = item.projectID })
             
         </td>

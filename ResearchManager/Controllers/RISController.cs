@@ -25,6 +25,8 @@ namespace ResearchManager.Controllers
                 TempData["ActiveUser"] = active;
             }
 
+            ViewBag.DashboardText = "RIS Staff Dashboard";
+
             try
             {   //Use searchTerm to query the database for project details and store this in a variable project
                 Entities db = new Entities();
@@ -51,6 +53,7 @@ namespace ResearchManager.Controllers
                 TempData["ActiveUser"] = active;
             }
 
+            ViewBag.DashboardText = "RIS Staff Dashboard";
             Entities db = new Entities();
             var sampleProject = db.projects.Where(p => p.projectID == projectID).First();
             return View(sampleProject);
@@ -142,6 +145,8 @@ namespace ResearchManager.Controllers
                 TempData["ActiveUser"] = active;
             }
 
+            ViewBag.DashboardText = "RIS Staff Dashboard";
+
             string label = HelperClasses.SharedControllerMethods.IdToLabel(active.staffPosition);
 
             // Create new Entities object. This is a reference to the database.
@@ -183,6 +188,7 @@ namespace ResearchManager.Controllers
                 TempData["ActiveUser"] = active;
             }
 
+            ViewBag.DashboardText = "RIS Staff Dashboard";
             string label = HelperClasses.SharedControllerMethods.IdToLabel(active.staffPosition);
 
             // return our project to be changed (should be only 1)

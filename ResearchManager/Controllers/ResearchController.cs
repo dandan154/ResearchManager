@@ -27,6 +27,8 @@ namespace ResearchManager.Controllers
                 TempData["ActiveUser"] = active; 
             }
 
+            ViewBag.DashboardText = "Researcher Dashboard";
+
             Entities db = new Entities();
             var projects = db.projects.Where(p => p.userID == active.userID);
             System.Diagnostics.Debug.Print("here4");
@@ -46,6 +48,8 @@ namespace ResearchManager.Controllers
                 TempData["ActiveUser"] = active;
             }
 
+            ViewBag.DashboardText = "Researcher Dashboard";
+
             try
             {   //Use searchTerm to query the database for project details and store this in a variable project
                 Entities db = new Entities();
@@ -61,6 +65,7 @@ namespace ResearchManager.Controllers
 
         public ActionResult EditProject(int projectID)
         {
+            ViewBag.DashboardText = "Researcher Dashboard";
             int progID = projectID;
             Entities db = new Entities();
             var sampleProject = db.projects.Where(p => p.projectID == progID).First();
@@ -84,6 +89,7 @@ namespace ResearchManager.Controllers
 
         public ActionResult CreateProject()
         {
+            ViewBag.DashboardText = "Researcher Dashboard";
             ViewBag.Message = "Form for creating new research projects into the management system";
             return View();
         }
@@ -149,7 +155,7 @@ namespace ResearchManager.Controllers
             catch
             {
                 TempData["alert"] = "Error Uploading";
-                return RedirectToAction("createProject");
+                return RedirectToAction("CreateProject");
             }
 
             if (ModelState.IsValid)
