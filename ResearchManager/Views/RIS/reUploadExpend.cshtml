@@ -1,8 +1,8 @@
 ﻿@model ResearchManager.project
 
 @{
-    ViewBag.Title = "reUploadExpend";
-    Layout = "~/Views/Shared/_RISLayout.cshtml";
+    ViewBag.Title = "ReuploadExpend";
+    Layout = "~/Views/Shared/_DefaultLayout.cshtml";
 }
 
 <h2>Edit Expenditure File</h2>
@@ -48,14 +48,15 @@
             </dd>
             <dt>@Html.LabelFor(model => model.projectFile, "Project File:")</dt>
 
-            
+
             <dd>
                 @Html.TextBox("file", "", new { type = "file", accept = ".xls,.xlsx" })
                 @Html.ValidationMessageFor(model => model.projectFile, "", new { @class = "text-danger" })
-                
+
             </dd>
+
             <dd>
-                <br/>
+                <br />
                 <input type="submit" value="Update" class="btn btn-default" />
             </dd>
         </dl>

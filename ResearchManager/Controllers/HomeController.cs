@@ -9,9 +9,20 @@ namespace ResearchManager.Controllers
 {
     public class HomeController : Controller
     {
+        public ActionResult SignOut()
+        {
+
+            TempData["ActiveUser"] = null; 
+            return View("SignIn"); 
+        }
 
         public ActionResult Contact()
         {
+            user active = TempData["ActiveUser"] as user; 
+            if(active != null)
+            {
+                TempData["ActiveUser"] = active; 
+            }
             ViewBag.Message = "Your contact page.";
 
             return View();
@@ -20,19 +31,19 @@ namespace ResearchManager.Controllers
         [HttpGet]
         public ActionResult SignIn()
         {
-            return viewSignIn(Session["StaffPosition"]);
-        }
-
-        public ActionResult viewSignIn(object staffPos)
-        {
-            if (staffPos != null)
+            user active = TempData["ActiveUser"] as user;
+            if (active != null)
+            {
+                TempData["ActiveUser"] = active;
                 return ControllerChange();
+            }
             return View("SignIn");
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SignIn(Models.SignInUser model)
+        public ActionResult SignIn(Models.SignInData model)
         {
             var db = new Entities();
 
@@ -53,9 +64,17 @@ namespace ResearchManager.Controllers
 
                         if (isCorrect)
                         {
-                            Session["UserID"] = usr.userID;
-                            Session["StaffPosition"] = usr.staffPosition;
-                            System.Diagnostics.Debug.WriteLine(Session["StaffPosition"]);
+                            user active = new user();
+
+                            TempData["ActiveUser"] = active; 
+                            
+                            active.staffPosition = usr.staffPosition;
+                            active.forename = usr.forename;
+                            active.surname = usr.surname;
+                            active.Matric = usr.Matric;
+                            active.Email = usr.Email;
+                            active.userID = usr.userID; 
+
                             return ControllerChange();
                         }
                     }
@@ -70,22 +89,33 @@ namespace ResearchManager.Controllers
 
         public RedirectToRouteResult ControllerChange()
         {
+            user active = TempData["ActiveUser"] as user;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+            }
+
             try
             {
                 //Redirect user to appropriate page
-                if (Session["StaffPosition"].ToString() == "Researcher")
+                if (active.staffPosition == "Researcher")
                 {
                     return RedirectToAction("Index", "Research");
                 }
-                else if (Session["StaffPosition"].ToString() == "RIS")
+                else if (active.staffPosition == "RIS")
                 {
                     return RedirectToAction("Index", "RIS");
                 }
-                else if (Session["StaffPosition"].ToString() == "Dean")
+                else if (active.staffPosition == "Dean")
                 {
+
                     return RedirectToAction("Index", "Dean");
                 }
-                else if (Session["StaffPosition"].ToString() == "AssociateDean")
+                else if (active.staffPosition == "AssociateDean")
                 {
                     return RedirectToAction("Index", "Associate");
                 }

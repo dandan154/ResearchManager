@@ -14,11 +14,23 @@ namespace ResearchManager.Controllers
 
         public ActionResult Details(int id)
         {
+            //TempData Check and Renewal
+            user active = TempData["ActiveUser"] as user;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+            }
+
+            ViewBag.DashboardText = "RIS Staff Dashboard";
+
             try
             {   //Use searchTerm to query the database for project details and store this in a variable project
-                int searchTerm = id;
                 Entities db = new Entities();
-                var project = db.projects.Where(p => p.projectID == searchTerm).First();
+                var project = db.projects.Where(p => p.projectID == id).First();
                 return View(project);
             }
             catch
@@ -30,15 +42,37 @@ namespace ResearchManager.Controllers
 
         public ActionResult ReuploadExpend(int projectID)
         {
-            int progID = projectID;
+            //TempData Check and Renewal
+            user active = TempData["ActiveUser"] as user;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+            }
+
+            ViewBag.DashboardText = "RIS Staff Dashboard";
             Entities db = new Entities();
-            var sampleProject = db.projects.Where(p => p.projectID == progID).First();
+            var sampleProject = db.projects.Where(p => p.projectID == projectID).First();
             return View(sampleProject);
         }
 
         [HttpPost]
         public ActionResult ReuploadExpend(int projectID, HttpPostedFileBase file)
         {
+            //TempData Check and Renewal
+            user active = TempData["ActiveUser"] as user;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+            }
+
             var allowedExtensions = new[] { ".xls", ".xlsx" };
             if (!allowedExtensions.Contains(Path.GetExtension(file.FileName)))
             {
@@ -81,9 +115,8 @@ namespace ResearchManager.Controllers
                 return RedirectToAction("Index");
             }
 
-            int progID = projectID;
             Entities db = new Entities();
-            var sampleProject = db.projects.Where(p => p.projectID == progID).First();
+            var sampleProject = db.projects.Where(p => p.projectID == projectID).First();
             var fToDel = sampleProject.projectFile;
             sampleProject.projectFile = path;
             db.Set<project>().Attach(sampleProject);
@@ -101,10 +134,20 @@ namespace ResearchManager.Controllers
         // GET: RIS
         public ActionResult Index()
         {
-            string session_capture = Convert.ToString(Session["StaffPosition"]);
+            //TempData Check and Renewal
+            user active = TempData["ActiveUser"] as user;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+            }
 
-            string label = HelperClasses.SharedControllerMethods.IdToLabel(session_capture);
+            ViewBag.DashboardText = "RIS Staff Dashboard";
 
+            string label = HelperClasses.SharedControllerMethods.IdToLabel(active.staffPosition);
 
             // Create new Entities object. This is a reference to the database.
             Entities db = new Entities();
@@ -112,7 +155,7 @@ namespace ResearchManager.Controllers
             var projects = db.projects.Where(p => p.projectStage == label);
 
             // RIS can view all projects
-            if (session_capture == "RIS")
+            if (active.staffPosition == "RIS")
             {
                 projects = db.projects;
             }
@@ -127,28 +170,36 @@ namespace ResearchManager.Controllers
 
         public FileResult Download(int projectID)
         {
-            int progID = projectID;
             Entities db = new Entities();
-            var dProject = db.projects.Where(p => p.projectID == progID).First();
-
+            var dProject = db.projects.Where(p => p.projectID == projectID).First();
             return File(dProject.projectFile, "application/" + Path.GetExtension(dProject.projectFile), dProject.pName + "-ExpenditureFile" + Path.GetExtension(dProject.projectFile));
         }
     
-        public ActionResult sign(int projectID)
+        public ActionResult Sign(int projectID)
         {
-            int id = projectID;
-            string session_capture = Session["StaffPosition"].ToString();
-            string label = HelperClasses.SharedControllerMethods.IdToLabel(session_capture);
+            //TempData Check and Renewal
+            user active = TempData["ActiveUser"] as user;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+            }
+
+            ViewBag.DashboardText = "RIS Staff Dashboard";
+            string label = HelperClasses.SharedControllerMethods.IdToLabel(active.staffPosition);
 
             // return our project to be changed (should be only 1)
             var db = new Entities();
             var projects = db.projects.Where(p => p.projectStage == label);
-            var projectToEdit = db.projects.Where(p => p.projectID == id).First();
+            var projectToEdit = db.projects.Where(p => p.projectID == projectID).First();
 
             if ((Session["StaffPosition"].ToString() == "RIS" && projectToEdit.projectStage == "Project created"))
             {
                 // update signatures based on current user
-                projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(session_capture);
+                projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(active.staffPosition);
 
                 // update database
                 db.Set<project>().Attach(projectToEdit);
@@ -157,7 +208,7 @@ namespace ResearchManager.Controllers
 
                 TempData["alert"] = "You have signed " + projectToEdit.pName;
 
-                string email = HelperClasses.SharedControllerMethods.PositionToNewPosition(session_capture);
+                string email = HelperClasses.SharedControllerMethods.PositionToNewPosition(active.staffPosition);
                 HelperClasses.SharedControllerMethods.EmailHandler(email, projectToEdit.pName, projectToEdit.pDesc); 
          
             }
@@ -166,10 +217,10 @@ namespace ResearchManager.Controllers
                 TempData["alert"] = "You do not have permission to sign " + projectToEdit.pName;
             }
             // show all projects without previously changed one
-            if (Session["StaffPosition"].ToString() == "RIS") {
+            if (active.staffPosition == "RIS") {
                 projects = db.projects.Where(p => p.projectStage == label);
             }
-            return RedirectToAction("Index", projects.ToList());//(projects.ToList());
+            return RedirectToAction("Index", projects.ToList());
         }
     }
 }
