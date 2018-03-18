@@ -35,7 +35,7 @@ namespace ResearchManager.Tests
             tempProject.pDesc = "test";
             tempProject.pAbstract = "test";
             tempProject.dateCreated = DateTime.UtcNow;
-            tempProject.projectFile = "none";
+            tempProject.projectFile = "none.xlsx";
             tempProject.projectStage = "Test";
 
             var projectToDel = db.projects.Add(tempProject);
