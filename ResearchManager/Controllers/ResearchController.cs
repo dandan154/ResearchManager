@@ -42,6 +42,7 @@ namespace ResearchManager.Controllers
         public ActionResult Details(int id)
         {
             user active = TempData["ActiveUser"] as user;
+            TempData["ActiveUser"] = active;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");
@@ -50,7 +51,6 @@ namespace ResearchManager.Controllers
             {
                 if (active.staffPosition != "Researcher")
                 {
-                    TempData["ActiveUser"] = active;
                     return RedirectToAction("ControllerChange", "Home");
                 }
 

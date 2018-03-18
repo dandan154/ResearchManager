@@ -93,7 +93,7 @@ namespace ResearchManager.Controllers
                     String randOne = Convert.ToString(rand1);
                     String randTwo = Convert.ToString(rand2);
                     String randThree = Convert.ToString(rand3);
-                    String newName = randOne + randTwo + randThree + "." + fileextension;
+                    String newName = randOne + randTwo + randThree + fileextension;
                     path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), newName);
                     while (System.IO.File.Exists(path) == true)
                     {
@@ -103,7 +103,7 @@ namespace ResearchManager.Controllers
                         String randFour = Convert.ToString(rand1);
                         String randFive = Convert.ToString(rand2);
                         String randSiz = Convert.ToString(rand3);
-                        String TestName = randOne + randTwo + randThree + "." + fileextension;
+                        String TestName = randOne + randTwo + randThree + fileextension;
                         path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), TestName);
                     }
                     file.SaveAs(path);
