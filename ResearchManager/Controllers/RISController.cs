@@ -133,10 +133,7 @@ namespace ResearchManager.Controllers
             db.Entry(sampleProject).State = System.Data.Entity.EntityState.Modified;
 
             db.SaveChanges();
-            System.Diagnostics.Debug.WriteLine(active.userID+"HERE USER ID");
-            System.Diagnostics.Debug.WriteLine(projectID + "HERE Project ID");
             SharedControllerMethods.addToHistory(active.userID, projectID, "Modified the project file");
-            System.Diagnostics.Debug.WriteLine("Test");
             if (System.IO.File.Exists(fToDel))
             {
                 System.IO.File.Delete(fToDel);

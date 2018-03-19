@@ -241,13 +241,8 @@ namespace ResearchManager.Controllers
                     pAbstract = model.pAbstract,
                     pDesc = model.pDesc,
                     projectFile = path,
-<<<<<<< HEAD
                 };
-
                 project addedProject = db.projects.Add(tempProject);
-=======
-                });
->>>>>>> 0d74ab1b79085f9ba906dc5344db34b3968264e0
                 db.SaveChanges();
                 SharedControllerMethods.addToHistory(active.userID,addedProject.projectID , "Created Project");
                 ViewBag.Message = "Created Project";
@@ -303,23 +298,5 @@ namespace ResearchManager.Controllers
             }
             return RedirectToAction("Index", projects.ToList());
         }
-<<<<<<< HEAD
-=======
-    public void addToHistory(int uID, int pID, string cSUM)
-        {
-            DateTime now = System.DateTime.Now;
-            change tempChange = new change()
-            {
-                projectID = pID,
-                userID = uID,
-                changeSummary = cSUM,
-                dateCreated = now
-            };
-            Entities db = new Entities();
-            db.changes.Add(tempChange);
-            db.SaveChanges();
-        }
-
->>>>>>> 0d74ab1b79085f9ba906dc5344db34b3968264e0
     }
 }

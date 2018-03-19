@@ -125,9 +125,6 @@ namespace ResearchManager.HelperClasses
                 changeSummary = CSUM,
                 dateCreated = now,
             };
-            System.Diagnostics.Debug.WriteLine(tempChange.projectID + "Test");
-            System.Diagnostics.Debug.WriteLine(tempChange.userID + "Test");
-            System.Diagnostics.Debug.WriteLine(tempChange.changeSummary +"Test");
             Entities db = new Entities();
             db.changes.Add(tempChange);
             db.SaveChanges();
