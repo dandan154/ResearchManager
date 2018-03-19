@@ -195,10 +195,13 @@ namespace ResearchManager.Controllers
             string label = HelperClasses.SharedControllerMethods.IdToLabel(active.staffPosition);
 
             // return our project to be changed (should be only 1)
-            var db = new Entities();
+            var db = new Entities(); 
             var projectToEdit = db.projects.Where(p => p.projectID == projectID).First();
 
-            projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(active.staffPosition);
+            if (projectToEdit.projectStage == "Awaiting further action from Researcher")
+                projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(active.staffPosition);
+            else if (projectToEdit.projectStage == "Created")
+                projectToEdit.projectStage = "Awaiting further action from RIS";
 
             // update database
             db.Set<project>().Attach(projectToEdit);
