@@ -12,7 +12,7 @@ namespace ResearchManager.Controllers
     public class RISController : Controller
     {
 
-        public ActionResult Details(int id)
+        public ActionResult Details(int id = -1)
         {
             //TempData Check and Renewal
             user active = TempData["ActiveUser"] as user;
@@ -23,6 +23,11 @@ namespace ResearchManager.Controllers
             else
             {
                 TempData["ActiveUser"] = active;
+                if (active.staffPosition != "RIS")
+                {
+                    return RedirectToAction("ControllerChange", "Home");
+                }
+
             }
 
             ViewBag.DashboardText = "RIS Staff Dashboard";
@@ -51,6 +56,11 @@ namespace ResearchManager.Controllers
             else
             {
                 TempData["ActiveUser"] = active;
+                if (active.staffPosition != "RIS")
+                {
+                    return RedirectToAction("ControllerChange", "Home");
+                }
+
             }
 
             ViewBag.DashboardText = "RIS Staff Dashboard";
@@ -71,6 +81,11 @@ namespace ResearchManager.Controllers
             else
             {
                 TempData["ActiveUser"] = active;
+                if (active.staffPosition != "RIS")
+                {
+                    return RedirectToAction("ControllerChange", "Home");
+                }
+
             }
 
             var allowedExtensions = new[] { ".xls", ".xlsx" };
@@ -133,6 +148,11 @@ namespace ResearchManager.Controllers
             else
             {
                 TempData["ActiveUser"] = active;
+                if (active.staffPosition != "RIS")
+                {
+                    return RedirectToAction("ControllerChange", "Home");
+                }
+
             }
 
             ViewBag.DashboardText = "RIS Staff Dashboard";
@@ -176,6 +196,11 @@ namespace ResearchManager.Controllers
             else
             {
                 TempData["ActiveUser"] = active;
+                if (active.staffPosition != "RIS")
+                {
+                    return RedirectToAction("ControllerChange", "Home");
+                }
+
             }
 
             ViewBag.DashboardText = "RIS Staff Dashboard";

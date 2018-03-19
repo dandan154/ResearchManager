@@ -22,9 +22,9 @@ namespace ResearchManager.Tests.Controllers
 
             // Arrange
             TempDataDictionary tempData = new TempDataDictionary();
-            var researcherToDel = DatabaseInsert.AddTestUser("Researcher",db);
+            var researcherToDel = DatabaseInsert.AddTestUser("Researcher", db);
 
-            var projectToDel = DatabaseInsert.AddTestProject(researcherToDel,db);
+            var projectToDel = DatabaseInsert.AddTestProject(researcherToDel, db);
             tempData["ActiveUser"] = researcherToDel;
 
             ResearchController controller = new ResearchController();
@@ -38,7 +38,7 @@ namespace ResearchManager.Tests.Controllers
             Assert.AreEqual("Index", result.ViewName);
             Assert.IsNotNull(result.TempData["ActiveUser"]);
             Assert.IsNotNull(result.Model);
-            Assert.AreEqual(((List<project>)result.Model).First().projectID,projectToDel.projectID);
+            Assert.AreEqual(((List<project>)result.Model).First().projectID, projectToDel.projectID);
 
             db.projects.Remove(projectToDel);
             db.users.Remove(researcherToDel);
@@ -170,7 +170,7 @@ namespace ResearchManager.Tests.Controllers
             Assert.IsNotNull(resultResearcher);
             Assert.AreEqual("Details", resultResearcher.ViewName);
         }
-        
+
         /////////////////////////////////*Details TESTS*/////////////////////////////////
 
         /////////////////////////////////CreateProject TESTS/////////////////////////////////
@@ -276,7 +276,7 @@ namespace ResearchManager.Tests.Controllers
             TempDataDictionary tempData = new TempDataDictionary();
             var researcherToDel = DatabaseInsert.AddTestUser("Researcher", db);
             tempData["ActiveUser"] = researcherToDel;
-            var pToDel = DatabaseInsert.AddTestProject(researcherToDel,db);
+            var pToDel = DatabaseInsert.AddTestProject(researcherToDel, db);
             ResearchController controller = new ResearchController
             {
                 TempData = tempData
@@ -443,7 +443,7 @@ namespace ResearchManager.Tests.Controllers
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(pToDel.pName + "-ExpenditureFile" + Path.GetExtension(pToDel.projectFile), result.FileDownloadName);
-            Assert.AreEqual("application/"+Path.GetExtension(pToDel.projectFile), result.ContentType);
+            Assert.AreEqual("application/" + Path.GetExtension(pToDel.projectFile), result.ContentType);
 
             db.projects.Remove(pToDel);
             db.users.Remove(researcherToDel);
@@ -499,6 +499,35 @@ namespace ResearchManager.Tests.Controllers
 
 
         /////////////////////////////////*Download TESTS*/////////////////////////////////
-    }
 
+
+        //////////////////////////////////addToHistory TESTS//////////////////////////////////
+        [TestMethod]
+        public void addToHistoryTest()
+        {
+            //Arrange
+            Entities db = new Entities();
+            var tempUser = DatabaseInsert.AddTestUser("Researcher", db);
+            var tempProject = DatabaseInsert.AddTestProject(tempUser, db);
+            ResearchController researchController = new ResearchController();
+            string changeSum = "Test Change Sum";
+
+            //ACT
+            researchController.addToHistory(tempUser.userID, tempProject.projectID, changeSum);
+            Entities db2 = new Entities();
+
+            var found = db2.projects.Find(tempProject.projectID).changes.First().changeSummary;
+
+            //Assert
+            Assert.AreEqual(changeSum, found);
+
+            //Clean Up
+
+            db2.changes.Remove(db2.projects.Find(tempProject.projectID).changes.First());
+            db2.projects.Remove(db2.projects.Find(tempProject.projectID));
+            db2.users.Remove(db2.users.Find(tempUser.userID));
+            db2.SaveChanges();
+        }
+        /////////////////////////////////*addToHistory TESTS*/////////////////////////////////
+    }
 }

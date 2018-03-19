@@ -23,11 +23,13 @@ namespace ResearchManager.Controllers
             }
             else
             {
-                if(active.staffPosition != "Researcher")
+                TempData["ActiveUser"] = active;
+                if (active.staffPosition != "Researcher")
                 {
-                    TempData["ActiveUser"] = active;
                     return RedirectToAction("ControllerChange", "Home");
                 }
+
+
 
             }
 
@@ -35,20 +37,20 @@ namespace ResearchManager.Controllers
 
             Entities db = new Entities();
             var projects = db.projects.Where(p => p.userID == active.userID);
-            
-            return View("Index",projects.ToList());
+
+            return View("Index", projects.ToList());
         }
 
-        public ActionResult Details(int id)
+        public ActionResult Details(int id = -1)
         {
             user active = TempData["ActiveUser"] as user;
-            TempData["ActiveUser"] = active;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");
             }
             else
             {
+                TempData["ActiveUser"] = active;
                 if (active.staffPosition != "Researcher")
                 {
                     return RedirectToAction("ControllerChange", "Home");
@@ -62,7 +64,7 @@ namespace ResearchManager.Controllers
             {   //Use searchTerm to query the database for project details and store this in a variable project
                 Entities db = new Entities();
                 var project = db.projects.Where(p => p.projectID == id).First();
-                return View("Details",project);
+                return View("Details", project);
             }
             catch
             {
@@ -80,9 +82,9 @@ namespace ResearchManager.Controllers
             }
             else
             {
+                TempData["ActiveUser"] = active;
                 if (active.staffPosition != "Researcher")
                 {
-                    TempData["ActiveUser"] = active;
                     return RedirectToAction("ControllerChange", "Home");
                 }
 
@@ -92,7 +94,7 @@ namespace ResearchManager.Controllers
             int progID = projectID;
             Entities db = new Entities();
             var sampleProject = db.projects.Where(p => p.projectID == progID).First();
-            return View("EditProject",sampleProject);
+            return View("EditProject", sampleProject);
         }
 
         [HttpPost]
@@ -105,9 +107,10 @@ namespace ResearchManager.Controllers
             }
             else
             {
+                TempData["ActiveUser"] = active;
+
                 if (active.staffPosition != "Researcher")
                 {
-                    TempData["ActiveUser"] = active;
                     return RedirectToAction("ControllerChange", "Home");
                 }
 
@@ -132,14 +135,14 @@ namespace ResearchManager.Controllers
             user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
-                RedirectToAction("SignIn","Home");
+                RedirectToAction("SignIn", "Home");
                 return null;
             }
             else
             {
+                TempData["ActiveUser"] = active;
                 if (active.staffPosition != "Researcher")
                 {
-                    TempData["ActiveUser"] = active;
                     RedirectToAction("ControllerChange", "Home");
                     return null;
                 }
@@ -149,7 +152,7 @@ namespace ResearchManager.Controllers
             Entities db = new Entities();
             var dProject = db.projects.Where(p => p.projectID == progID).First();
 
-            return File(dProject.projectFile, "application/" + Path.GetExtension(dProject.projectFile),dProject.pName+ "-ExpenditureFile" + Path.GetExtension(dProject.projectFile));
+            return File(dProject.projectFile, "application/" + Path.GetExtension(dProject.projectFile), dProject.pName + "-ExpenditureFile" + Path.GetExtension(dProject.projectFile));
         }
 
         public ActionResult CreateProject()
@@ -161,9 +164,9 @@ namespace ResearchManager.Controllers
             }
             else
             {
+                TempData["ActiveUser"] = active;
                 if (active.staffPosition != "Researcher")
                 {
-                    TempData["ActiveUser"] = active;
                     return RedirectToAction("ControllerChange", "Home");
                 }
 
@@ -185,21 +188,21 @@ namespace ResearchManager.Controllers
             }
             else
             {
+                TempData["ActiveUser"] = active;
                 if (active.staffPosition != "Researcher")
                 {
-                    TempData["ActiveUser"] = active;
                     return RedirectToAction("ControllerChange", "Home");
                 }
 
             }
 
-            var allowedExtensions = new[] { ".xls", ".xlsx"};
+            var allowedExtensions = new[] { ".xls", ".xlsx" };
             if (!allowedExtensions.Contains(Path.GetExtension(file.FileName)))
             {
                 TempData["alert"] = "Select a file with extension type: " + string.Join(" ", allowedExtensions); ;
                 return RedirectToAction("createProject");
             }
-            var path ="";
+            var path = "";
             try
             {
                 if (file.ContentLength > 0)
@@ -236,7 +239,7 @@ namespace ResearchManager.Controllers
                     pAbstract = model.pAbstract,
                     pDesc = model.pDesc,
                     projectFile = path,
-                 });
+                });
                 db.SaveChanges();
                 ViewBag.Message = "Created Project";
                 return RedirectToAction("Index");
@@ -255,9 +258,9 @@ namespace ResearchManager.Controllers
             }
             else
             {
+                TempData["ActiveUser"] = active;
                 if (active.staffPosition != "Researcher")
                 {
-                    TempData["ActiveUser"] = active;
                     return RedirectToAction("ControllerChange", "Home");
                 }
 
@@ -291,7 +294,20 @@ namespace ResearchManager.Controllers
             }
             return RedirectToAction("Index", projects.ToList());
         }
+    public void addToHistory(int uID, int pID, string cSUM)
+        {
+            DateTime now = System.DateTime.Now;
+            change tempChange = new change()
+            {
+                projectID = pID,
+                userID = uID,
+                changeSummary = cSUM,
+                dateCreated = now
+            };
+            Entities db = new Entities();
+            db.changes.Add(tempChange);
+            db.SaveChanges();
+        }
 
     }
-
 }
