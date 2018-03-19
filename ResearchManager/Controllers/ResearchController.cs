@@ -204,26 +204,16 @@ namespace ResearchManager.Controllers
             {
                 if (file.ContentLength > 0)
                 {
-                    int rand1, rand2, rand3;
-                    string randOne, randTwo, randThree, newName, fileName, fileExtension;
-                    Random randInt = new Random();
-                    do
+                    var fileName = Path.GetFileName(file.FileName);
+                    var fileextension = Path.GetExtension(fileName); ;
+
+                    while (System.IO.File.Exists(path) == true)
                     {
-                        fileName = Path.GetFileName(file.FileName);
-                        fileExtension = Path.GetExtension(fileName);
-
-                        rand1 = randInt.Next(1, 10000);
-                        rand2 = randInt.Next(1, 10000);
-                        rand3 = randInt.Next(1, 10000);
-
-                        randOne = Convert.ToString(rand1);
-                        randTwo = Convert.ToString(rand2);
-                        randThree = Convert.ToString(rand3);
-
-                        newName = randOne + randTwo + randThree + fileExtension;
-                        path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), newName);
+                        const int STRING_LENGTH = 32;
+                        fileName = Crypto.GenerateSalt(STRING_LENGTH).Substring(0, STRING_LENGTH);
+                        String TestName = fileName + fileextension;
+                        path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), TestName);
                     }
-                    while (System.IO.File.Exists(path) == true);
 
                     file.SaveAs(path);
                 }
