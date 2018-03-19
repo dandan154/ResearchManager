@@ -23,11 +23,14 @@ namespace ResearchManager.Controllers
             }
             else
             {
-                if(active.staffPosition != "Researcher")
+                TempData["ActiveUser"] = active;
+
+                if (active.staffPosition != "Researcher")
                 {
-                    TempData["ActiveUser"] = active;
                     return RedirectToAction("ControllerChange", "Home");
                 }
+
+
 
             }
 
@@ -42,13 +45,13 @@ namespace ResearchManager.Controllers
         public ActionResult Details(int id)
         {
             user active = TempData["ActiveUser"] as user;
-            TempData["ActiveUser"] = active;
             if (active == null)
             {
                 return RedirectToAction("SignIn", "Home");
             }
             else
             {
+                TempData["ActiveUser"] = active;
                 if (active.staffPosition != "Researcher")
                 {
                     return RedirectToAction("ControllerChange", "Home");
@@ -80,9 +83,9 @@ namespace ResearchManager.Controllers
             }
             else
             {
+                TempData["ActiveUser"] = active;
                 if (active.staffPosition != "Researcher")
                 {
-                    TempData["ActiveUser"] = active;
                     return RedirectToAction("ControllerChange", "Home");
                 }
 
@@ -105,9 +108,10 @@ namespace ResearchManager.Controllers
             }
             else
             {
+                TempData["ActiveUser"] = active;
+
                 if (active.staffPosition != "Researcher")
                 {
-                    TempData["ActiveUser"] = active;
                     return RedirectToAction("ControllerChange", "Home");
                 }
 
@@ -137,9 +141,9 @@ namespace ResearchManager.Controllers
             }
             else
             {
+                TempData["ActiveUser"] = active;
                 if (active.staffPosition != "Researcher")
                 {
-                    TempData["ActiveUser"] = active;
                     RedirectToAction("ControllerChange", "Home");
                     return null;
                 }
@@ -161,9 +165,9 @@ namespace ResearchManager.Controllers
             }
             else
             {
+                TempData["ActiveUser"] = active;
                 if (active.staffPosition != "Researcher")
                 {
-                    TempData["ActiveUser"] = active;
                     return RedirectToAction("ControllerChange", "Home");
                 }
 
@@ -185,9 +189,9 @@ namespace ResearchManager.Controllers
             }
             else
             {
+                TempData["ActiveUser"] = active;
                 if (active.staffPosition != "Researcher")
                 {
-                    TempData["ActiveUser"] = active;
                     return RedirectToAction("ControllerChange", "Home");
                 }
 
@@ -255,9 +259,9 @@ namespace ResearchManager.Controllers
             }
             else
             {
+                TempData["ActiveUser"] = active;
                 if (active.staffPosition != "Researcher")
                 {
-                    TempData["ActiveUser"] = active;
                     return RedirectToAction("ControllerChange", "Home");
                 }
 
