@@ -41,7 +41,7 @@ namespace ResearchManager.Controllers
             return View("Index", projects.ToList());
         }
 
-        public ActionResult Details(int id)
+        public ActionResult Details(int id = -1)
         {
             user active = TempData["ActiveUser"] as user;
             if (active == null)
