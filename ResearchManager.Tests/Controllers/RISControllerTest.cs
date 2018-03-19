@@ -57,5 +57,79 @@ namespace ResearchManager.Tests.Controllers
             Assert.IsNotNull(result);
         }
         */
+
+        public void RISIndexTest()
+        {
+            Entities db = new Entities();
+
+            // Arrange
+            TempDataDictionary tempData = new TempDataDictionary();
+            var RISToDel = DatabaseInsert.AddTestUser("RIS", db);
+
+            var projectToDel = DatabaseInsert.AddTestProject(RISToDel, db);
+            tempData["ActiveUser"] = RISToDel;
+
+            RISController controller = new RISController();
+            controller.TempData = tempData;
+
+            // Act
+            ViewResult result = controller.Index() as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Index", result.ViewName);
+            Assert.IsNotNull(result.TempData["ActiveUser"]);
+            Assert.IsNotNull(result.Model);
+            Assert.AreEqual(((List<project>)result.Model).First().projectID, projectToDel.projectID);
+
+            db.projects.Remove(projectToDel);
+            db.users.Remove(RISToDel);
+            db.SaveChanges();
+        }
+
+        [TestMethod]
+        public void RISIndexRedirectTest()
+        {
+            Entities db = new Entities();
+
+            // Arrange
+            TempDataDictionary tempDataRIS = new TempDataDictionary();
+            TempDataDictionary tempDataResearcher = new TempDataDictionary();
+
+            var RISToDel = DatabaseInsert.AddTestUser("RIS", db);
+            var ResearcherToDel = DatabaseInsert.AddTestUser("Researcher", db);
+
+
+            tempDataRIS["ActiveUser"] = RISToDel;
+            tempDataResearcher["ActiveUser"] = ResearcherToDel;
+
+            RISController RISController = new RISController();
+            RISController.TempData = tempDataRIS;
+
+            RISController ResearchRISController = new RISController();
+            ResearchRISController.TempData = tempDataResearcher;
+
+            // Act
+            RedirectToRouteResult resultResearcher = (RedirectToRouteResult)ResearchRISController.Index() as RedirectToRouteResult;
+            ViewResult resultRIS = (ViewResult)RISController.Index() as ViewResult;
+
+
+            db.users.Remove(RISToDel);
+            db.users.Remove(ResearcherToDel);
+            db.SaveChanges();
+
+            // Assert 'Other User'
+            Assert.IsNotNull(resultResearcher);
+            Assert.IsTrue(resultResearcher.RouteValues.ContainsKey("action"));
+            Assert.IsTrue(resultResearcher.RouteValues.ContainsKey("controller"));
+            Assert.AreEqual("ControllerChange", resultResearcher.RouteValues["action"].ToString());
+            Assert.AreEqual("Home", resultResearcher.RouteValues["controller"].ToString());
+
+            //Assert Researcher
+            Assert.IsNotNull(resultRIS);
+            Assert.AreEqual("Index", resultRIS.ViewName);
+        }
+
+        /////////////////////////////////*INDEX TESTS*/////////////////////////////////
     }
 }
