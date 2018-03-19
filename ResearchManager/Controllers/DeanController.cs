@@ -13,6 +13,7 @@ namespace ResearchManager.Controllers
         // GET: Dean
         public ActionResult Index()
         {
+            //TempData Check and Renewal
             user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
@@ -21,6 +22,11 @@ namespace ResearchManager.Controllers
             else
             {
                 TempData["ActiveUser"] = active;
+                if (active.staffPosition != "Dean")
+                {
+                    return RedirectToAction("ControllerChange", "Home");
+                }
+
             }
 
             ViewBag.DashboardText = "Dean Dashboard";
@@ -46,8 +52,9 @@ namespace ResearchManager.Controllers
             return View(projects.ToList());
         }
 
-        public ActionResult Details(int id)
+        public ActionResult Details(int id = -1)
         {
+            //TempData Check and Renewal
             user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
@@ -56,6 +63,11 @@ namespace ResearchManager.Controllers
             else
             {
                 TempData["ActiveUser"] = active;
+                if (active.staffPosition != "Dean")
+                {
+                    return RedirectToAction("ControllerChange", "Home");
+                }
+
             }
 
             ViewBag.DashboardText = "Dean Dashboard";
@@ -88,6 +100,7 @@ namespace ResearchManager.Controllers
 
         public ActionResult Sign(int projectID)
         {
+            //TempData Check and Renewal
             user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
@@ -96,6 +109,11 @@ namespace ResearchManager.Controllers
             else
             {
                 TempData["ActiveUser"] = active;
+                if (active.staffPosition != "Dean")
+                {
+                    return RedirectToAction("ControllerChange", "Home");
+                }
+
             }
 
 
