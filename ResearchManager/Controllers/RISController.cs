@@ -175,7 +175,7 @@ namespace ResearchManager.Controllers
                 projects = db.projects.Where(p => p.projectStage == label);
             }
 
-            return View(projects.ToList());
+            return View("Index",projects.ToList());
         }
 
         public FileResult Download(int projectID)
