@@ -12,6 +12,7 @@ namespace ResearchManager
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.IO;
 
     public partial class project
     {
@@ -36,7 +37,15 @@ namespace ResearchManager
         public string pDesc { get; set; }
         [Display(Name = "Project Abstract")]
         public string pAbstract { get; set; }
-    
+
+        public string pPFileDisplay {
+            get
+            {
+                return (this.pName + "-ExpenditureFile" + Path.GetExtension(this.projectFile));
+            }
+        }
+
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<change> changes { get; set; }
         public virtual user user { get; set; }

@@ -1,7 +1,6 @@
 ﻿@model ResearchManager.project
 
 @{
-    TempData["ActiveUser"] = TempData["ActiveUser"];
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_DefaultLayout.cshtml";
 }
@@ -41,7 +40,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.projectFile)
+            @Html.DisplayFor(model => model.pPFileDisplay)
         </dd>
 
         <dt>

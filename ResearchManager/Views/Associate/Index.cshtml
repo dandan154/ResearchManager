@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<ResearchManager.project>
 
 @{
-    TempData["ActiveUser"] = TempData["ActiveUser"];
     ViewBag.Title = "Ongoing Projects - Require Signing";
     Layout = "~/Views/Shared/_DefaultLayout.cshtml";
 }
@@ -56,7 +55,10 @@
                 </td>
                 <td>
                     @Html.ActionLink("Details", "Details", new { id = field.projectID }) | 
-                    @Html.ActionLink("Sign", "Sign", new { projectID = field.projectID })
+                    @if (field.projectStage == "Awaiting further action from Associate Dean")
+                    {
+                    @Html.ActionLink("Sign", "Sign", new { projectID = field.projectID }, new { onclick = "return confirm('Are you sure you wish to sign?');" })
+                    }
                 </td>
             </tr>
         }
