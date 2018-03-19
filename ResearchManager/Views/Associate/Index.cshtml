@@ -56,7 +56,7 @@
                 </td>
                 <td>
                     @Html.ActionLink("Details", "Details", new { id = field.projectID }) | 
-                    @Html.ActionLink("Sign", "Sign", new { projectID = field.projectID })
+                    @Html.ActionLink("Sign", "Sign", new { projectID = field.projectID }, new { onclick = "return confirm('Are you sure you wish to sign?');" })
                 </td>
             </tr>
         }
