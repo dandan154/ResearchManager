@@ -26,10 +26,14 @@ textarea {
 .loginForm {
 }
 
+a.navbar-brand{
+    color:white;
+}
+
 #loginLabel {
     width: 100%;
     text-align: center;
-    color: #263f68;
+    color: #4365e2;
 }
 
 #matInput, #passInput {
@@ -41,7 +45,7 @@ textarea {
 
 
 h2 {
-    color: #263f68;
+    color: #4365e2;
 }
 
 #loginButton {
@@ -51,15 +55,15 @@ h2 {
 }
 
 #logbutt {
-    background-color: #263f68;
+    background-color: #4365e2;
     color: white;
     border-radius: 8px;
 }
 
 #plntxtPass, #userID {
     border-radius: 8px;
-    color: #263f68;
-    border-color: #263f68;
+    color: #4365e2;
+    border-color: #4365e2;
 }
 
 #footerText {

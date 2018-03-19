@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Helpers;
 using System.IO; 
 
+
 namespace ResearchManager.HelperClasses
 {
     public static class SharedControllerMethods
@@ -114,7 +115,19 @@ namespace ResearchManager.HelperClasses
 
             return null; 
         }
-
-       
+        public static void addToHistory(int uID, int pID, string CSUM)
+        {
+            DateTime now = System.DateTime.Now;
+            change tempChange = new change()
+            {
+                projectID = pID,
+                userID = uID,
+                changeSummary = CSUM,
+                dateCreated = now,
+            };
+            Entities db = new Entities();
+            db.changes.Add(tempChange);
+            db.SaveChanges();
+        }
     }
 }
