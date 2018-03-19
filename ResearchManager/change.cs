@@ -11,13 +11,18 @@ namespace ResearchManager
 {
     using System;
     using System.Collections.Generic;
-        
+    using System.ComponentModel.DataAnnotations;
     public partial class change
     {
+        [Display(Name = "Change ID")]
         public int changeID { get; set; }
+        [Display(Name = "User ID")]
         public int userID { get; set; }
+        [Display(Name = "Project ID")]
         public int projectID { get; set; }
+        [Display(Name = "Date Created")]
         public System.DateTime dateCreated { get; set; }
+        [Display(Name = "Change Summary")]
         public string changeSummary { get; set; }
     
         public virtual user user { get; set; }

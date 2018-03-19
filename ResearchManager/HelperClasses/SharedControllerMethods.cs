@@ -73,7 +73,7 @@ namespace ResearchManager.HelperClasses
             if (id != "")
             {
                 if (id == "RIS")
-                    return "Project created";
+                    return "Awaiting further action from RIS";
 
                 if (id == "Researcher")
                     return "Awaiting further action from Researcher";

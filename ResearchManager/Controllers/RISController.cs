@@ -84,28 +84,18 @@ namespace ResearchManager.Controllers
             {
                 if (file.ContentLength > 0)
                 {
+
                     var fileName = Path.GetFileName(file.FileName);
-                    var fileextension = Path.GetExtension(fileName);
-                    Random randInt = new Random();
-                    int rand1 = randInt.Next(1, 10000);
-                    int rand2 = randInt.Next(1, 10000);
-                    int rand3 = randInt.Next(1, 10000);
-                    String randOne = Convert.ToString(rand1);
-                    String randTwo = Convert.ToString(rand2);
-                    String randThree = Convert.ToString(rand3);
-                    String newName = randOne + randTwo + randThree + fileextension;
-                    path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), newName);
+                    var fileextension = Path.GetExtension(fileName);;
+
                     while (System.IO.File.Exists(path) == true)
                     {
-                        int rand4 = randInt.Next(1, 10000);
-                        int rand5 = randInt.Next(1, 10000);
-                        int rand6 = randInt.Next(1, 10000);
-                        String randFour = Convert.ToString(rand1);
-                        String randFive = Convert.ToString(rand2);
-                        String randSiz = Convert.ToString(rand3);
-                        String TestName = randOne + randTwo + randThree + fileextension;
+                        const int STRING_LENGTH = 32;
+                        fileName = Crypto.GenerateSalt(STRING_LENGTH).Substring(0, STRING_LENGTH); 
+                        String TestName = fileName + fileextension;
                         path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), TestName);
                     }
+
                     file.SaveAs(path);
                 }
             }
@@ -196,7 +186,7 @@ namespace ResearchManager.Controllers
             var projects = db.projects.Where(p => p.projectStage == label);
             var projectToEdit = db.projects.Where(p => p.projectID == projectID).First();
 
-            if ((Session["StaffPosition"].ToString() == "RIS" && projectToEdit.projectStage == "Project created"))
+            if ((active.staffPosition == "RIS" && projectToEdit.projectStage == "Awaiting further action from RIS"))
             {
                 // update signatures based on current user
                 projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(active.staffPosition);
