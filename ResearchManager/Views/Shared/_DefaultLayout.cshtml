@@ -8,7 +8,8 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 @{ 
-    var active = TempData["ActiveUser"] as user; 
+    //var active = TempData["ActiveUser"] as user;
+    //TempData["ActiveUser"] = active; 
 }
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -26,7 +27,7 @@
                     <li>@Html.ActionLink("Home", "SignIn", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Sign Out", "SignOut", "Home")</li>
-                    <li>@active.Matric</li>
+                    <li></li>
                 </ul>
             </div>
         </div>
