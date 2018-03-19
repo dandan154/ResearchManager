@@ -11,7 +11,7 @@ namespace ResearchManager
 {
     using System;
     using System.Collections.Generic;
-    
+        
     public partial class change
     {
         public int changeID { get; set; }
