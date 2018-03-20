@@ -219,18 +219,12 @@ namespace ResearchManager.Controllers
 
             if ((active.staffPosition == "RIS" && projectToEdit.projectStage == "Created"))
             {
-                // update signatures based on current user
-                projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(active.staffPosition);
 
                 // update database
+                projectToEdit.projectStage = "Awaiting further action from Associate Dean";
                 db.Set<project>().Attach(projectToEdit);
                 db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
-
-                TempData["alert"] = "You have signed " + projectToEdit.pName;
-
-                string email = HelperClasses.SharedControllerMethods.PositionToNewPosition(active.staffPosition);
-                HelperClasses.SharedControllerMethods.EmailHandler(email, projectToEdit.pName, projectToEdit.pDesc);
                 HelperClasses.SharedControllerMethods.addToHistory(active.userID, projectID, "RIS Staff Signed The Project");
             }
             else
@@ -261,29 +255,148 @@ namespace ResearchManager.Controllers
                 }
 
             }
-            string label = "Need Further Clarification";
             var db = new Entities();
             var projectToEdit = db.projects.Where(p => p.projectID == projectID).First();
             if ((active.staffPosition == "RIS" && projectToEdit.projectStage == "Created"))
             {
                 // update signatures based on current user
-                projectToEdit.projectStage = "awaitingClarification";
+                projectToEdit.projectStage = "Awaiting Clarification";
 
                 // update database
                 db.Set<project>().Attach(projectToEdit);
                 db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
+            }
+            return RedirectToAction("getMessage", projectToEdit);
+        }
 
-                TempData["alert"] = "You have returned " + projectToEdit.pName + " for further clarification";
-
-                string email = HelperClasses.SharedControllerMethods.PositionToNewPosition(active.staffPosition);
-                HelperClasses.SharedControllerMethods.addToHistory(active.userID, projectID, "RIS Staff requested clarification");
+        public ActionResult Corrections(int projectID)
+        {
+            //TempData Check and Renewal
+            user active = TempData["ActiveUser"] as user;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
             }
             else
             {
-                TempData["alert"] = "You do not have permission to request clarification for : " + projectToEdit.pName;
+                TempData["ActiveUser"] = active;
+                if (active.staffPosition != "RIS")
+                {
+                    return RedirectToAction("ControllerChange", "Home");
+                }
+
+            }
+            var db = new Entities();
+            var projectToEdit = db.projects.Where(p => p.projectID == projectID).First();
+            if ((active.staffPosition == "RIS" && projectToEdit.projectStage == "Created"))
+            {
+                // update signatures based on current user
+                projectToEdit.projectStage = "Awaiting Corrections";
+
+                // update database
+                db.Set<project>().Attach(projectToEdit);
+                db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
             }
 
+            return RedirectToAction("getMessage", projectToEdit);
+        }
+        public ActionResult furtherInfo(int projectID)
+        {
+            //TempData Check and Renewal
+            user active = TempData["ActiveUser"] as user;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+                if (active.staffPosition != "RIS")
+                {
+                    return RedirectToAction("ControllerChange", "Home");
+                }
+
+            }
+            var db = new Entities();
+            var projectToEdit = db.projects.Where(p => p.projectID == projectID).First();
+            if ((active.staffPosition == "RIS" && projectToEdit.projectStage == "Created"))
+            {
+                // update signatures based on current user
+                projectToEdit.projectStage = "Awaiting Further Information";
+                System.Diagnostics.Debug.WriteLine(projectToEdit.projectStage + "stge");
+                // update database
+                db.Set<project>().Attach(projectToEdit);
+                db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+            }
+
+            return RedirectToAction("getMessage", projectToEdit);
+        }
+        public ActionResult getMessage(project proj)
+        {
+            ViewBag.DashboardText = "Further Requirements";
+            return View(proj);
+        }
+        [HttpPost]
+        public ActionResult getMessage(int projectID, string message)
+        {
+            System.Diagnostics.Debug.WriteLine(projectID + "PID");
+            ViewBag.DashboardText = "Further Requirements";
+            user active = TempData["ActiveUser"] as user;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+                if (active.staffPosition != "RIS")
+                {
+                    return RedirectToAction("ControllerChange", "Home");
+                }
+
+            }
+            var db = new Entities();
+            var projectToEdit = db.projects.Where(p => p.projectID == projectID).First();
+            System.Diagnostics.Debug.WriteLine(projectToEdit.projectID + "PID2");
+            System.Diagnostics.Debug.WriteLine(projectToEdit.projectStage + "projectStage");
+            if ((active.staffPosition == "RIS" && projectToEdit.projectStage == "Awaiting Further Information"))
+            {
+                // update database
+                db.Set<project>().Attach(projectToEdit);
+                db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;
+                SharedControllerMethods.addToHistory(active.userID, projectID, message);
+                db.SaveChanges();
+
+                TempData["alert"] = "You have returned " + projectToEdit.pName + " for further information";
+
+            }
+            else if ((active.staffPosition == "RIS" && projectToEdit.projectStage == "Awaiting Clarification"))
+            {
+                // update database
+                db.Set<project>().Attach(projectToEdit);
+                db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+                HelperClasses.SharedControllerMethods.addToHistory(active.userID, projectID, message);
+            }
+            else if ((active.staffPosition == "RIS" && projectToEdit.projectStage == "Awaiting Corrections"))
+            {
+                // update signatures based on current user
+                projectToEdit.projectStage = "Awaiting Corrections";
+
+                // update database
+                db.Set<project>().Attach(projectToEdit);
+                db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+                HelperClasses.SharedControllerMethods.addToHistory(active.userID, projectID, message);
+            }
+            else
+            {
+                TempData["alert"] = "You do not have permission to request further information for : " + projectToEdit.pName;
+            }
             return RedirectToAction("Index");
         }
     }

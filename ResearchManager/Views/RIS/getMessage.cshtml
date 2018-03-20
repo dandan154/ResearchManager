@@ -1,0 +1,44 @@
+﻿@model ResearchManager.project
+
+@{
+    ViewBag.Title = "getMessage";
+    ViewBag.DashboardText = "Further Requirements";
+    Layout = "~/Views/Shared/_DefaultLayout.cshtml";
+}
+
+
+@using (Html.BeginForm("getMessage", "RIS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.projectID)
+        <h2>@Html.Raw(Model.projectStage)</h2>
+
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.pName)
+            </dt>
+
+            <dd>
+                @Html.TextBox("message", null, new { @class = "messageToSend" })
+                @Html.ValidationMessageFor(model => model.pName, "", new { @class = "text-danger" })
+                <br />
+            </dd>
+            <dd>
+                <br />
+                <input type="submit" value="Update" class="btn btn-default" />
+            </dd>
+        </dl>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

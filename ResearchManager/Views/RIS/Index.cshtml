@@ -51,8 +51,8 @@
                 @Html.ActionLink("Reupload", "ReuploadExpend", new { projectID = item.projectID }) |
                 @Html.ActionLink("Ask for Clarification", "Clarification", new { projectID = item.projectID }) |
                 @Html.ActionLink("Further Information", "furtherInfo", new { projectID = item.projectID }) |
-                @Html.ActionLink("Ask for Corrections", "corrections", new { projectID = item.projectID }) |
-                @if (item.projectStage == "Awaiting further action from RIS" || item.projectStage == "Created")
+                @Html.ActionLink("Ask for Corrections", "Corrections", new { projectID = item.projectID }) |
+                @if (item.projectStage == "Awaiting RIS Confirmation" || item.projectStage == "Created")
     {
             @Html.ActionLink("Sign", "Sign", new { projectID = item.projectID }, new { onclick = "return confirm('Are you sure you wish to sign?');" })
 }

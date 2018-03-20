@@ -98,7 +98,7 @@ namespace ResearchManager.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditProject(project edited)
+        public ActionResult EditProject(project edited, HttpPostedFileBase file)
         {
             user active = TempData["ActiveUser"] as user;
             if (active == null)
@@ -120,7 +120,42 @@ namespace ResearchManager.Controllers
             var sampleProject = db.projects.Where(p => p.projectID == edited.projectID).First();
             sampleProject.pName = edited.pName;
             sampleProject.pDesc = edited.pDesc;
+            sampleProject.projectStage = "Created";
             sampleProject.pAbstract = edited.pAbstract;
+            var allowedExtensions = new[] { ".xls", ".xlsx" };
+            if (!allowedExtensions.Contains(Path.GetExtension(file.FileName)))
+            {
+                TempData["alert"] = "Select a file with extension type: " + string.Join(" ", allowedExtensions); ;
+                return RedirectToAction("createProject");
+            }
+            var path = "";
+            try
+            {
+                if (file.ContentLength > 0)
+                {
+                    System.Diagnostics.Debug.WriteLine(": COntent>0");
+                    var fileName = Path.GetFileName(file.FileName);
+                    var fileextension = Path.GetExtension(fileName); ;
+
+                    do
+                    {
+                        System.Diagnostics.Debug.WriteLine("Do");
+                        const int STRING_LENGTH = 32;
+                        fileName = Crypto.GenerateSalt(STRING_LENGTH).Substring(0, STRING_LENGTH);
+                        String TestName = fileName + fileextension;
+                        path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), TestName);
+                    } while (System.IO.File.Exists(path) == true);
+
+                    System.Diagnostics.Debug.WriteLine(path + "path");
+                    file.SaveAs(path);
+                }
+            }
+            catch
+            {
+                System.Diagnostics.Debug.WriteLine("Catch");
+                TempData["alert"] = "Error Uploading";
+                return RedirectToAction("Index");
+            }
             db.Set<project>().Attach(sampleProject);
             db.Entry(sampleProject).State = System.Data.Entity.EntityState.Modified;
             SharedControllerMethods.addToHistory(active.userID, edited.projectID, "Changed Project Details");
@@ -251,7 +286,6 @@ namespace ResearchManager.Controllers
                 SharedControllerMethods.addToHistory(active.userID,addedProject.projectID , "Created Project");
                 ViewBag.Message = "Created Project";
                 return RedirectToAction("Index");
-
             }
 
             return View(model);
@@ -280,8 +314,8 @@ namespace ResearchManager.Controllers
             var db = new Entities(); 
             var projectToEdit = db.projects.Where(p => p.projectID == projectID).First();
 
-            if (projectToEdit.projectStage == "Awaiting further action from Researcher")
-                projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(active.staffPosition);
+            if (projectToEdit.projectStage == "Created")
+                projectToEdit.projectStage = "Awaiting RIS Confirmation";
             //else if (projectToEdit.projectStage == "Created")
                 //projectToEdit.projectStage = "Awaiting further action from RIS";
 
