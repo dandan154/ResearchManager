@@ -22,13 +22,13 @@
                 </button>
                 @Html.ActionLink((string)ViewBag.DashboardText, "SignIn", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="navbar-collapse collapse navHalf">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "SignIn", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Sign Out", "SignOut", "Home")</li>
-                    <li>@Html.Raw(active.Matric)</li>
                 </ul>
+                <p id="matricLabel">Signed in as @Html.Raw(active.forename) : @Html.Raw(active.Matric)</p>    
             </div>
         </div>
     </div>

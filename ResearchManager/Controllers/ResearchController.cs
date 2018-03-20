@@ -196,7 +196,7 @@ namespace ResearchManager.Controllers
                 }
 
             }
-
+            System.Diagnostics.Debug.WriteLine(active.staffPosition + " : staffPos");
             var allowedExtensions = new[] { ".xls", ".xlsx" };
             if (!allowedExtensions.Contains(Path.GetExtension(file.FileName)))
             {
@@ -208,22 +208,26 @@ namespace ResearchManager.Controllers
             {
                 if (file.ContentLength > 0)
                 {
+                    System.Diagnostics.Debug.WriteLine(": COntent>0");
                     var fileName = Path.GetFileName(file.FileName);
                     var fileextension = Path.GetExtension(fileName); ;
 
                     do
                     {
+                        System.Diagnostics.Debug.WriteLine("Do");
                         const int STRING_LENGTH = 32;
                         fileName = Crypto.GenerateSalt(STRING_LENGTH).Substring(0, STRING_LENGTH);
                         String TestName = fileName + fileextension;
                         path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), TestName);
                     } while (System.IO.File.Exists(path) == true);
 
+                    System.Diagnostics.Debug.WriteLine(path + "path");
                     file.SaveAs(path);
                 }
             }
             catch
             {
+                System.Diagnostics.Debug.WriteLine("Catch");
                 TempData["alert"] = "Error Uploading";
                 return RedirectToAction("CreateProject");
             }
@@ -278,8 +282,8 @@ namespace ResearchManager.Controllers
 
             if (projectToEdit.projectStage == "Awaiting further action from Researcher")
                 projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(active.staffPosition);
-            else if (projectToEdit.projectStage == "Created")
-                projectToEdit.projectStage = "Awaiting further action from RIS";
+            //else if (projectToEdit.projectStage == "Created")
+                //projectToEdit.projectStage = "Awaiting further action from RIS";
 
             // update database
             db.Set<project>().Attach(projectToEdit);
@@ -290,7 +294,7 @@ namespace ResearchManager.Controllers
 
             string email = HelperClasses.SharedControllerMethods.PositionToNewPosition(active.staffPosition);
             HelperClasses.SharedControllerMethods.EmailHandler(email, projectToEdit.pName, projectToEdit.pDesc);
-
+            HelperClasses.SharedControllerMethods.addToHistory(active.userID, projectID, "Sent to RIS");
             // show all projects without previously changed one
             if (active.staffPosition == "RIS")
             {
