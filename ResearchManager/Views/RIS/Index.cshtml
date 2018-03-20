@@ -49,7 +49,7 @@
                 @Html.ActionLink("Download", "Download", new { projectID = item.projectID }) |
                 @Html.ActionLink("Details", "Details", new { id = item.projectID }) |
                 @Html.ActionLink("Reupload", "ReuploadExpend", new { projectID = item.projectID }) |
-                @if (item.projectStage == "Awaiting further action from RIS")
+                @if (item.projectStage == "Awaiting further action from RIS" || item.projectStage == "Created")
                 {
                 @Html.ActionLink("Sign", "Sign", new { projectID = item.projectID }, new { onclick = "return confirm('Are you sure you wish to sign?');" })
                 }
