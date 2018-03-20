@@ -13,7 +13,7 @@ namespace ResearchManager.Controllers
     public class RISController : Controller
     {
 
-        public ActionResult Details(int id = -1)
+        public ActionResult Details(int id = -1) //
         {
             //TempData Check and Renewal
             user active = TempData["ActiveUser"] as user;
@@ -46,7 +46,7 @@ namespace ResearchManager.Controllers
             }
         }
 
-        public ActionResult ReuploadExpend(int projectID)
+        public ActionResult ReuploadExpend(int projectID) //
         {
 
             //TempData Check and Renewal
@@ -68,13 +68,12 @@ namespace ResearchManager.Controllers
             ViewBag.DashboardText = "RIS Staff Dashboard";
             Entities db = new Entities();
             var sampleProject = db.projects.Where(p => p.projectID == projectID).First();
-            return View(sampleProject);
+            return View("ReuploadExpend",sampleProject);
         }
 
         [HttpPost]
-        public ActionResult ReuploadExpend(int projectID, HttpPostedFileBase file)
+        public ActionResult ReuploadExpend(int projectID, HttpPostedFileBase file) // -
         {
-            System.Diagnostics.Debug.WriteLine("HEre ReUpload");
             //TempData Check and Renewal
             user active = TempData["ActiveUser"] as user;
             if (active == null)
@@ -104,11 +103,10 @@ namespace ResearchManager.Controllers
                 {
                     System.Diagnostics.Debug.WriteLine("filelength > 0");
                     var fileName = Path.GetFileName(file.FileName);
-                    var fileextension = Path.GetExtension(fileName);;
+                    var fileextension = Path.GetExtension(fileName);
 
                     do
                     {
-                        System.Diagnostics.Debug.WriteLine("System.IO.File.Exists(path) == true");
                         const int STRING_LENGTH = 32;
                         fileName = Crypto.GenerateSalt(STRING_LENGTH).Substring(0, STRING_LENGTH);
                         String TestName = fileName + fileextension;
@@ -120,7 +118,6 @@ namespace ResearchManager.Controllers
             }
             catch
             {
-                System.Diagnostics.Debug.WriteLine("caught");
                 ViewBag.Message = "Upload failed";
                 return RedirectToAction("Index");
             }
@@ -143,7 +140,7 @@ namespace ResearchManager.Controllers
         }
 
         // GET: RIS
-        public ActionResult Index()
+        public ActionResult Index()//
         {
             //TempData Check and Renewal
             user active = TempData["ActiveUser"] as user;
@@ -184,10 +181,28 @@ namespace ResearchManager.Controllers
             return View("Index",projects.ToList());
         }
 
-        public FileResult Download(int projectID)
+        public FileResult Download(int projectID) //
         {
+            user active = TempData["ActiveUser"] as user;
+            if (active == null)
+            {
+                RedirectToAction("SignIn", "Home");
+                return null;
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+                if (active.staffPosition != "RIS")
+                {
+                    RedirectToAction("ControllerChange", "Home");
+                    return null;
+                }
+
+            }
+            int progID = projectID;
             Entities db = new Entities();
-            var dProject = db.projects.Where(p => p.projectID == projectID).First();
+            var dProject = db.projects.Where(p => p.projectID == progID).First();
+
             return File(dProject.projectFile, "application/" + Path.GetExtension(dProject.projectFile), dProject.pName + "-ExpenditureFile" + Path.GetExtension(dProject.projectFile));
         }
     

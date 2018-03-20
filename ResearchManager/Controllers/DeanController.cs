@@ -79,14 +79,14 @@ namespace ResearchManager.Controllers
 
                 if (project == null)
                 {
-                    return RedirectToAction("Index"); 
+                    return RedirectToAction("Index", "Dean"); 
                 }
                 return View(project);
             }
             catch
             {
                 //Return to Index if error occurs
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Dean");
             }
         }
 

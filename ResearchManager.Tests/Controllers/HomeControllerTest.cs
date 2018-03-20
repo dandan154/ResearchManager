@@ -24,6 +24,7 @@ namespace ResearchManager.Tests.Controllers
 
             // Assert
             Assert.IsNotNull(result);
+            Assert.AreEqual("SignIn", result.ViewName); 
         }
         
 
@@ -38,11 +39,36 @@ namespace ResearchManager.Tests.Controllers
 
             // Assert
             Assert.IsNotNull(result);
+            Assert.AreEqual("Contact", result.ViewName); 
         }
 
         [TestMethod]
         public void HomeSignOut()
         {
+            //Connect to database
+            Entities db = new Entities();
+
+            //Create new TempData storage
+            TempDataDictionary tempData = new TempDataDictionary();
+
+            //Create new user 
+            user testUser = DatabaseInsert.AddTestUser("Dean", db);
+            tempData["ActiveUser"] = testUser;
+
+            HomeController controller = new HomeController();
+            controller.TempData = tempData;
+
+            db.users.Remove(testUser);
+            db.SaveChanges();
+
+            ViewResult view = controller.SignOut() as ViewResult;
+
+            //Main Tests
+            Assert.IsNotNull(testUser);
+            Assert.IsNotNull(view);
+            Assert.AreEqual(null, view.TempData["ActiveUser"]);
+            Assert.AreEqual("SignIn", view.ViewName); 
+
 
         }
     }

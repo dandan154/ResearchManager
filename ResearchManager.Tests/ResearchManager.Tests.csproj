@@ -123,10 +123,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\AssControllerTest.cs" />
+    <Compile Include="Controllers\AssociateControllerTest.cs" />
     <Compile Include="Controllers\DeanControllerTest.cs" />
     <Compile Include="Controllers\RISControllerTest.cs" />
     <Compile Include="Controllers\ResearchControllerTest.cs" />
+    <Compile Include="Model Tests\changesUnitTest.cs" />
     <Compile Include="Model Tests\projectUnitTest.cs" />
     <Compile Include="Model Tests\userUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
