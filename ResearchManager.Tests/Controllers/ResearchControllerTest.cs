@@ -475,7 +475,7 @@ namespace ResearchManager.Tests.Controllers
             ResearchController.TempData = tempDataResearcher;
 
             // Act
-            RedirectToRouteResult resultRIS = (RedirectToRouteResult)RISResearchController.EditProject(pToDelRIS.projectID) as RedirectToRouteResult;
+            FileResult resultRIS = (FileResult)RISResearchController.Download(pToDelRIS.projectID) as FileResult;
             FileResult resultResearcher = ResearchController.Download(pToDel.projectID) as FileResult;
 
             db.projects.Remove(pToDelRIS);
@@ -485,11 +485,7 @@ namespace ResearchManager.Tests.Controllers
             db.SaveChanges();
 
             // Assert 'Other User'
-            Assert.IsNotNull(resultRIS);
-            Assert.IsTrue(resultRIS.RouteValues.ContainsKey("action"));
-            Assert.IsTrue(resultRIS.RouteValues.ContainsKey("controller"));
-            Assert.AreEqual("ControllerChange", resultRIS.RouteValues["action"].ToString());
-            Assert.AreEqual("Home", resultRIS.RouteValues["controller"].ToString());
+            Assert.IsNull(resultRIS);
 
             //Assert Researcher
             Assert.IsNotNull(resultResearcher);

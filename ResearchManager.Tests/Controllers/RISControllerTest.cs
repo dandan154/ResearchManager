@@ -8,6 +8,7 @@ using ResearchManager;
 using ResearchManager.Controllers;
 using System.Web;
 using Moq;
+using System.IO;
 
 namespace ResearchManager.Tests.Controllers
 {
@@ -125,12 +126,87 @@ namespace ResearchManager.Tests.Controllers
             Assert.AreEqual("ControllerChange", resultResearcher.RouteValues["action"].ToString());
             Assert.AreEqual("Home", resultResearcher.RouteValues["controller"].ToString());
 
-            //Assert Researcher
+            //Assert RIS
             Assert.IsNotNull(resultRIS);
             Assert.AreEqual("Index", resultRIS.ViewName);
         }
 
         /////////////////////////////////*INDEX TESTS*/////////////////////////////////
+
+        /////////////////////////////////ReUpload TESTS/////////////////////////////////
+        [TestMethod]
+        public void ReUploadTest()
+        {
+            Entities db = new Entities();
+            // Arrange
+            TempDataDictionary tempData = new TempDataDictionary();
+            var RISToDel = DatabaseInsert.AddTestUser("RIS", db);
+            var projectToDel = DatabaseInsert.AddTestProject(RISToDel, db);
+            tempData["ActiveUser"] = RISToDel;
+            RISController controller = new RISController
+            {
+                TempData = tempData
+            };
+
+            // Act
+            ViewResult result = controller.ReuploadExpend(projectToDel.projectID) as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("ReuploadExpend", result.ViewName);
+            Assert.IsNotNull(result.TempData["ActiveUser"]);
+            Assert.IsNotNull(result.Model);
+            Assert.AreEqual(((project)result.Model).projectID, projectToDel.projectID);
+            db.projects.Remove(projectToDel);
+            db.users.Remove(RISToDel);
+        }
+
+        [TestMethod]
+        public void ReUploadRedirectTest()
+        {
+            Entities db = new Entities();
+
+            // Arrange
+            TempDataDictionary tempDataRIS = new TempDataDictionary();
+            TempDataDictionary tempDataResearcher = new TempDataDictionary();
+
+            var RISToDel = DatabaseInsert.AddTestUser("RIS", db);
+            var ResearcherToDel = DatabaseInsert.AddTestUser("Researcher", db);
+            var RISprojectToDel = DatabaseInsert.AddTestProject(RISToDel, db);
+            var ResearcherprojectToDel = DatabaseInsert.AddTestProject(ResearcherToDel, db);
+
+
+            tempDataRIS["ActiveUser"] = RISToDel;
+            tempDataResearcher["ActiveUser"] = ResearcherToDel;
+
+            RISController RISController = new RISController();
+            RISController.TempData = tempDataRIS;
+
+            RISController ResearchController = new RISController();
+            ResearchController.TempData = tempDataResearcher;
+
+            // Act
+            RedirectToRouteResult resultResearcher = (RedirectToRouteResult)ResearchController.ReuploadExpend(ResearcherprojectToDel.projectID) as RedirectToRouteResult;
+            ViewResult resultRIS = (ViewResult)RISController.ReuploadExpend(RISprojectToDel.projectID) as ViewResult;
+
+            db.projects.Remove(ResearcherprojectToDel);
+            db.projects.Remove(RISprojectToDel);
+            db.users.Remove(RISToDel);
+            db.users.Remove(ResearcherToDel);
+            db.SaveChanges();
+
+            // Assert 'Other User'
+            Assert.IsNotNull(resultResearcher);
+            Assert.IsTrue(resultResearcher.RouteValues.ContainsKey("action"));
+            Assert.IsTrue(resultResearcher.RouteValues.ContainsKey("controller"));
+            Assert.AreEqual("ControllerChange", resultResearcher.RouteValues["action"].ToString());
+            Assert.AreEqual("Home", resultResearcher.RouteValues["controller"].ToString());
+
+            //Assert Researcher
+            Assert.IsNotNull(resultRIS);
+            Assert.AreEqual("ReuploadExpend", resultRIS.ViewName);
+        }
+        /////////////////////////////////*ReUpload TESTS*/////////////////////////////////
 
         /////////////////////////////////Details TESTS/////////////////////////////////
         [TestMethod]
@@ -208,12 +284,86 @@ namespace ResearchManager.Tests.Controllers
             Assert.AreEqual("ControllerChange", resultResearcher.RouteValues["action"].ToString());
             Assert.AreEqual("Home", resultResearcher.RouteValues["controller"].ToString());
 
-            //Assert Researcher
+            //Assert RIS
             Assert.IsNotNull(resultRIS);
             Assert.AreEqual("Details", resultRIS.ViewName);
         }
 
         /////////////////////////////////*Details TESTS*/////////////////////////////////
 
+        //////////////////////////////////Download TESTS//////////////////////////////////
+
+        [TestMethod]
+        public void DownloadProjectTest()
+        {
+            Entities db = new Entities();
+            // Arrange
+            TempDataDictionary tempData = new TempDataDictionary();
+            var RISToDel = DatabaseInsert.AddTestUser("RIS", db);
+            tempData["ActiveUser"] = RISToDel;
+            var pToDel = DatabaseInsert.AddTestProject(RISToDel, db);
+            RISController controller = new RISController
+            {
+                TempData = tempData
+            };
+
+            // Act
+            FileResult result = controller.Download(pToDel.projectID) as FileResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(pToDel.pName + "-ExpenditureFile" + Path.GetExtension(pToDel.projectFile), result.FileDownloadName);
+            Assert.AreEqual("application/" + Path.GetExtension(pToDel.projectFile), result.ContentType);
+
+            db.projects.Remove(pToDel);
+            db.users.Remove(RISToDel);
+            db.SaveChanges();
+        }
+
+        [TestMethod]
+        public void DownloadProjectRedirectTest()
+        {
+            Entities db = new Entities();
+
+            // Arrange
+            TempDataDictionary tempDataRIS = new TempDataDictionary();
+            TempDataDictionary tempDataResearcher = new TempDataDictionary();
+
+            var RISToDel = DatabaseInsert.AddTestUser("RIS", db);
+            var ResearcherToDel = DatabaseInsert.AddTestUser("Researcher", db);
+            var pToDel = DatabaseInsert.AddTestProject(ResearcherToDel, db);
+            var pToDelRIS = DatabaseInsert.AddTestProject(RISToDel, db);
+
+
+            tempDataRIS["ActiveUser"] = RISToDel;
+            tempDataResearcher["ActiveUser"] = ResearcherToDel;
+
+            RISController ResearchRISController = new RISController();
+            ResearchRISController.TempData = tempDataResearcher;
+
+            RISController RISController = new RISController();
+            RISController.TempData = tempDataRIS;
+
+            // Act
+            FileResult resultResearcher = (FileResult)ResearchRISController.Download(pToDel.projectID) as FileResult;
+            FileResult resultRIS = RISController.Download(pToDel.projectID) as FileResult;
+
+            db.projects.Remove(pToDelRIS);
+            db.projects.Remove(pToDel);
+            db.users.Remove(RISToDel);
+            db.users.Remove(ResearcherToDel);
+            db.SaveChanges();
+
+            // Assert 'Other User'
+            Assert.IsNull(resultResearcher);
+
+            //Assert RIS
+            Assert.IsNotNull(resultRIS);
+            Assert.AreEqual(pToDelRIS.pName + "-ExpenditureFile" + Path.GetExtension(pToDelRIS.projectFile), resultRIS.FileDownloadName);
+            Assert.AreEqual("application/" + Path.GetExtension(pToDelRIS.projectFile), resultRIS.ContentType);
+        }
+
+
+        /////////////////////////////////*Download TESTS*/////////////////////////////////
     }
 }
