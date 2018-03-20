@@ -211,13 +211,13 @@ namespace ResearchManager.Controllers
                     var fileName = Path.GetFileName(file.FileName);
                     var fileextension = Path.GetExtension(fileName); ;
 
-                    while (System.IO.File.Exists(path) == true)
+                    do
                     {
                         const int STRING_LENGTH = 32;
                         fileName = Crypto.GenerateSalt(STRING_LENGTH).Substring(0, STRING_LENGTH);
                         String TestName = fileName + fileextension;
                         path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), TestName);
-                    }
+                    } while (System.IO.File.Exists(path) == true);
 
                     file.SaveAs(path);
                 }
