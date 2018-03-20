@@ -37,7 +37,7 @@ namespace ResearchManager.Controllers
             {   //Use searchTerm to query the database for project details and store this in a variable project
                 Entities db = new Entities();
                 var project = db.projects.Where(p => p.projectID == id).First();
-                return View(project);
+                return View("Details",project);
             }
             catch
             {
