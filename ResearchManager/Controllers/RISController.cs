@@ -230,8 +230,8 @@ namespace ResearchManager.Controllers
                 TempData["alert"] = "You have signed " + projectToEdit.pName;
 
                 string email = HelperClasses.SharedControllerMethods.PositionToNewPosition(active.staffPosition);
-                HelperClasses.SharedControllerMethods.EmailHandler(email, projectToEdit.pName, projectToEdit.pDesc); 
-         
+                HelperClasses.SharedControllerMethods.EmailHandler(email, projectToEdit.pName, projectToEdit.pDesc);
+                HelperClasses.SharedControllerMethods.addToHistory(active.userID, projectID, "RIS Staff Signed The Project");
             }
             else
             {

@@ -17,10 +17,12 @@
 
         <div>
             <div id="matInput">
-            @Html.TextBoxFor(u => u.userID, new { @placeholder = "Username" })
+            <p class="logLabel">Username</p>
+            @Html.TextBoxFor(u => u.userID)
                 </div>
             <div id="passInput">
-            @Html.PasswordFor(u => u.plntxtPass, new { @placeholder = "Password" })
+            <p  class="logLabel">Password</p>
+            @Html.PasswordFor(u => u.plntxtPass)
                 </div>
             <div id="loginButton">
             <button id="logbutt" type="submit">Sign In</button>

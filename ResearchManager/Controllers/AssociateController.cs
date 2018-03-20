@@ -132,7 +132,7 @@ namespace ResearchManager.Controllers
 
             string email = HelperClasses.SharedControllerMethods.PositionToNewPosition(active.staffPosition);
             HelperClasses.SharedControllerMethods.EmailHandler(email, projectToEdit.pName, projectToEdit.pDesc);
-
+            HelperClasses.SharedControllerMethods.addToHistory(active.userID, projectID, "Associate Dean Signed The Project");
             // show all projects without previously changed one
             if (active.staffPosition == "RIS")
             {
