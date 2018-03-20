@@ -27,7 +27,7 @@ namespace ResearchManager.Tests
             return userToDel;
         }
 
-        static public project AddTestProject(user user, Entities db)
+        static public project AddTestProject(user user, Entities db, string stage = "Created")
         {
             var tempProject = new project();
             tempProject.userID = user.userID;
@@ -36,7 +36,7 @@ namespace ResearchManager.Tests
             tempProject.pAbstract = "test";
             tempProject.dateCreated = DateTime.UtcNow;
             tempProject.projectFile = "none.xlsx";
-            tempProject.projectStage = "Test";
+            tempProject.projectStage = stage;
 
             var projectToDel = db.projects.Add(tempProject);
             db.SaveChanges();

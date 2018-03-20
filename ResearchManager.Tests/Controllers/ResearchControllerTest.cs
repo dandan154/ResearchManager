@@ -524,5 +524,143 @@ namespace ResearchManager.Tests.Controllers
             db2.SaveChanges();
         }
         /////////////////////////////////*addToHistory TESTS*/////////////////////////////////
+
+
+        /////////////////////////////////Sign TESTS/////////////////////////////////
+        [TestMethod]
+        public void ResearcherSignTest()
+        {
+            Entities db = new Entities();
+
+            // Arrange
+            TempDataDictionary tempData = new TempDataDictionary();
+            var ResearcherToDel = DatabaseInsert.AddTestUser("Researcher", db);
+
+            var projectToDel = DatabaseInsert.AddTestProject(ResearcherToDel, db, "Awaiting further action from Researcher");
+            tempData["ActiveUser"] = ResearcherToDel;
+
+            ResearchController controller = new ResearchController();
+            controller.TempData = tempData;
+
+            // Act
+            ViewResult result = (ViewResult)controller.Sign(projectToDel.projectID);
+            Entities db2 = new Entities();
+            db2.changes.Remove(db2.projects.Find(projectToDel.projectID).changes.First());
+            db2.projects.Remove(db2.projects.Find(projectToDel.projectID));
+            db2.users.Remove(db2.users.Find(ResearcherToDel.userID));
+            db2.SaveChanges();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Index", result.ViewName);
+            Assert.IsNotNull(result.TempData["ActiveUser"]);
+            Assert.IsNotNull(result.Model);
+            Assert.AreEqual(((List<project>)result.Model).First().projectID, projectToDel.projectID);
+
+
+        }
+
+        [TestMethod]
+        public void ResearcherSignRedirectTest()
+        {
+
+
+            Entities db = new Entities();
+
+            // Arrange
+            TempDataDictionary tempData = new TempDataDictionary();
+            TempDataDictionary tempDataRIS = new TempDataDictionary();
+            var ResearcherToDel = DatabaseInsert.AddTestUser("Researcher", db);
+
+            var RISToDel = DatabaseInsert.AddTestUser("RIS", db);
+
+            
+
+            var projectToDel = DatabaseInsert.AddTestProject(ResearcherToDel, db, "Awaiting further action from Researcher");
+
+            var projectToDelRIS = DatabaseInsert.AddTestProject(RISToDel, db, "Awaiting further action from Researcher");
+
+            tempData["ActiveUser"] = ResearcherToDel;
+            tempDataRIS["ActiveUser"] = RISToDel;
+
+            ResearchController controller = new ResearchController();
+            controller.TempData = tempData;
+
+            ResearchController RIScontroller = new ResearchController();
+            RIScontroller.TempData = tempDataRIS;
+
+            // Act
+            ViewResult result = (ViewResult)controller.Sign(projectToDel.projectID);
+
+            RedirectToRouteResult resultRIS = (RedirectToRouteResult)RIScontroller.Sign(projectToDel.projectID);
+
+            Entities db2 = new Entities();
+            db2.changes.Remove(db2.projects.Find(projectToDel.projectID).changes.First());
+            db2.projects.Remove(db2.projects.Find(projectToDel.projectID));
+            db2.users.Remove(db2.users.Find(ResearcherToDel.userID));
+
+            db2.projects.Remove(db2.projects.Find(projectToDelRIS.projectID));
+            db2.users.Remove(db2.users.Find(RISToDel.userID));
+            db2.SaveChanges();
+
+            // Assert
+            Assert.IsNotNull(resultRIS);
+            Assert.IsTrue(resultRIS.RouteValues.ContainsKey("action"));
+            Assert.IsTrue(resultRIS.RouteValues.ContainsKey("controller"));
+            Assert.AreEqual("ControllerChange", resultRIS.RouteValues["action"].ToString());
+            Assert.AreEqual("Home", resultRIS.RouteValues["controller"].ToString());
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Index", result.ViewName);
+            Assert.IsNotNull(result.TempData["ActiveUser"]);
+            Assert.IsNotNull(result.Model);
+            Assert.AreEqual(((List<project>)result.Model).First().projectID, projectToDel.projectID);
+
+            /*
+            Entities db = new Entities();
+
+            // Arrange
+            TempDataDictionary tempDataRIS = new TempDataDictionary();
+            TempDataDictionary tempDataResearcher = new TempDataDictionary();
+
+            var RISToDel = DatabaseInsert.AddTestUser("RIS", db);
+            var ResearcherToDel = DatabaseInsert.AddTestUser("Researcher", db);
+            var projectToDelRIS = DatabaseInsert.AddTestProject(RISToDel, db);
+            var projectToDelResearcher = DatabaseInsert.AddTestProject(ResearcherToDel, db);
+
+            tempDataRIS["ActiveUser"] = RISToDel;
+            tempDataResearcher["ActiveUser"] = ResearcherToDel;
+
+            RISController ResearchRISController = new RISController();
+            ResearchRISController.TempData = tempDataResearcher;
+
+            RISController RISController = new RISController();
+            RISController.TempData = tempDataRIS;
+
+            // Act
+            RedirectToRouteResult resultResearcher = (RedirectToRouteResult)ResearchRISController.Details(projectToDelRIS.projectID) as RedirectToRouteResult;
+            ViewResult resultRIS = (ViewResult)RISController.Details(projectToDelResearcher.projectID) as ViewResult;
+
+            Entities db2 = new Entities();
+            db2.changes.Remove(db2.projects.Find(projectToDel.projectID).changes.First());
+            db2.projects.Remove(db2.projects.Find(projectToDel.projectID));
+            db2.users.Remove(db2.users.Find(ResearcherToDel.userID));
+            db2.SaveChanges();
+
+            // Assert 'Other User'
+            Assert.IsNotNull(resultResearcher);
+            Assert.IsTrue(resultResearcher.RouteValues.ContainsKey("action"));
+            Assert.IsTrue(resultResearcher.RouteValues.ContainsKey("controller"));
+            Assert.AreEqual("ControllerChange", resultResearcher.RouteValues["action"].ToString());
+            Assert.AreEqual("Home", resultResearcher.RouteValues["controller"].ToString());
+
+            //Assert RIS
+            Assert.IsNotNull(resultRIS);
+            Assert.AreEqual("Details", resultRIS.ViewName);
+            */
+        }
+
+        /////////////////////////////////*Sign TESTS*/////////////////////////////////
+
     }
 }

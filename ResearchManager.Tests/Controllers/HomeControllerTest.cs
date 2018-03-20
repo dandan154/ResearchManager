@@ -39,7 +39,7 @@ namespace ResearchManager.Tests.Controllers
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual("SignIn", result.ViewData); 
+            Assert.AreEqual("Contact", result.ViewName); 
         }
 
         [TestMethod]

@@ -290,7 +290,7 @@ namespace ResearchManager.Controllers
             db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
 
-            var projects = db.projects.Where(p => p.projectStage == label);
+            var projects = db.projects.Where(p => p.user.userID == active.userID);
 
             string email = HelperClasses.SharedControllerMethods.PositionToNewPosition(active.staffPosition);
             HelperClasses.SharedControllerMethods.EmailHandler(email, projectToEdit.pName, projectToEdit.pDesc);
@@ -300,7 +300,7 @@ namespace ResearchManager.Controllers
             {
                 projects = db.projects.Where(p => p.projectStage == label);
             }
-            return RedirectToAction("Index", projects.ToList());
+            return View("Index", "Research", projects.ToList());
         }
     }
 }
