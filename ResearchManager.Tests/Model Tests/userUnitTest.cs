@@ -55,7 +55,7 @@ namespace ResearchManager.Tests.Model_Tests
         }
 
         [TestMethod]
-        public void testSetGetStaffPOs()
+        public void testSetGetaddUser()
         {
             user u = new user();
             project p = new project();
