@@ -23,7 +23,7 @@ namespace ResearchManager.Controllers
             else
             {
                 TempData["ActiveUser"] = active;
-                if (active.staffPosition != "Associate Dean")
+                if (active.staffPosition != "AssociateDean")
                 {
                     return RedirectToAction("ControllerChange", "Home");
                 }
@@ -64,7 +64,7 @@ namespace ResearchManager.Controllers
             else
             {
                 TempData["ActiveUser"] = active;
-                if (active.staffPosition != "Associate Dean")
+                if (active.staffPosition != "AssociateDean")
                 {
                     return RedirectToAction("ControllerChange", "Home");
                 }
@@ -96,6 +96,7 @@ namespace ResearchManager.Controllers
 
         public ActionResult Sign(int projectID)
         {
+            System.Diagnostics.Debug.WriteLine("Sign Called");
             //TempData Check and Renewal
             user active = TempData["ActiveUser"] as user;
             if (active == null)
@@ -105,22 +106,22 @@ namespace ResearchManager.Controllers
             else
             {
                 TempData["ActiveUser"] = active;
-                if (active.staffPosition != "Associate Dean")
+                if (active.staffPosition != "AssociateDean")
                 {
                     return RedirectToAction("ControllerChange", "Home");
                 }
 
             }
-
+            System.Diagnostics.Debug.WriteLine("Passed TempData");
             int id = projectID;
-            string label = HelperClasses.SharedControllerMethods.IdToLabel(active.staffPosition);
+            string label = "Awaiting further action from Dean";
 
             // return our project to be changed (should be only 1)
             var db = new Entities();
             var projectToEdit = db.projects.Where(p => p.projectID == id).First();
 
-            projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(active.staffPosition);
-
+            projectToEdit.projectStage = label;
+            System.Diagnostics.Debug.WriteLine(label + "Called");
             // update database
             db.Set<project>().Attach(projectToEdit);
             db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;

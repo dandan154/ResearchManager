@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ResearchManager.project>
  
  @{
+     ViewBag.DashboardText = "Researcher Dashboard";
      ViewBag.Title = "Dashboard";
      Layout = "~/Views/Shared/_DefaultLayout.cshtml";
      }
@@ -84,7 +85,11 @@
                           @if (item.projectStage == "Awaiting Further Information")
                         {
                         @Html.ActionLink("Provide Further Information", "EditProject", new { projectID = item.projectID }, new { onclick = "return confirm('Are you sure you wish to send the project?');" })
+                        }@if (item.projectStage == "Awaiting further action from Researcher")
+                        {
+                        @Html.ActionLink("Sign", "Sign","Research", new { projectID = item.projectID }, new { onclick = "return confirm('Are you sure you wish to sign the project?');" })
                         }
+                          
         </td>
         
     </tr>

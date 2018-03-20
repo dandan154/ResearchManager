@@ -16,6 +16,7 @@ namespace ResearchManager.Controllers
         // GET: Research
         public ActionResult Index()
         {
+            ViewBag.DashboardText = "Researcher Dashboard";
             user active = TempData["ActiveUser"] as user;
             if (active == null)
             {
@@ -246,12 +247,11 @@ namespace ResearchManager.Controllers
                     System.Diagnostics.Debug.WriteLine(": COntent>0");
                     var fileName = Path.GetFileName(file.FileName);
                     var fileextension = Path.GetExtension(fileName); ;
-
+                    Random rand = new Random();
                     do
                     {
                         System.Diagnostics.Debug.WriteLine("Do");
-                        const int STRING_LENGTH = 32;
-                        fileName = Crypto.GenerateSalt(STRING_LENGTH).Substring(0, STRING_LENGTH);
+                        fileName = rand.Next(1,10000000).ToString();
                         String TestName = fileName + fileextension;
                         path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), TestName);
                     } while (System.IO.File.Exists(path) == true);
@@ -314,8 +314,8 @@ namespace ResearchManager.Controllers
             var db = new Entities(); 
             var projectToEdit = db.projects.Where(p => p.projectID == projectID).First();
 
-            if (projectToEdit.projectStage == "Created")
-                projectToEdit.projectStage = "Awaiting RIS Confirmation";
+            if (projectToEdit.projectStage == "Awaiting further action from Researcher")
+                projectToEdit.projectStage = "Awaiting further action from Associate Dean";
             //else if (projectToEdit.projectStage == "Created")
                 //projectToEdit.projectStage = "Awaiting further action from RIS";
 
@@ -328,13 +328,13 @@ namespace ResearchManager.Controllers
 
             string email = HelperClasses.SharedControllerMethods.PositionToNewPosition(active.staffPosition);
             HelperClasses.SharedControllerMethods.EmailHandler(email, projectToEdit.pName, projectToEdit.pDesc);
-            HelperClasses.SharedControllerMethods.addToHistory(active.userID, projectID, "Sent to RIS");
+            HelperClasses.SharedControllerMethods.addToHistory(active.userID, projectID, "Sent to Associate Dean");
             // show all projects without previously changed one
             if (active.staffPosition == "RIS")
             {
                 projects = db.projects.Where(p => p.projectStage == label);
             }
-            return View("Index", "Research", projects.ToList());
+            return View("Index", projects.ToList());
         }
     }
 }

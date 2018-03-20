@@ -104,11 +104,10 @@ namespace ResearchManager.Controllers
                     System.Diagnostics.Debug.WriteLine("filelength > 0");
                     var fileName = Path.GetFileName(file.FileName);
                     var fileextension = Path.GetExtension(fileName);
-
+                    Random rand = new Random();
                     do
                     {
-                        const int STRING_LENGTH = 32;
-                        fileName = Crypto.GenerateSalt(STRING_LENGTH).Substring(0, STRING_LENGTH);
+                        fileName = rand.Next(1, 10000000).ToString();
                         String TestName = fileName + fileextension;
                         path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), TestName);
                     } while (System.IO.File.Exists(path) == true);
@@ -236,7 +235,7 @@ namespace ResearchManager.Controllers
             {
 
                 // update database
-                projectToEdit.projectStage = "Awaiting further action from Associate Dean";
+                projectToEdit.projectStage = "Awaiting further action from Researcher";
                 db.Set<project>().Attach(projectToEdit);
                 db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
