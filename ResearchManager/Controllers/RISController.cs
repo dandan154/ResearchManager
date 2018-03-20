@@ -243,5 +243,48 @@ namespace ResearchManager.Controllers
             }
             return RedirectToAction("Index", projects.ToList());
         }
+
+        public ActionResult Clarification(int projectID)
+        {
+            //TempData Check and Renewal
+            user active = TempData["ActiveUser"] as user;
+            if (active == null)
+            {
+                return RedirectToAction("SignIn", "Home");
+            }
+            else
+            {
+                TempData["ActiveUser"] = active;
+                if (active.staffPosition != "RIS")
+                {
+                    return RedirectToAction("ControllerChange", "Home");
+                }
+
+            }
+            string label = "Need Further Clarification";
+            var db = new Entities();
+            var projectToEdit = db.projects.Where(p => p.projectID == projectID).First();
+            if ((active.staffPosition == "RIS" && projectToEdit.projectStage == "Created"))
+            {
+                // update signatures based on current user
+                projectToEdit.projectStage = "awaitingClarification";
+
+                // update database
+                db.Set<project>().Attach(projectToEdit);
+                db.Entry(projectToEdit).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+                TempData["alert"] = "You have returned " + projectToEdit.pName + " for further clarification";
+
+                string email = HelperClasses.SharedControllerMethods.PositionToNewPosition(active.staffPosition);
+                HelperClasses.SharedControllerMethods.addToHistory(active.userID, projectID, "RIS Staff requested clarification");
+            }
+            else
+            {
+                TempData["alert"] = "You do not have permission to request clarification for : " + projectToEdit.pName;
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }
