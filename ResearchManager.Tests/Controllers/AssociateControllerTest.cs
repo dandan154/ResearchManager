@@ -10,11 +10,11 @@ using ResearchManager.Controllers;
 namespace ResearchManager.Tests.Controllers
 {
     [TestClass]
-    public class DeanControllerTest
+    public class AssociateControllerTest
 
     {
         [TestMethod]
-        public void DeanDetailsRedirect()
+        public void AssociateDetailsRedirect()
         {
             //Connect to database
             Entities db = new Entities();
@@ -23,22 +23,22 @@ namespace ResearchManager.Tests.Controllers
             TempDataDictionary tempData = new TempDataDictionary();
 
             //Add test models to the database
-            user testUser = DatabaseInsert.AddTestUser("Dean", db);
+            user testUser = DatabaseInsert.AddTestUser("Associate Dean", db);
             project testProject = DatabaseInsert.AddTestProject(testUser, db);
 
             //Create controller instance
             tempData["ActiveUser"] = testUser;
-            DeanController deanNullProject = new DeanController();
-            DeanController deanNullUser = new DeanController();
-            deanNullProject.TempData = tempData;
+            DeanController associateNullProject = new DeanController();
+            DeanController associateNullUser = new DeanController();
+            associateNullProject.TempData = tempData;
 
             //remove test project before usage
             db.projects.Remove(testProject);
             db.SaveChanges();
 
             //Return view with invalid projectID
-            RedirectToRouteResult result = (RedirectToRouteResult)deanNullProject.Details(testProject.projectID);
-            RedirectToRouteResult result2 = (RedirectToRouteResult)deanNullUser.Details(testProject.projectID); 
+            RedirectToRouteResult result = (RedirectToRouteResult)associateNullProject.Details(testProject.projectID);
+            RedirectToRouteResult result2 = (RedirectToRouteResult)associateNullUser.Details(testProject.projectID);
             db.users.Remove(testUser);
             db.SaveChanges();
 
@@ -46,8 +46,8 @@ namespace ResearchManager.Tests.Controllers
             Assert.IsNotNull(result);
             Assert.IsTrue(result.RouteValues.ContainsKey("action"));
             Assert.IsTrue(result.RouteValues.ContainsKey("controller"));
-            Assert.AreEqual("Index", result.RouteValues["action"].ToString());
-            Assert.AreEqual("Dean", result.RouteValues["controller"].ToString());
+            Assert.AreEqual("ControllerChange", result.RouteValues["action"].ToString());
+            Assert.AreEqual("Home", result.RouteValues["controller"].ToString());
 
             Assert.IsNotNull(result2);
             Assert.IsTrue(result2.RouteValues.ContainsKey("action"));
@@ -57,7 +57,7 @@ namespace ResearchManager.Tests.Controllers
         }
 
         [TestMethod]
-        public void DeanDetailsStandard()
+        public void AssociateDetailsStandard()
         {
             //Connect to database
             Entities db = new Entities();
@@ -66,15 +66,15 @@ namespace ResearchManager.Tests.Controllers
             TempDataDictionary tempData = new TempDataDictionary();
 
             //Add test models to the database
-            user testUser = DatabaseInsert.AddTestUser("Dean", db);
+            user testUser = DatabaseInsert.AddTestUser("Associate Dean", db);
             project testProject = DatabaseInsert.AddTestProject(testUser, db);
 
             //Create controller instance
-            tempData["ActiveUser"] = testUser; 
-            DeanController dean = new DeanController();
-            dean.TempData = tempData;
+            tempData["ActiveUser"] = testUser;
+            AssociateController associate = new AssociateController();
+            associate.TempData = tempData;
 
-            ViewResult action = (ViewResult)dean.Details(testProject.projectID);
+            ViewResult action = (ViewResult)associate.Details(testProject.projectID);
 
             //Remove testing models from database
             db.projects.Remove(testProject);
@@ -88,45 +88,26 @@ namespace ResearchManager.Tests.Controllers
 
         }
 
-        public void DeanIndexRedirect()
+        [TestMethod]
+        public void AssociateIndexRedirect()
         {
             //Connect to database
             Entities db = new Entities();
-
-            //Create new TempData storage
-            TempDataDictionary tempData = new TempDataDictionary();
-
-            //Add test models to the database
-            user testUser = DatabaseInsert.AddTestUser("Dean", db);
-
-            //Create controller instance
-            tempData["ActiveUser"] = testUser;
-            DeanController deanNullProject = new DeanController();
-            DeanController deanNullUser = new DeanController();
-            deanNullProject.TempData = tempData;
+            AssociateController associateNullUser = new AssociateController();
 
             //Return view with invalid projectID
-            RedirectToRouteResult result = (RedirectToRouteResult)deanNullProject.Index();
-            RedirectToRouteResult result2 = (RedirectToRouteResult)deanNullUser.Index();
-            db.users.Remove(testUser);
-            db.SaveChanges();
+            RedirectToRouteResult result = (RedirectToRouteResult)associateNullUser.Index();
 
             //Main Tests
             Assert.IsNotNull(result);
             Assert.IsTrue(result.RouteValues.ContainsKey("action"));
             Assert.IsTrue(result.RouteValues.ContainsKey("controller"));
-            Assert.AreEqual("Index", result.RouteValues["action"].ToString());
-            Assert.AreEqual("Dean", result.RouteValues["controller"].ToString());
-
-            Assert.IsNotNull(result2);
-            Assert.IsTrue(result2.RouteValues.ContainsKey("action"));
-            Assert.IsTrue(result2.RouteValues.ContainsKey("controller"));
-            Assert.AreEqual("SignIn", result2.RouteValues["action"].ToString());
-            Assert.AreEqual("Home", result2.RouteValues["controller"].ToString());
+            Assert.AreEqual("SignIn", result.RouteValues["action"].ToString());
+            Assert.AreEqual("Home", result.RouteValues["controller"].ToString());
         }
 
         [TestMethod]
-        public void DeanIndexStandard()
+        public void AssociateIndexStandard()
         {
             //Connect to database
             Entities db = new Entities();
@@ -135,16 +116,17 @@ namespace ResearchManager.Tests.Controllers
             TempDataDictionary tempData = new TempDataDictionary();
 
             //Add test models to the database
-            user testUser = DatabaseInsert.AddTestUser("Dean", db);
+            user testUser = DatabaseInsert.AddTestUser("Associate Dean", db);
             project testProject = DatabaseInsert.AddTestProject(testUser, db);
 
             //Create controller instance
             tempData["ActiveUser"] = testUser;
 
-            DeanController dean = new DeanController();
-            dean.TempData = tempData; 
-            ViewResult action = (ViewResult)dean.Index();
-           
+            AssociateController associate = new AssociateController();
+            associate.TempData = tempData;
+
+            ViewResult action = (ViewResult)associate.Index();
+
             //Remove testing models from database
             db.projects.Remove(testProject);
             db.users.Remove(testUser);
@@ -152,12 +134,10 @@ namespace ResearchManager.Tests.Controllers
 
             //Main Tests
             Assert.IsNotNull(action);
+            Assert.IsNotNull(testUser);
             Assert.IsNotNull(action.ViewData.Model);
-            Assert.IsNotNull(action.TempData["ActiveUser"]); 
-            Assert.IsNotNull(testUser); 
+            Assert.IsNotNull(action.TempData["ActiveUser"]);
             Assert.AreEqual(action.TempData["ActiveUser"], testUser);
-
         }
-
     }
 }
