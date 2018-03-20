@@ -509,11 +509,10 @@ namespace ResearchManager.Tests.Controllers
             Entities db = new Entities();
             var tempUser = DatabaseInsert.AddTestUser("Researcher", db);
             var tempProject = DatabaseInsert.AddTestProject(tempUser, db);
-            ResearchController researchController = new ResearchController();
             string changeSum = "Test Change Sum";
 
             //ACT
-            researchController.addToHistory(tempUser.userID, tempProject.projectID, changeSum);
+            HelperClasses.SharedControllerMethods.addToHistory(tempUser.userID, tempProject.projectID, changeSum);
             Entities db2 = new Entities();
 
             var found = db2.projects.Find(tempProject.projectID).changes.First().changeSummary;

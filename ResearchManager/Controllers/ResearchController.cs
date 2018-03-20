@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Helpers;
-
+using ResearchManager.HelperClasses;
 
 namespace ResearchManager.Controllers
 {
@@ -123,6 +123,7 @@ namespace ResearchManager.Controllers
             sampleProject.pAbstract = edited.pAbstract;
             db.Set<project>().Attach(sampleProject);
             db.Entry(sampleProject).State = System.Data.Entity.EntityState.Modified;
+            SharedControllerMethods.addToHistory(active.userID, edited.projectID, "Changed Project Details");
             db.SaveChanges();
 
             return RedirectToAction("Index");
@@ -230,7 +231,8 @@ namespace ResearchManager.Controllers
             if (ModelState.IsValid)
             {
                 var db = new Entities();
-                db.projects.Add(new project
+
+                project tempProject = new project
                 {
                     userID = active.userID,
                     dateCreated = DateTime.Now.ToUniversalTime(),
@@ -239,8 +241,10 @@ namespace ResearchManager.Controllers
                     pAbstract = model.pAbstract,
                     pDesc = model.pDesc,
                     projectFile = path,
-                });
+                };
+                project addedProject = db.projects.Add(tempProject);
                 db.SaveChanges();
+                SharedControllerMethods.addToHistory(active.userID,addedProject.projectID , "Created Project");
                 ViewBag.Message = "Created Project";
                 return RedirectToAction("Index");
 
@@ -294,20 +298,5 @@ namespace ResearchManager.Controllers
             }
             return RedirectToAction("Index", projects.ToList());
         }
-    public void addToHistory(int uID, int pID, string cSUM)
-        {
-            DateTime now = System.DateTime.Now;
-            change tempChange = new change()
-            {
-                projectID = pID,
-                userID = uID,
-                changeSummary = cSUM,
-                dateCreated = now
-            };
-            Entities db = new Entities();
-            db.changes.Add(tempChange);
-            db.SaveChanges();
-        }
-
     }
 }

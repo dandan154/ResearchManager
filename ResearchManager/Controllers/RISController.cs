@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Helpers;
+using ResearchManager.HelperClasses;
 
 namespace ResearchManager.Controllers
 {
@@ -36,7 +37,7 @@ namespace ResearchManager.Controllers
             {   //Use searchTerm to query the database for project details and store this in a variable project
                 Entities db = new Entities();
                 var project = db.projects.Where(p => p.projectID == id).First();
-                return View(project);
+                return View("Details",project);
             }
             catch
             {
@@ -47,6 +48,7 @@ namespace ResearchManager.Controllers
 
         public ActionResult ReuploadExpend(int projectID)
         {
+
             //TempData Check and Renewal
             user active = TempData["ActiveUser"] as user;
             if (active == null)
@@ -72,6 +74,7 @@ namespace ResearchManager.Controllers
         [HttpPost]
         public ActionResult ReuploadExpend(int projectID, HttpPostedFileBase file)
         {
+            System.Diagnostics.Debug.WriteLine("HEre ReUpload");
             //TempData Check and Renewal
             user active = TempData["ActiveUser"] as user;
             if (active == null)
@@ -91,7 +94,7 @@ namespace ResearchManager.Controllers
             var allowedExtensions = new[] { ".xls", ".xlsx" };
             if (!allowedExtensions.Contains(Path.GetExtension(file.FileName)))
             {
-                TempData["alert"] = "Select a file with extension type: " + string.Join(" ", allowedExtensions); ;
+                TempData["alert"] = "Select a file with extension type: " + string.Join(" ", allowedExtensions);
                 return RedirectToAction("Index");
             }
             var path = "";
@@ -99,23 +102,25 @@ namespace ResearchManager.Controllers
             {
                 if (file.ContentLength > 0)
                 {
-
+                    System.Diagnostics.Debug.WriteLine("filelength > 0");
                     var fileName = Path.GetFileName(file.FileName);
                     var fileextension = Path.GetExtension(fileName);;
 
-                    while (System.IO.File.Exists(path) == true)
+                    do
                     {
+                        System.Diagnostics.Debug.WriteLine("System.IO.File.Exists(path) == true");
                         const int STRING_LENGTH = 32;
-                        fileName = Crypto.GenerateSalt(STRING_LENGTH).Substring(0, STRING_LENGTH); 
+                        fileName = Crypto.GenerateSalt(STRING_LENGTH).Substring(0, STRING_LENGTH);
                         String TestName = fileName + fileextension;
                         path = Path.Combine(Server.MapPath("~/App_Data/ExpenditureFiles"), TestName);
-                    }
+                    } while (System.IO.File.Exists(path) == true);
 
                     file.SaveAs(path);
                 }
             }
             catch
             {
+                System.Diagnostics.Debug.WriteLine("caught");
                 ViewBag.Message = "Upload failed";
                 return RedirectToAction("Index");
             }
@@ -126,8 +131,9 @@ namespace ResearchManager.Controllers
             sampleProject.projectFile = path;
             db.Set<project>().Attach(sampleProject);
             db.Entry(sampleProject).State = System.Data.Entity.EntityState.Modified;
-            db.SaveChanges();
 
+            db.SaveChanges();
+            SharedControllerMethods.addToHistory(active.userID, projectID, "Modified the project file");
             if (System.IO.File.Exists(fToDel))
             {
                 System.IO.File.Delete(fToDel);
