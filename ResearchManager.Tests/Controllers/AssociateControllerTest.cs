@@ -66,7 +66,7 @@ namespace ResearchManager.Tests.Controllers
             TempDataDictionary tempData = new TempDataDictionary();
 
             //Add test models to the database
-            user testUser = DatabaseInsert.AddTestUser("Associate Dean", db);
+            user testUser = DatabaseInsert.AddTestUser("AssociateDean", db);
             project testProject = DatabaseInsert.AddTestProject(testUser, db);
 
             //Create controller instance
@@ -116,7 +116,7 @@ namespace ResearchManager.Tests.Controllers
             TempDataDictionary tempData = new TempDataDictionary();
 
             //Add test models to the database
-            user testUser = DatabaseInsert.AddTestUser("Associate Dean", db);
+            user testUser = DatabaseInsert.AddTestUser("AssociateDean", db);
             project testProject = DatabaseInsert.AddTestProject(testUser, db);
 
             //Create controller instance
