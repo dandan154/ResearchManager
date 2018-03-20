@@ -217,7 +217,7 @@ namespace ResearchManager.Controllers
             var projects = db.projects.Where(p => p.projectStage == label);
             var projectToEdit = db.projects.Where(p => p.projectID == projectID).First();
 
-            if ((active.staffPosition == "RIS" && projectToEdit.projectStage == "Awaiting further action from RIS"))
+            if ((active.staffPosition == "RIS" && projectToEdit.projectStage == "Created"))
             {
                 // update signatures based on current user
                 projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(active.staffPosition);

@@ -278,8 +278,8 @@ namespace ResearchManager.Controllers
 
             if (projectToEdit.projectStage == "Awaiting further action from Researcher")
                 projectToEdit.projectStage = HelperClasses.SharedControllerMethods.Signature(active.staffPosition);
-            else if (projectToEdit.projectStage == "Created")
-                projectToEdit.projectStage = "Awaiting further action from RIS";
+            //else if (projectToEdit.projectStage == "Created")
+                //projectToEdit.projectStage = "Awaiting further action from RIS";
 
             // update database
             db.Set<project>().Attach(projectToEdit);
